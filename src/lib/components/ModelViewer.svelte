@@ -44,13 +44,11 @@
 		const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
 		const controls = new OrbitControls(camera, renderer.domElement);
 		const modelContainer = new THREE.Group();
-		const decor = new THREE.Group();
 		const clock = new THREE.Clock();
 
 		camera.position.set(2.8, 1.8, 6.2);
 		modelContainer.position.y = 0.18;
 		scene.add(modelContainer);
-		scene.add(decor);
 		scene.add(new THREE.HemisphereLight('#ffffff', '#1a0f0a', 1.35));
 
 		const key = new THREE.DirectionalLight(accent, 2.3);
@@ -102,9 +100,8 @@
 		);
 		platform.position.y = -1.08;
 
-		fallbackCore.visible = false;
-		fallbackWire.visible = false;
-		decor.add(ring, platform);
+		const fallbackGroup = new THREE.Group();
+		fallbackGroup.add(fallbackCore, fallbackWire, ring, platform);
 
 		const loader = new GLTFLoader();
 
@@ -113,9 +110,7 @@
 				const child = modelContainer.children[0];
 				modelContainer.remove(child);
 			}
-			fallbackCore.visible = true;
-			fallbackWire.visible = true;
-			modelContainer.add(fallbackCore, fallbackWire);
+			modelContainer.add(fallbackGroup);
 		};
 
 		const loadGLB = (url: string) => {
