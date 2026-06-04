@@ -66,23 +66,48 @@
 		controls.minDistance = 4.4;
 		controls.maxDistance = 8;
 
-		const fallbackMat = new THREE.MeshStandardMaterial({
-			color: '#f7f3e8',
-			metalness: 0.42,
-			roughness: 0.34,
-			emissive: new THREE.Color(accent),
-			emissiveIntensity: 0.05
-		});
-
-		const wireMat = new THREE.MeshBasicMaterial({
-			color: accent,
-			wireframe: true,
+		const PARTICLE_COUNT = 4000;
+		const pPos = new Float32Array(PARTICLE_COUNT * 3);
+		const pCol = new Float32Array(PARTICLE_COUNT * 3);
+		for (let i = 0; i < PARTICLE_COUNT; i++) {
+			const idx = i * 3;
+			const parity = i % 2;
+			const t = i / PARTICLE_COUNT;
+			if (parity === 0) {
+				const theta = i * 0.7;
+				const phi = i * 0.3;
+				const r = 0.2 + t * 0.35;
+				pPos[idx] = r * Math.sin(theta) * Math.cos(phi);
+				pPos[idx + 1] = r * Math.cos(theta) * 0.8;
+				pPos[idx + 2] = r * Math.sin(theta) * Math.sin(phi) * 0.6;
+				pCol[idx] = 0.95;
+				pCol[idx + 1] = 0.72;
+				pCol[idx + 2] = 0.52;
+			} else {
+				const angle = i * 1.7;
+				const rr = 0.3 + t * 0.55;
+				pPos[idx] = rr * Math.sin(angle);
+				pPos[idx + 1] = Math.cos(angle * 2) * 0.05;
+				pPos[idx + 2] = rr * Math.cos(angle) * 0.45;
+				pCol[idx] = 0.55;
+				pCol[idx + 1] = 0.7;
+				pCol[idx + 2] = 0.95;
+			}
+		}
+		const pGeo = new THREE.BufferGeometry();
+		pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+		pGeo.setAttribute('color', new THREE.BufferAttribute(pCol, 3));
+		const pMat = new THREE.PointsMaterial({
+			size: 0.025,
+			vertexColors: true,
 			transparent: true,
-			opacity: 0.2
+			opacity: 0.85,
+			blending: THREE.AdditiveBlending,
+			depthWrite: false,
+			sizeAttenuation: true
 		});
-
-		const fallbackCore = new THREE.Mesh(new THREE.IcosahedronGeometry(0.96, 4), fallbackMat);
-		const fallbackWire = new THREE.Mesh(new THREE.IcosahedronGeometry(1.02, 2), wireMat);
+		const particles = new THREE.Points(pGeo, pMat);
+		let pCounter = 100;
 
 		const ring = new THREE.Mesh(
 			new THREE.TorusGeometry(1.36, 0.016, 16, 140),
@@ -97,7 +122,30 @@
 		platform.position.y = -1.08;
 
 		const fallbackGroup = new THREE.Group();
-		fallbackGroup.add(fallbackCore, fallbackWire, ring, platform);
+		fallbackGroup.add(particles, ring, platform);
+
+		const updateParticles = (elapsed: number) => {
+			pCounter += 0.02;
+			const pos = particles.geometry.attributes.position.array as Float32Array;
+			const scale = 0.006;
+			for (let i = 2; i < PARTICLE_COUNT; i++) {
+				const parity = i % 2;
+				const idx = i * 3;
+				const r = pCounter / Math.cos(pCounter / (i + 1)) + parity * (pCounter / 2 + (i % 97));
+				const a = pCounter / 9 + i * i;
+				const rz = r * scale;
+				if (parity === 0) {
+					pos[idx] = rz * Math.sin(a) * Math.cos(i / pCounter);
+					pos[idx + 1] = rz * Math.cos(a) * 0.8;
+					pos[idx + 2] = rz * Math.sin(a) * Math.sin(i / pCounter) * 0.5;
+				} else {
+					pos[idx] = rz * Math.sin(a) * Math.cos(i / pCounter);
+					pos[idx + 1] = rz * Math.cos(a + 2) * 0.28 * 2.1;
+					pos[idx + 2] = rz * Math.sin(a) * Math.sin(i / pCounter) * 0.3;
+				}
+			}
+			particles.geometry.attributes.position.needsUpdate = true;
+		};
 
 		const loader = new GLTFLoader();
 
@@ -105,6 +153,8 @@
 			while (modelContainer.children.length) {
 				modelContainer.remove(modelContainer.children[0]);
 			}
+			pCounter = 100;
+			ring.rotation.z = 0;
 			modelContainer.add(fallbackGroup);
 		};
 
@@ -239,11 +289,11 @@
 		let frame = 0;
 		const tick = () => {
 			const elapsed = clock.getElapsedTime();
-			const floatY = Math.sin(elapsed * 1.4) * 0.08;
-			fallbackCore.position.y = floatY;
-			fallbackWire.position.y = floatY;
-			fallbackWire.rotation.x -= 0.004;
-			ring.rotation.z += 0.006;
+			const current = modelContainer.children[0];
+			if (current === fallbackGroup) {
+				updateParticles(elapsed);
+				ring.rotation.z += 0.006;
+			}
 			controls.update();
 			renderer.render(scene, camera);
 			frame = requestAnimationFrame(tick);
