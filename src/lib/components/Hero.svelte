@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ArrowDownRight, Mail, AtSign, MessageCircle } from '@lucide/svelte';
+	import { ArrowDownRight, Mail, MessageCircle } from '@lucide/svelte';
 	import type { Skill, TimelineItem } from '$lib/data/portfolio';
 
 	type Props = {
@@ -111,7 +111,7 @@
 							<span>{email}</span>
 						</a>
 						<a href={instagramUrl} target="_blank" rel="noreferrer" aria-label="Instagram">
-							<AtSign size={18} />
+							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
 							<span>@{instagram}</span>
 						</a>
 						<a href={whatsappUrl} target="_blank" rel="noreferrer" aria-label="WhatsApp">
@@ -511,7 +511,8 @@
 	.toc-card h2 {
 		margin: 0;
 		font-size: 1.35rem;
-		line-height: 1;
+		line-height: 1.25;
+		padding-bottom: 0.1em;
 	}
 
 	.toc-card p {

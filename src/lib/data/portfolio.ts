@@ -571,9 +571,6 @@ const motionPersonalAssets: ProjectAsset[] = [
 		src: '/media/work/motion/motion-44-potrait.mp4',
 		type: 'video',
 		meta: '',
-		// Backend-only clip timing: change startAt/endAt to adjust this loop.
-		startAt: 0,
-		endAt: 12,
 		ratio: 'portrait'
 	},
 	{
@@ -581,9 +578,6 @@ const motionPersonalAssets: ProjectAsset[] = [
 		src: '/media/work/motion/motion-44-square.mp4',
 		type: 'video',
 		meta: '',
-		// Backend-only clip timing: change startAt/endAt to adjust this loop.
-		startAt: 0,
-		endAt: 12,
 		ratio: 'square'
 	}
 ];
