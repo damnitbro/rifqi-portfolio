@@ -133,8 +133,8 @@ export const brandPalette = [
 export const skills: Skill[] = [
 	{ label: '3D Artist', value: 'Model previews, look-dev, cinematic presentation' },
 	{ label: 'Video Editor', value: 'Short-form cuts, pacing, social-first reels' },
-	{ label: 'Social Media & Motion Designer', value: 'Campaign posts, motion assets, and social visual systems' },
-	{ label: 'Contact Information', value: 'Email, Instagram, and WhatsApp details for collaboration' }
+	{ label: 'Motion Design', value: 'Campaign posts, motion assets, and social visual systems' },
+	{ label: 'Contact', value: 'Email, Instagram, and WhatsApp details for collaboration' }
 ];
 
 export const personalSkills: Skill[] = [
@@ -257,7 +257,7 @@ const socaAssets: ProjectAsset[] = [
 		ratio: 'portrait'
 	},
 	{
-		title: 'Sovia X Banner Mockup',
+		title: 'Sovia X Banner',
 		src: '/media/work/3d-personal/soca-frame-x-banner-sovia.webp',
 		type: 'image',
 		meta: '',
@@ -637,7 +637,7 @@ export const experienceSections: ExperienceSection[] = [
 	{
 		id: 'experience-graphics',
 		kicker: 'Job experience / graphics',
-		title: 'Graphics and Motion Designer',
+		title: 'Graphics Designer',
 		description:
 			'Social graphics and motion-ready layouts for campaign communication, using strong hierarchy, repeatable templates, and clean visual systems.',
 		apps: [appBadges.figma, appBadges.photoshop],

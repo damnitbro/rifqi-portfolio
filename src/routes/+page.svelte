@@ -151,7 +151,7 @@
 					dot.classList.remove('nav-dot-click');
 					void dot.offsetWidth;
 					dot.classList.add('nav-dot-click');
-					window.setTimeout(() => dot.classList.remove('nav-dot-click'), 820);
+					dot.classList.add('nav-dot-active');
 				}
 			}
 		};
@@ -209,8 +209,8 @@
 	<div class="nav-links">
 		<a href="#experience-3d">3D Artist</a>
 		<a href="#experience-video">Video Editor</a>
-		<a href="#experience-graphics">Graphic and Motion Designer</a>
-		<a href="#contact">Contact Information</a>
+		<a href="#experience-graphics">Motion Design</a>
+		<a href="#contact">Contact</a>
 	</div>
 
 	<!-- <a class="nav-player" href="#top">Player 1</a> -->
@@ -526,14 +526,20 @@
 
 	:global(.status-dot.nav-dot-click) {
 		animation:
-			nav-dot-click 780ms cubic-bezier(0.22, 1, 0.36, 1),
+			nav-dot-click 780ms cubic-bezier(0.22, 1, 0.36, 1) forwards,
 			nav-dot-idle 2.6s ease-in-out infinite 780ms;
+	}
+
+	:global(.status-dot.nav-dot-active) {
+		box-shadow: 0 0 30px rgba(251, 8, 8, 0.9), 0 0 0 0.4rem rgba(255, 16, 16, 0.1);
+		transform: scale(1.06);
 	}
 
 	.nav-links {
 		justify-content: center;
 		flex: 0 1 auto;
 		min-width: 0;
+		margin-left: 3rem;
 	}
 
 	.nav-links a {
@@ -862,6 +868,7 @@
 		.nav-links {
 			justify-content: center;
 			gap: 0.2rem;
+			margin-left: 2.2rem;
 		}
 
 		.nav-links a {

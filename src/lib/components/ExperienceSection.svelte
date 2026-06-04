@@ -240,7 +240,7 @@
 												autoplay
 												muted={mutedMap[key] ?? true}
 												playsinline
-												preload="metadata"
+												preload="auto"
 											></video>
 											<div class="vid-overlay-controls">
 												<button aria-label="Restart video" onclick={() => restartVideo(key)}>
@@ -297,7 +297,7 @@
 	}
 
 	h2 {
-		margin: 0;
+		margin: 0 0 0.2em 0;
 		font-size: 4.8rem;
 		line-height: 0.88;
 		text-wrap: balance;
@@ -1020,13 +1020,13 @@
 		}
 
 		.project-group[data-layout='personal-3d'] figure[data-title='University Final Semester Project'] {
-			grid-column: 1 / span 3 !important;
+			grid-column: 1 / -1 !important;
 			grid-row: auto !important;
 			width: 100%;
 		}
 
 		.project-group[data-layout='personal-3d'] figure[data-title='Chess Piece'] {
-			grid-column: 4 / -1 !important;
+			grid-column: 1 / -1 !important;
 			grid-row: auto !important;
 			width: 100%;
 		}
@@ -1091,6 +1091,12 @@
 	@media (max-width: 620px) {
 		.mockup-grid {
 			grid-template-columns: 1fr;
+		}
+
+		.poster-columns {
+			grid-template-columns: 1fr;
+			min-height: 560px;
+			height: 80vh;
 		}
 	}
 

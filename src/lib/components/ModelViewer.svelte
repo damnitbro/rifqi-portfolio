@@ -25,8 +25,26 @@
 
 	let host: HTMLDivElement;
 	let canvas: HTMLCanvasElement;
+	let canvas2d: HTMLCanvasElement;
 	let index = $state(0);
 	let modelTitle = $derived(models[index]?.title ?? title);
+	let show2d = $state(false);
+	let loadRef: ((url: string) => void) | null = null;
+	let reset2dFn: (() => void) | null = null;
+
+	$effect(() => {
+		const fn = loadRef;
+		const i = index;
+		if (fn && models.length > 0) {
+			fn(models[i].url);
+		}
+	});
+
+	$effect(() => {
+		if (show2d && reset2dFn) {
+			reset2dFn();
+		}
+	});
 
 	const prev = () => {
 		if (models.length < 2) return;
@@ -37,6 +55,26 @@
 		if (models.length < 2) return;
 		index = (index + 1) % models.length;
 	};
+
+	function navAction(node: HTMLElement, direction: 'prev' | 'next') {
+		const handler = direction === 'prev' ? prev : next;
+		node.addEventListener('click', handler);
+		return {
+			destroy() {
+				node.removeEventListener('click', handler);
+			}
+		};
+	}
+
+	function dotAction(node: HTMLElement, i: number) {
+		const handler = () => { index = i; };
+		node.addEventListener('click', handler);
+		return {
+			destroy() {
+				node.removeEventListener('click', handler);
+			}
+		};
+	}
 
 	onMount(() => {
 		const scene = new THREE.Scene();
@@ -66,48 +104,23 @@
 		controls.minDistance = 4.4;
 		controls.maxDistance = 8;
 
-		const PARTICLE_COUNT = 4000;
-		const pPos = new Float32Array(PARTICLE_COUNT * 3);
-		const pCol = new Float32Array(PARTICLE_COUNT * 3);
-		for (let i = 0; i < PARTICLE_COUNT; i++) {
-			const idx = i * 3;
-			const parity = i % 2;
-			const t = i / PARTICLE_COUNT;
-			if (parity === 0) {
-				const theta = i * 0.7;
-				const phi = i * 0.3;
-				const r = 0.2 + t * 0.35;
-				pPos[idx] = r * Math.sin(theta) * Math.cos(phi);
-				pPos[idx + 1] = r * Math.cos(theta) * 0.8;
-				pPos[idx + 2] = r * Math.sin(theta) * Math.sin(phi) * 0.6;
-				pCol[idx] = 0.95;
-				pCol[idx + 1] = 0.72;
-				pCol[idx + 2] = 0.52;
-			} else {
-				const angle = i * 1.7;
-				const rr = 0.3 + t * 0.55;
-				pPos[idx] = rr * Math.sin(angle);
-				pPos[idx + 1] = Math.cos(angle * 2) * 0.05;
-				pPos[idx + 2] = rr * Math.cos(angle) * 0.45;
-				pCol[idx] = 0.55;
-				pCol[idx + 1] = 0.7;
-				pCol[idx + 2] = 0.95;
-			}
-		}
-		const pGeo = new THREE.BufferGeometry();
-		pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
-		pGeo.setAttribute('color', new THREE.BufferAttribute(pCol, 3));
-		const pMat = new THREE.PointsMaterial({
-			size: 0.025,
-			vertexColors: true,
-			transparent: true,
-			opacity: 0.85,
-			blending: THREE.AdditiveBlending,
-			depthWrite: false,
-			sizeAttenuation: true
+		const fallbackMat = new THREE.MeshStandardMaterial({
+			color: '#f7f3e8',
+			metalness: 0.42,
+			roughness: 0.34,
+			emissive: new THREE.Color(accent),
+			emissiveIntensity: 0.05
 		});
-		const particles = new THREE.Points(pGeo, pMat);
-		let pCounter = 100;
+
+		const wireMat = new THREE.MeshBasicMaterial({
+			color: accent,
+			wireframe: true,
+			transparent: true,
+			opacity: 0.2
+		});
+
+		const fallbackCore = new THREE.Mesh(new THREE.IcosahedronGeometry(0.96, 4), fallbackMat);
+		const fallbackWire = new THREE.Mesh(new THREE.IcosahedronGeometry(1.02, 2), wireMat);
 
 		const ring = new THREE.Mesh(
 			new THREE.TorusGeometry(1.36, 0.016, 16, 140),
@@ -122,30 +135,7 @@
 		platform.position.y = -1.08;
 
 		const fallbackGroup = new THREE.Group();
-		fallbackGroup.add(particles, ring, platform);
-
-		const updateParticles = (elapsed: number) => {
-			pCounter += 0.02;
-			const pos = particles.geometry.attributes.position.array as Float32Array;
-			const scale = 0.006;
-			for (let i = 2; i < PARTICLE_COUNT; i++) {
-				const parity = i % 2;
-				const idx = i * 3;
-				const r = pCounter / Math.cos(pCounter / (i + 1)) + parity * (pCounter / 2 + (i % 97));
-				const a = pCounter / 9 + i * i;
-				const rz = r * scale;
-				if (parity === 0) {
-					pos[idx] = rz * Math.sin(a) * Math.cos(i / pCounter);
-					pos[idx + 1] = rz * Math.cos(a) * 0.8;
-					pos[idx + 2] = rz * Math.sin(a) * Math.sin(i / pCounter) * 0.5;
-				} else {
-					pos[idx] = rz * Math.sin(a) * Math.cos(i / pCounter);
-					pos[idx + 1] = rz * Math.cos(a + 2) * 0.28 * 2.1;
-					pos[idx + 2] = rz * Math.sin(a) * Math.sin(i / pCounter) * 0.3;
-				}
-			}
-			particles.geometry.attributes.position.needsUpdate = true;
-		};
+		fallbackGroup.add(fallbackCore, fallbackWire, ring, platform);
 
 		const loader = new GLTFLoader();
 
@@ -153,9 +143,8 @@
 			while (modelContainer.children.length) {
 				modelContainer.remove(modelContainer.children[0]);
 			}
-			pCounter = 100;
-			ring.rotation.z = 0;
 			modelContainer.add(fallbackGroup);
+			show2d = false;
 		};
 
 		const loadGLB = (url: string) => {
@@ -173,89 +162,17 @@
 					model.position.y -= 0.3;
 					model.scale.setScalar(2.5 / size);
 					modelContainer.add(model);
+					show2d = false;
 				},
 				undefined,
 				showFallback
 			);
 		};
 
-		const proceduralGenerators: Record<string, () => THREE.Object3D> = {
-			'torus-knot': () => {
-				const group = new THREE.Group();
-				const core = new THREE.Mesh(
-					new THREE.TorusKnotGeometry(0.7, 0.25, 128, 32),
-					new THREE.MeshStandardMaterial({
-						color: '#f7f3e8',
-						metalness: 0.7,
-						roughness: 0.2,
-						emissive: new THREE.Color(accent),
-						emissiveIntensity: 0.08
-					})
-				);
-				const wire = new THREE.Mesh(
-					new THREE.TorusKnotGeometry(0.73, 0.27, 48, 16),
-					new THREE.MeshBasicMaterial({
-						color: accent,
-						wireframe: true,
-						transparent: true,
-						opacity: 0.15
-					})
-				);
-				group.add(core, wire);
-				return group;
-			},
-			'crystal-cluster': () => {
-				const group = new THREE.Group();
-				const count = 9;
-				const baseMat = new THREE.MeshStandardMaterial({
-					color: '#f7f3e8',
-					metalness: 0.6,
-					roughness: 0.15,
-					transparent: true,
-					opacity: 0.9,
-					emissive: new THREE.Color(accent),
-					emissiveIntensity: 0.05
-				});
-				const wireM = new THREE.MeshBasicMaterial({
-					color: accent,
-					wireframe: true,
-					transparent: true,
-					opacity: 0.12
-				});
-				for (let i = 0; i < count; i++) {
-					const t = i / count;
-					const size = 0.2 + t * 0.5;
-					const angle = t * Math.PI * 2;
-					const radius = 0.5 + t * 0.4;
-					const x = Math.cos(angle) * radius;
-					const y = Math.sin(angle * 1.3) * radius * 0.5;
-					const z = Math.sin(angle) * radius;
-					const oct = new THREE.Mesh(new THREE.OctahedronGeometry(size, 0), baseMat.clone());
-					oct.position.set(x, y, z);
-					oct.rotation.set(angle * 2, angle * 1.5, angle);
-					group.add(oct);
-					const wireOct = new THREE.Mesh(new THREE.OctahedronGeometry(size * 1.06, 0), wireM);
-					wireOct.position.copy(oct.position);
-					wireOct.rotation.copy(oct.rotation);
-					group.add(wireOct);
-				}
-				return group;
-			}
-		};
-
-		const loadProcedural = (key: string) => {
-			const gen = proceduralGenerators[key];
-			if (!gen) { showFallback(); return; }
-			while (modelContainer.children.length) {
-				modelContainer.remove(modelContainer.children[0]);
-			}
-			modelContainer.add(gen());
-		};
-
 		const loadModel = (url: string) => {
 			if (!url) { showFallback(); return; }
-			if (url.startsWith('procedural:')) {
-				loadProcedural(url.slice('procedural:'.length));
+			if (url === 'particle-planet') {
+				show2d = true;
 				return;
 			}
 			loadGLB(url);
@@ -267,11 +184,7 @@
 			showFallback();
 		}
 
-		$effect(() => {
-			if (models.length > 0) {
-				loadModel(models[index].url);
-			}
-		});
+		loadRef = loadModel;
 
 		const resize = () => {
 			const width = Math.max(320, host.clientWidth);
@@ -286,19 +199,90 @@
 		resizeObserver.observe(host);
 		resize();
 
-		let frame = 0;
+	let frame = 0;
+	let frame2d = 0;
+	let pCounter = 100;
+
 		const tick = () => {
 			const elapsed = clock.getElapsedTime();
-			const current = modelContainer.children[0];
-			if (current === fallbackGroup) {
-				updateParticles(elapsed);
-				ring.rotation.z += 0.006;
-			}
+			const floatY = Math.sin(elapsed * 1.4) * 0.08;
+			fallbackCore.position.y = floatY;
+			fallbackWire.position.y = floatY;
+			fallbackWire.rotation.x -= 0.004;
+			ring.rotation.z += 0.006;
 			controls.update();
 			renderer.render(scene, camera);
 			frame = requestAnimationFrame(tick);
 		};
 		tick();
+
+		const draw2D = () => {
+			frame2d = requestAnimationFrame(draw2D);
+			if (!show2d || !canvas2d) return;
+			const w = canvas2d.width;
+			const h = canvas2d.height;
+			if (w === 0 || h === 0) return;
+			const ctx = canvas2d.getContext('2d');
+			if (!ctx) return;
+
+			ctx.fillStyle = 'rgba(0, 0, 0, 0.157)';
+			ctx.fillRect(0, 0, w, h);
+
+			pCounter += 0.015;
+			const cx = w / 2;
+			const cy = h / 2;
+
+			for (let i = 3000; i >= 2; i -= 2) {
+				drawPoint(ctx, i, 0, cx, cy, pCounter);
+			}
+			for (let i = 1999; i > 1; i -= 2) {
+				drawPoint(ctx, i, 1, cx, cy, pCounter);
+			}
+		};
+
+		const drawPoint = (
+			ctx: CanvasRenderingContext2D,
+			i: number,
+			parity: number,
+			cx: number,
+			cy: number,
+			counter: number
+		) => {
+			const r = counter / Math.cos(counter / i) + parity * (counter / 2 + (i % counter));
+			const a = counter / 9 + i * i;
+			const ringFlatten = parity ? 0.28 : 1.0;
+			const ringTilt = parity ? 2.1 : 1.0;
+			const x = cx + r * Math.sin(a) * Math.cos(!parity * i / counter);
+			const y = cy + r * Math.cos(a + parity * 2) * ringFlatten * ringTilt;
+			let size = 1 - Math.cos(a);
+			if (parity) {
+				const depth = Math.sin(a + 2);
+				size *= ((depth + 1) / 2) * (1.3 - 0.4) + 0.4;
+			}
+			ctx.beginPath();
+			ctx.arc(x, y, Math.max(size, 0.5) / 2, 0, Math.PI * 2);
+			if (parity === 0) {
+				ctx.fillStyle = 'rgba(220, 200, 170, 0.706)';
+			} else {
+				ctx.fillStyle = 'rgba(200, 220, 255, 0.627)';
+			}
+			ctx.fill();
+		};
+
+		const reset2D = () => {
+			pCounter = 100;
+			if (canvas2d) {
+				canvas2d.width = host.clientWidth;
+				canvas2d.height = host.clientHeight;
+				const ctx = canvas2d.getContext('2d');
+				if (ctx) {
+					ctx.fillStyle = '#000';
+					ctx.fillRect(0, 0, canvas2d.width, canvas2d.height);
+				}
+			}
+		};
+
+		reset2dFn = reset2D;
 
 		const handleKeydown = (e: KeyboardEvent) => {
 			if (models.length < 2) return;
@@ -327,6 +311,7 @@
 
 		return () => {
 			cancelAnimationFrame(frame);
+			cancelAnimationFrame(frame2d);
 			resizeObserver.disconnect();
 			controls.dispose();
 			renderer.dispose();
@@ -346,27 +331,26 @@
 
 <div class="model-viewer" bind:this={host} style:--accent={accent}>
 	<canvas bind:this={canvas} aria-label={modelTitle}></canvas>
-	<div class="model-label">
+	<canvas bind:this={canvas2d} class:active={show2d}></canvas>
+	<div class="model-label" class:hidden={show2d}>
 		<span>{kicker}</span>
 		<strong>{modelTitle}</strong>
 	</div>
-	{#if models.length > 1}
-		<button class="nav-arrow nav-prev" onclick={prev} aria-label="Previous model">
-			<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-		</button>
-		<button class="nav-arrow nav-next" onclick={next} aria-label="Next model">
-			<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-		</button>
-		<div class="nav-dots">
-			{#each models as _, i}
-				<button
-					class:active={i === index}
-					onclick={() => { index = i; }}
-					aria-label="Switch to model {i + 1}"
-				></button>
-			{/each}
-		</div>
-	{/if}
+	<button class="nav-arrow nav-prev" class:hidden={models.length < 2} use:navAction={'prev'} aria-label="Previous model">
+		<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+	</button>
+	<button class="nav-arrow nav-next" class:hidden={models.length < 2} use:navAction={'next'} aria-label="Next model">
+		<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+	</button>
+	<div class="nav-dots" class:hidden={models.length < 2}>
+		{#each models as _, i (i)}
+			<button
+				class:active={i === index}
+				use:dotAction={i}
+				aria-label="Switch to model {i + 1}"
+			></button>
+		{/each}
+	</div>
 </div>
 
 <style>
@@ -386,12 +370,26 @@
 		inset: 0;
 		width: 100%;
 		height: 100%;
+	}
+
+	canvas:first-of-type {
 		cursor: grab;
 		z-index: 1;
 	}
 
-	canvas:active {
+	canvas:first-of-type:active {
 		cursor: grabbing;
+	}
+
+	canvas + canvas {
+		z-index: 2;
+		pointer-events: none;
+		opacity: 0;
+		transition: opacity 0.4s ease;
+	}
+
+	canvas + canvas.active {
+		opacity: 1;
 	}
 
 	.model-label {
@@ -401,7 +399,12 @@
 		display: grid;
 		gap: 0.35rem;
 		pointer-events: none;
-		z-index: 2;
+		z-index: 3;
+		transition: opacity 0.3s ease;
+	}
+
+	.model-label.hidden {
+		opacity: 0;
 	}
 
 	span {
@@ -421,8 +424,8 @@
 
 	.nav-arrow {
 		position: absolute;
-		top: 50%;
-		z-index: 3;
+		top: calc(50% - 1.3rem);
+		z-index: 4;
 		display: grid;
 		place-items: center;
 		width: 2.6rem;
@@ -433,8 +436,13 @@
 		border: 1px solid rgba(255, 255, 255, 0.15);
 		border-radius: 50%;
 		cursor: pointer;
-		transform: translateY(-50%);
 		transition: background 0.15s, color 0.15s;
+		isolation: isolate;
+		contain: layout style;
+	}
+
+	.nav-arrow.hidden {
+		display: none;
 	}
 
 	.nav-arrow:hover {
@@ -454,10 +462,14 @@
 		position: absolute;
 		left: 50%;
 		bottom: 1rem;
-		z-index: 3;
+		z-index: 4;
 		display: flex;
 		gap: 0.4rem;
 		transform: translateX(-50%);
+	}
+
+	.nav-dots.hidden {
+		display: none;
 	}
 
 	.nav-dots button {

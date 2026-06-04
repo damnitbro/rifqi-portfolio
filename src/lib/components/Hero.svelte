@@ -177,7 +177,7 @@
 	h1 {
 		max-width: 10ch;
 		margin: 0;
-		font-family: Impact, 'Arial Narrow', Haettenschweiler, sans-serif;
+		font-family: Impact, Oswald, 'Arial Narrow', Haettenschweiler, sans-serif;
 		font-size: 5.8rem;
 		font-weight: 500;
 		line-height: 0.86;
@@ -307,7 +307,7 @@
 		width: 100%;
 		gap: 0.035em;
 		color: #ffffff;
-		font-family: Impact, 'Arial Narrow', Haettenschweiler, sans-serif;
+		font-family: Impact, Oswald, 'Arial Narrow', Haettenschweiler, sans-serif;
 		font-size: clamp(4.1rem, 9.4vw, 10.4rem);
 		line-height: 0.72;
 		text-transform: uppercase;
@@ -353,7 +353,7 @@
 
 	.intro-card h2 {
 		margin: 0;
-		font-family: Impact, 'Arial Narrow', Haettenschweiler, sans-serif;
+		font-family: Impact, Oswald, 'Arial Narrow', Haettenschweiler, sans-serif;
 		font-size: 3.2rem;
 		font-weight: 500;
 		line-height: 0.9;
@@ -484,6 +484,7 @@
 		grid-template-columns: 3rem minmax(0, 0.8fr) minmax(12rem, 1fr);
 		align-items: center;
 		gap: clamp(0.8rem, 2vw, 1.4rem);
+		row-gap: 1rem;
 		min-height: 5.8rem;
 		padding: clamp(0.9rem, 1.8vw, 1.25rem);
 		background: rgba(12, 10, 11, 0.72);
@@ -509,10 +510,9 @@
 	}
 
 	.toc-card h2 {
-		margin: 0;
+		margin: 0 0 0.4em 0;
 		font-size: 1.35rem;
-		line-height: 1.25;
-		padding-bottom: 0.1em;
+		line-height: 1.5;
 	}
 
 	.toc-card p {

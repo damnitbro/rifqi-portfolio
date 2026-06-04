@@ -12,11 +12,9 @@
 	const ytSrc = `https://www.youtube.com/embed/${YT_ID}?autoplay=1&mute=1&loop=1&playlist=${YT_ID}&controls=1&rel=0`;
 
 	const models = [
-		{ url: '', title: 'Particle Planet' },
+		{ url: '', title: '3D Shape' },
 		{ url: '/media/models/Lucy.glb', title: 'Lucy' },
-		{ url: '/media/models/Male.glb', title: 'Male' },
-		{ url: 'procedural:torus-knot', title: 'Torus Knot' },
-		{ url: 'procedural:crystal-cluster', title: 'Crystal Cluster' }
+		{ url: '/media/models/Male.glb', title: 'Male' }
 	];
 </script>
 
