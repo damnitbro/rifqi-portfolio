@@ -194,6 +194,12 @@
 		name="description"
 		content="Interactive portfolio CV for 3D art, video editing, motion design, social posts, and identity work."
 	/>
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap"
+		rel="stylesheet"
+	/>
 </svelte:head>
 
 {#if isLoading}
@@ -326,7 +332,8 @@
 		--cursor-x: 0;
 		--cursor-y: 0;
 		--scroll-progress: 0;
-		--display-font: Impact, 'Arial Black', 'Roboto Condensed', 'Arial Narrow', system-ui, sans-serif;
+		--display-font: 'Bebas Neue', Impact, 'Arial Black', 'Roboto Condensed', 'Arial Narrow',
+			system-ui, sans-serif;
 	}
 
 	:global(.motion-ready .game-nav) {

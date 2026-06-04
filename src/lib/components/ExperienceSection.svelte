@@ -1068,6 +1068,12 @@
 			aspect-ratio: var(--asset-aspect, 16 / 9);
 		}
 
+		.project-group[data-layout='soca-showcase'] figure[data-title='Sovia Pop out'] {
+			width: min(100%, 20rem);
+			justify-self: center;
+			aspect-ratio: 9 / 16;
+		}
+
 		.project-group[data-layout='personal-3d'] .media-grid {
 			grid-template-columns: repeat(6, minmax(0, 1fr));
 		}
@@ -1162,6 +1168,16 @@
 		.mockup-grid {
 			grid-template-columns: repeat(2, minmax(0, 1fr));
 			gap: 0.5rem;
+		}
+
+		.project-group.logo-system .mockup-figure {
+			grid-column: auto !important;
+			width: 100%;
+			aspect-ratio: 1 / 1;
+		}
+
+		.project-group.logo-system .mockup-figure img {
+			object-fit: cover;
 		}
 
 		.color-row {

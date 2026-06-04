@@ -638,7 +638,9 @@
 		}
 
 		h1 {
-			font-size: clamp(3.2rem, 17vw, 4rem);
+			max-width: 14ch;
+			font-size: clamp(2.75rem, 12.8vw, 3.35rem);
+			line-height: 0.92;
 		}
 
 		.intro p {
@@ -684,6 +686,11 @@
 	@media (max-width: 420px) {
 		.portfolio-word {
 			font-size: clamp(2.05rem, 16vw, 3.2rem);
+		}
+
+		h1 {
+			max-width: 13ch;
+			font-size: clamp(2.45rem, 12vw, 2.95rem);
 		}
 
 		.cta {

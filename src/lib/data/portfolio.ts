@@ -534,13 +534,6 @@ const personalLogoAssets: ProjectAsset[] = [
 	},
 	{
 	title: '',
-		src: '/media/work/personal-logo/image-30.webp',
-		type: 'image',
-		meta: 'brand mockup',
-		aspect: '354 / 237'
-	},
-	{
-	title: '',
 		src: '/media/work/personal-logo/image-32.webp',
 		type: 'image',
 		meta: 'brand mockup',
@@ -551,7 +544,14 @@ const personalLogoAssets: ProjectAsset[] = [
 		src: '/media/work/personal-logo/link-image-31.png',
 		type: 'image',
 		meta: 'brand mockup',
-		aspect: '1 / 1'
+		aspect: '303 / 228'
+	},
+	{
+	title: '',
+		src: '/media/work/personal-logo/image-30.webp',
+		type: 'image',
+		meta: 'brand mockup',
+		aspect: '354 / 237'
 	}
 ];
 
