@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 800" role="img" aria-labelledby="title desc">
+	<title id="title">Editorial reel poster</title>
+	<desc id="desc">Abstract coral and black motion poster.</desc>
+	<rect width="1280" height="800" fill="#0b0b0b"/>
+	<circle cx="920" cy="210" r="260" fill="#8b0000"/>
+	<circle cx="300" cy="620" r="220" fill="#c2a96a"/>
+	<path d="M120 180h820v44H120zm0 110h560v44H120zm0 110h720v44H120z" fill="#f8f8f2"/>
+	<path d="M1080 760 760 80h120l320 680z" fill="#6e6e6e"/>
+	<text x="120" y="690" fill="#0b0b0b" font-family="Arial, sans-serif" font-size="88" font-weight="900">EDIT REEL</text>
+</svg>

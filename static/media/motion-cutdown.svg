@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 800" role="img" aria-labelledby="title desc">
+	<title id="title">Motion cutdown poster</title>
+	<desc id="desc">Abstract green, blue, and black motion poster.</desc>
+	<rect width="1280" height="800" fill="#10110f"/>
+	<rect x="110" y="120" width="420" height="560" rx="24" fill="#8b0000"/>
+	<rect x="610" y="120" width="560" height="160" rx="24" fill="#c2a96a"/>
+	<rect x="610" y="340" width="250" height="340" rx="24" fill="#f8f8f2"/>
+	<rect x="920" y="340" width="250" height="340" rx="24" fill="#6e6e6e"/>
+	<text x="150" y="625" fill="#10110f" font-family="Arial, sans-serif" font-size="82" font-weight="900">MOTION</text>
+</svg>
