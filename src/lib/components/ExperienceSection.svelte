@@ -240,7 +240,7 @@
 												autoplay
 												muted={mutedMap[key] ?? true}
 												playsinline
-												preload="auto"
+												preload="metadata"
 											></video>
 											<div class="vid-overlay-controls">
 												<button aria-label="Restart video" onclick={() => restartVideo(key)}>
