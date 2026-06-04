@@ -645,7 +645,7 @@ export const experienceSections: ExperienceSection[] = [
 		groups: [
 			{
 				kind: 'priority',
-				title: 'Kementerian Kesehatan Social Media Designer',
+				title: 'Ministry of Health Social Media Designer',
 				description:
 					'Health campaign visuals designed for clear public communication, balancing institutional trust, accessible messaging, and consistent social media presentation.',
 				layout: 'poster-wall',

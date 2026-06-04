@@ -182,6 +182,7 @@
 		font-size: 5.8rem;
 		font-weight: 500;
 		line-height: 0.86;
+		letter-spacing: 0.024em;
 		text-transform: uppercase;
 		text-wrap: balance;
 		overflow-wrap: anywhere;
@@ -514,6 +515,7 @@
 		margin: 0 0 0.4em 0;
 		font-size: 1.35rem;
 		line-height: 1.5;
+		letter-spacing: 0.022em;
 	}
 
 	.toc-card p {

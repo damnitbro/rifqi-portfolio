@@ -330,6 +330,7 @@
 		font-family: var(--display-font);
 		font-size: 4.8rem;
 		line-height: 0.88;
+		letter-spacing: 0.024em;
 		text-wrap: balance;
 	}
 
@@ -476,6 +477,7 @@
 		font-family: var(--display-font);
 		font-size: 2.4rem;
 		line-height: 1.08;
+		letter-spacing: 0.022em;
 		text-wrap: balance;
 		overflow-wrap: anywhere;
 	}

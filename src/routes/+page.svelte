@@ -717,6 +717,7 @@
 		font-family: var(--display-font);
 		font-size: 4.8rem;
 		line-height: 0.88;
+		letter-spacing: 0.024em;
 		text-wrap: balance;
 	}
 
@@ -796,7 +797,7 @@
 	.footer-intro h2 {
 		max-width: 8ch;
 		font-size: clamp(5.4rem, 18vw, 18rem);
-		letter-spacing: 0;
+		letter-spacing: 0.024em;
 		text-transform: uppercase;
 	}
 
