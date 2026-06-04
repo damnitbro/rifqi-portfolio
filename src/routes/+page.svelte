@@ -197,6 +197,7 @@
 	</div>
 {/if}
 
+<div class="page-content" class:page-visible={!isLoading}>
 <nav class="game-nav" aria-label="Main navigation" style="z-index: 10;" >
 	<div class="nav-status">
 		<span class="status-dot"></span>
@@ -279,6 +280,7 @@
 		<span>Interactive CV</span>
 	</div>
 </footer>
+</div>
 
 <style>
 	:global(*) {
@@ -459,6 +461,15 @@
 		font-size: 0.76rem;
 		font-weight: 950;
 		text-transform: uppercase;
+	}
+
+	.page-content {
+		opacity: 0;
+		transition: opacity 800ms ease;
+	}
+
+	.page-content.page-visible {
+		opacity: 1;
 	}
 
 	.game-nav {
