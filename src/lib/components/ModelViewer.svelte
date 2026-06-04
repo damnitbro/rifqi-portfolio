@@ -101,6 +101,9 @@
 			})
 		);
 		platform.position.y = -1.08;
+
+		fallbackCore.visible = false;
+		fallbackWire.visible = false;
 		decor.add(ring, platform);
 
 		const loader = new GLTFLoader();
@@ -109,12 +112,9 @@
 			while (modelContainer.children.length) {
 				const child = modelContainer.children[0];
 				modelContainer.remove(child);
-				if (child instanceof THREE.Mesh) {
-					child.geometry.dispose();
-					const materials = Array.isArray(child.material) ? child.material : [child.material];
-					materials.forEach((m) => m.dispose());
-				}
 			}
+			fallbackCore.visible = true;
+			fallbackWire.visible = true;
 			modelContainer.add(fallbackCore, fallbackWire);
 		};
 
@@ -125,11 +125,6 @@
 					while (modelContainer.children.length) {
 						const child = modelContainer.children[0];
 						modelContainer.remove(child);
-						if (child instanceof THREE.Mesh) {
-							child.geometry.dispose();
-							const materials = Array.isArray(child.material) ? child.material : [child.material];
-							materials.forEach((m) => m.dispose());
-						}
 					}
 					const model = gltf.scene;
 					const box = new THREE.Box3().setFromObject(model);
