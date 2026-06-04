@@ -37,19 +37,26 @@
 	};
 
 	const segmentVideo = (node: HTMLVideoElement, asset: ProjectAsset) => {
+		let inView = false;
+
+		const playIfVisible = () => {
+			if (!inView || document.hidden) return;
+			void node.play().catch(() => {
+				// Browsers can still defer autoplay under load; muted inline video will retry when visible.
+			});
+		};
+
 		const applyStart = () => {
 			const start = asset.startAt ?? 0;
 			if (Number.isFinite(node.duration) && Math.abs(node.currentTime - start) > 0.25) {
 				node.currentTime = start;
 			}
-			void node.play().catch(() => {
-				// Browsers can still defer autoplay under load; muted inline video will retry on metadata.
-			});
+			playIfVisible();
 		};
 
 		const restartSegment = () => {
 			node.currentTime = asset.startAt ?? 0;
-			void node.play();
+			playIfVisible();
 		};
 
 		const handleTimeUpdate = () => {
@@ -60,25 +67,48 @@
 
 		const handleEnded = () => {
 			if (asset.endAt || (asset.startAt ?? 0) > 0) {
-				node.currentTime = asset.startAt ?? 0;
-				void node.play();
+				restartSegment();
+			}
+		};
+
+		const handleVisibility = () => {
+			if (document.hidden) {
+				node.pause();
+			} else {
+				playIfVisible();
 			}
 		};
 
 		node.muted = true;
-		node.autoplay = true;
+		node.autoplay = false;
 		node.loop = !asset.endAt;
 		node.playsInline = true;
+		node.preload = 'metadata';
 		node.addEventListener('loadedmetadata', applyStart);
 		node.addEventListener('timeupdate', handleTimeUpdate);
 		node.addEventListener('ended', handleEnded);
-		void node.play().catch(() => undefined);
+		document.addEventListener('visibilitychange', handleVisibility);
+
+		const observer = new IntersectionObserver(
+			([entry]) => {
+				inView = entry.isIntersecting;
+				if (inView) {
+					playIfVisible();
+				} else {
+					node.pause();
+				}
+			},
+			{ rootMargin: '220px 0px', threshold: 0.08 }
+		);
+		observer.observe(node);
 
 		return {
 			destroy() {
+				observer.disconnect();
 				node.removeEventListener('loadedmetadata', applyStart);
 				node.removeEventListener('timeupdate', handleTimeUpdate);
 				node.removeEventListener('ended', handleEnded);
+				document.removeEventListener('visibilitychange', handleVisibility);
 			}
 		};
 	};
@@ -92,7 +122,7 @@
 		const el = videoEls[key];
 		if (!el) return;
 		el.currentTime = 0;
-		void el.play();
+		void el.play().catch(() => undefined);
 	};
 
 	const toggleMute = (key: string) => {
@@ -237,10 +267,9 @@
 												bind:this={videoEls[key]}
 												use:segmentVideo={asset}
 												src={asset.src}
-												autoplay
 												muted={mutedMap[key] ?? true}
 												playsinline
-												preload="auto"
+												preload="metadata"
 											></video>
 											<div class="vid-overlay-controls">
 												<button aria-label="Restart video" onclick={() => restartVideo(key)}>
@@ -298,6 +327,7 @@
 
 	h2 {
 		margin: 0 0 0.2em 0;
+		font-family: var(--display-font);
 		font-size: 4.8rem;
 		line-height: 0.88;
 		text-wrap: balance;
@@ -353,7 +383,7 @@
 	}
 
 	.metric-card strong {
-		font-family: Impact, sans-serif;
+		font-family: var(--display-font);
 		font-size: 2.4rem;
 		color: var(--accent);
 		line-height: 1;
@@ -443,6 +473,7 @@
 
 	h3 {
 		margin: 0;
+		font-family: var(--display-font);
 		font-size: 2.4rem;
 		line-height: 1.08;
 		text-wrap: balance;
@@ -961,6 +992,26 @@
 	}
 
 	@media (max-width: 680px) {
+		.experience-section {
+			gap: 1.2rem;
+		}
+
+		.project-group {
+			content-visibility: auto;
+			contain-intrinsic-size: 760px;
+			gap: 0.9rem;
+			padding: 0.75rem;
+			border-radius: 18px 8px 18px 8px;
+		}
+
+		.vid-overlay-controls {
+			opacity: 1;
+		}
+
+		.vid-overlay-controls button {
+			backdrop-filter: none;
+		}
+
 		h2 {
 			font-size: 2.6rem;
 		}
@@ -969,8 +1020,18 @@
 			font-size: 2rem;
 		}
 
+		.group-copy {
+			gap: 0.45rem;
+		}
+
+		.group-copy p {
+			font-size: 0.92rem;
+			line-height: 1.45;
+		}
+
 		.media-grid {
 			grid-template-columns: repeat(6, minmax(0, 1fr));
+			gap: 0.6rem;
 		}
 
 		.color-row {
@@ -1004,7 +1065,7 @@
 			grid-row: auto;
 			grid-column: 1 / -1 !important;
 			width: 100%;
-			aspect-ratio: auto;
+			aspect-ratio: var(--asset-aspect, 16 / 9);
 		}
 
 		.project-group[data-layout='personal-3d'] .media-grid {
@@ -1083,20 +1144,84 @@
 
 		.poster-columns {
 			grid-template-columns: repeat(2, minmax(0, 1fr));
-			min-height: 520px;
-			height: 72vh;
+			min-height: 430px;
+			height: 62vh;
 		}
 	}
 
 	@media (max-width: 620px) {
+		.logo-system-container {
+			gap: 1rem;
+		}
+
+		.main-logo-figure {
+			max-width: 18rem;
+			justify-self: center;
+		}
+
 		.mockup-grid {
-			grid-template-columns: 1fr;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: 0.5rem;
+		}
+
+		.color-row {
+			grid-template-columns: repeat(5, minmax(0, 1fr));
+			gap: 0.35rem;
+		}
+
+		.color-row strong,
+		.color-row small {
+			font-size: 0.58rem;
 		}
 
 		.poster-columns {
+			min-height: 450px;
+			height: 66vh;
+		}
+	}
+
+	@media (max-width: 480px) {
+		.media-grid {
 			grid-template-columns: 1fr;
-			min-height: 560px;
-			height: 80vh;
+		}
+
+		.media-grid figure,
+		.media-grid figure.featured,
+		.media-grid figure[data-ratio='wide'],
+		.media-grid figure[data-ratio='square'],
+		.media-grid figure[data-ratio='portrait'],
+		.media-grid figure[data-ratio='poster'],
+		.media-grid figure[data-ratio='tall'],
+		.media-grid figure.poster,
+		.project-group[data-layout='motion-layout'] figure[data-ratio='square'],
+		.project-group[data-layout='motion-layout'] figure[data-ratio='portrait'] {
+			grid-column: 1 / -1 !important;
+		}
+
+		.project-group[data-layout='personal-3d'] figure[data-title='Horror Poster for No Smoke Campaign'] {
+			width: min(100%, 16rem);
+		}
+
+		.mockup-grid {
+			grid-template-columns: 1fr 1fr;
+		}
+
+		.poster-columns {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			height: 58vh;
+			min-height: 390px;
+		}
+
+		figcaption {
+			padding: 1.8rem 0.55rem 0.55rem;
+		}
+
+		figcaption strong {
+			font-size: 0.72rem;
+		}
+
+		figcaption span {
+			font-size: 0.62rem;
 		}
 	}
 

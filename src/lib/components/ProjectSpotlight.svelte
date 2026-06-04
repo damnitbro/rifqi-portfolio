@@ -27,6 +27,7 @@
 				src={ytSrc}
 				title="Gibran Pro Home - Satu Satunya Rumah Sultan Di Pondok Indah"
 				frameborder="0"
+				loading="lazy"
 				allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
 				allowfullscreen
 			></iframe>
@@ -65,6 +66,17 @@
 	@media (max-width: 980px) {
 		.spotlight-grid {
 			grid-template-columns: 1fr;
+		}
+	}
+
+	@media (max-width: 680px) {
+		.spotlight {
+			gap: 1rem;
+		}
+
+		.yt-embed-shell {
+			min-height: auto;
+			aspect-ratio: 16 / 9;
 		}
 	}
 </style>

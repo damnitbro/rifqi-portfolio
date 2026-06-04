@@ -22,7 +22,7 @@
 	}
 
 	.marquee-track span {
-		font-family: Impact, sans-serif;
+		font-family: var(--display-font);
 		font-size: clamp(5rem, 14vw, 10rem);
 		font-weight: 900;
 		text-transform: uppercase;

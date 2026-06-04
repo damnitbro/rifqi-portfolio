@@ -79,10 +79,17 @@
 	onMount(() => {
 		const scene = new THREE.Scene();
 		const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
-		const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+		const isSmallViewport = () => window.matchMedia('(max-width: 760px)').matches;
+		const renderer = new THREE.WebGLRenderer({
+			canvas,
+			antialias: !isSmallViewport(),
+			alpha: true,
+			powerPreference: 'high-performance'
+		});
 		const controls = new OrbitControls(camera, renderer.domElement);
 		const modelContainer = new THREE.Group();
-		const clock = new THREE.Clock();
+		const startTime = performance.now();
+		let viewerVisible = true;
 
 		camera.position.set(2.8, 1.8, 6.2);
 		modelContainer.position.y = 0.18;
@@ -191,7 +198,7 @@
 			const height = Math.max(420, host.clientHeight);
 			camera.aspect = width / height;
 			camera.updateProjectionMatrix();
-			renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+			renderer.setPixelRatio(Math.min(window.devicePixelRatio, isSmallViewport() ? 1.25 : 2));
 			renderer.setSize(width, height, false);
 		};
 
@@ -199,26 +206,38 @@
 		resizeObserver.observe(host);
 		resize();
 
-	let frame = 0;
-	let frame2d = 0;
-	let pCounter = 100;
+		const visibilityObserver = new IntersectionObserver(
+			([entry]) => {
+				viewerVisible = entry.isIntersecting;
+			},
+			{ rootMargin: '180px 0px', threshold: 0.01 }
+		);
+		visibilityObserver.observe(host);
+
+		const canAnimate = () => viewerVisible && !document.hidden;
+
+		let frame = 0;
+		let frame2d = 0;
+		let pCounter = 100;
 
 		const tick = () => {
-			const elapsed = clock.getElapsedTime();
-			const floatY = Math.sin(elapsed * 1.4) * 0.08;
-			fallbackCore.position.y = floatY;
-			fallbackWire.position.y = floatY;
-			fallbackWire.rotation.x -= 0.004;
-			ring.rotation.z += 0.006;
-			controls.update();
-			renderer.render(scene, camera);
+			if (canAnimate()) {
+				const elapsed = (performance.now() - startTime) / 1000;
+				const floatY = Math.sin(elapsed * 1.4) * 0.08;
+				fallbackCore.position.y = floatY;
+				fallbackWire.position.y = floatY;
+				fallbackWire.rotation.x -= 0.004;
+				ring.rotation.z += 0.006;
+				controls.update();
+				renderer.render(scene, camera);
+			}
 			frame = requestAnimationFrame(tick);
 		};
 		tick();
 
 		const draw2D = () => {
 			frame2d = requestAnimationFrame(draw2D);
-			if (!show2d || !canvas2d) return;
+			if (!canAnimate() || !show2d || !canvas2d) return;
 			const w = canvas2d.width;
 			const h = canvas2d.height;
 			if (w === 0 || h === 0) return;
@@ -231,11 +250,13 @@
 			pCounter += 0.015;
 			const cx = w / 2;
 			const cy = h / 2;
+			const primaryCount = isSmallViewport() ? 1200 : 3000;
+			const secondaryCount = isSmallViewport() ? 800 : 1999;
 
-			for (let i = 3000; i >= 2; i -= 2) {
+			for (let i = primaryCount; i >= 2; i -= 2) {
 				drawPoint(ctx, i, 0, cx, cy, pCounter);
 			}
-			for (let i = 1999; i > 1; i -= 2) {
+			for (let i = secondaryCount; i > 1; i -= 2) {
 				drawPoint(ctx, i, 1, cx, cy, pCounter);
 			}
 		};
@@ -252,7 +273,7 @@
 			const a = counter / 9 + i * i;
 			const ringFlatten = parity ? 0.28 : 1.0;
 			const ringTilt = parity ? 2.1 : 1.0;
-			const x = cx + r * Math.sin(a) * Math.cos(!parity * i / counter);
+			const x = cx + r * Math.sin(a) * Math.cos((parity === 0 ? 1 : 0) * i / counter);
 			const y = cy + r * Math.cos(a + parity * 2) * ringFlatten * ringTilt;
 			let size = 1 - Math.cos(a);
 			if (parity) {
@@ -313,6 +334,7 @@
 			cancelAnimationFrame(frame);
 			cancelAnimationFrame(frame2d);
 			resizeObserver.disconnect();
+			visibilityObserver.disconnect();
 			controls.dispose();
 			renderer.dispose();
 			window.removeEventListener('keydown', handleKeydown);
@@ -488,9 +510,30 @@
 		transform: scale(1.35);
 	}
 
-	@media (max-width: 620px) {
+	@media (max-width: 680px) {
+		.model-viewer {
+			min-height: auto;
+			aspect-ratio: 4 / 5;
+		}
+
 		strong {
-			font-size: 2.6rem;
+			font-size: clamp(2.35rem, 12vw, 3.25rem);
+		}
+
+		.nav-arrow {
+			width: 2.35rem;
+			height: 2.35rem;
+		}
+	}
+
+	@media (max-width: 420px) {
+		.model-viewer {
+			aspect-ratio: 1 / 1.15;
+		}
+
+		.model-label {
+			left: 0.9rem;
+			bottom: 0.9rem;
 		}
 	}
 </style>

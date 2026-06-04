@@ -138,10 +138,11 @@
 <style>
 	.hero {
 		--hero-pad: clamp(1rem, 2.6vw, 2rem);
+		--hero-nav-space: 0rem;
 		min-height: 100svh;
 		display: grid;
 		grid-template-rows: auto auto 1fr;
-		padding: var(--hero-pad);
+		padding: calc(var(--hero-pad) + var(--hero-nav-space)) var(--hero-pad) var(--hero-pad);
 		background:
 			repeating-radial-gradient(circle at 86% 28%, rgba(255, 0, 0, 0.28) 0 2px, transparent 2px 10px),
 			radial-gradient(circle at 86% 22%, rgba(139, 0, 0, 0.56), transparent 21rem),
@@ -177,7 +178,7 @@
 	h1 {
 		max-width: 10ch;
 		margin: 0;
-		font-family: Impact, Oswald, 'Arial Narrow', Haettenschweiler, sans-serif;
+		font-family: var(--display-font);
 		font-size: 5.8rem;
 		font-weight: 500;
 		line-height: 0.86;
@@ -307,7 +308,7 @@
 		width: 100%;
 		gap: 0.035em;
 		color: #ffffff;
-		font-family: Impact, Oswald, 'Arial Narrow', Haettenschweiler, sans-serif;
+		font-family: var(--display-font);
 		font-size: clamp(4.1rem, 9.4vw, 10.4rem);
 		line-height: 0.72;
 		text-transform: uppercase;
@@ -353,7 +354,7 @@
 
 	.intro-card h2 {
 		margin: 0;
-		font-family: Impact, Oswald, 'Arial Narrow', Haettenschweiler, sans-serif;
+		font-family: var(--display-font);
 		font-size: 3.2rem;
 		font-weight: 500;
 		line-height: 0.9;
@@ -589,19 +590,82 @@
 
 	@media (max-width: 660px) {
 		.hero {
+			--hero-pad: 0.8rem;
+			--hero-nav-space: 3.2rem;
 			min-height: auto;
 		}
 
+		.hero-grid {
+			gap: 1.2rem;
+			padding-block: 1.6rem 1rem;
+		}
+
+		.cover-banner {
+			width: calc(100% + (var(--hero-pad) * 2));
+			min-height: clamp(13.5rem, 58vw, 18rem);
+			margin: calc(var(--hero-pad) * -1) calc(var(--hero-pad) * -1) 1.4rem;
+			padding: 2.8rem 0.75rem 1.4rem;
+			overflow: hidden;
+		}
+
+		.cover-banner::before {
+			right: -4rem;
+			top: 3rem;
+			width: 12rem;
+			height: 12rem;
+			filter: blur(1.1rem);
+			opacity: 0.48;
+		}
+
+		.cover-banner::after {
+			left: -3.5rem;
+			bottom: 0.4rem;
+			width: 10rem;
+			height: 7rem;
+			opacity: 0.72;
+		}
+
+		.portfolio-frame {
+			min-height: clamp(9.4rem, 40vw, 13rem);
+			padding: clamp(0.8rem, 4vw, 1.2rem);
+			border-radius: 18px 8px 18px 8px;
+			box-shadow: 0 1.25rem 2.5rem rgba(0, 0, 0, 0.48);
+		}
+
+		.portfolio-word {
+			font-size: clamp(2.35rem, 17vw, 4.15rem);
+			line-height: 0.82;
+		}
+
 		h1 {
-			font-size: 3.9rem;
+			font-size: clamp(3.2rem, 17vw, 4rem);
 		}
 
 		.intro p {
 			font-size: 1.05rem;
 		}
 
+		.intro-card {
+			border-radius: 18px 8px 18px 8px;
+		}
+
+		.intro-card h2 {
+			font-size: clamp(2.4rem, 13vw, 3rem);
+		}
+
+		.contact-row {
+			display: grid;
+			grid-template-columns: 1fr;
+		}
+
+		.contact-row a {
+			justify-content: start;
+			min-width: 0;
+		}
+
 		.toc-card {
 			grid-template-columns: 2rem minmax(0, 1fr);
+			min-height: auto;
 		}
 
 		.toc-card p {
@@ -614,6 +678,16 @@
 
 		.toc-card h2 {
 			font-size: 1.05rem;
+		}
+	}
+
+	@media (max-width: 420px) {
+		.portfolio-word {
+			font-size: clamp(2.05rem, 16vw, 3.2rem);
+		}
+
+		.cta {
+			width: 100%;
 		}
 	}
 </style>

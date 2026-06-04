@@ -52,6 +52,12 @@
 		forceTop();
 		updateScrollState();
 		const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+		const mobileQuery = window.matchMedia('(max-width: 760px)');
+		const applyMobileMode = () => {
+			document.body.classList.toggle('mobile-optimized', mobileQuery.matches);
+		};
+		applyMobileMode();
+		mobileQuery.addEventListener('change', applyMobileMode);
 		const revealGroups = [
 			'.hero .cover-banner',
 			'.hero .intro > *',
@@ -92,7 +98,7 @@
 		});
 
 		let observer: IntersectionObserver | undefined;
-		if (prefersReducedMotion.matches) {
+		if (prefersReducedMotion.matches || mobileQuery.matches) {
 			revealElements.forEach((element) => element.classList.add('motion-visible'));
 		} else {
 			document.body.classList.add('motion-ready');
@@ -172,10 +178,12 @@
 			window.removeEventListener('resize', queueMotionUpdate);
 			window.removeEventListener('pointermove', handlePointer);
 			document.removeEventListener('click', handleInteractiveClick);
+			mobileQuery.removeEventListener('change', applyMobileMode);
 			observer?.disconnect();
 			if (raf) window.cancelAnimationFrame(raf);
 			if (previousScrollRestoration) history.scrollRestoration = previousScrollRestoration;
 			document.body.classList.remove('motion-ready');
+			document.body.classList.remove('mobile-optimized');
 		};
 	});
 </script>
@@ -318,6 +326,7 @@
 		--cursor-x: 0;
 		--cursor-y: 0;
 		--scroll-progress: 0;
+		--display-font: Impact, 'Arial Black', 'Roboto Condensed', 'Arial Narrow', system-ui, sans-serif;
 	}
 
 	:global(.motion-ready .game-nav) {
@@ -354,6 +363,14 @@
 		filter: blur(0);
 		clip-path: inset(0 0 0 0 round 0);
 		transform: translate3d(0, 0, 0) scale(1);
+	}
+
+	:global(.mobile-optimized .motion-reveal) {
+		opacity: 1 !important;
+		filter: none !important;
+		clip-path: none !important;
+		transform: none !important;
+		transition: none !important;
 	}
 
 	:global(.motion-ready .hero) {
@@ -407,6 +424,10 @@
 		pointer-events: none;
 		transform: translate(-50%, -50%) scale(0);
 		animation: interaction-ripple 620ms ease-out;
+	}
+
+	:global(.mobile-optimized .interaction-pop::after) {
+		display: none;
 	}
 
 	.loading-screen {
@@ -686,6 +707,7 @@
 
 	h2 {
 		margin: 0;
+		font-family: var(--display-font);
 		font-size: 4.8rem;
 		line-height: 0.88;
 		text-wrap: balance;
@@ -846,7 +868,19 @@
 
 	@media (max-width: 620px) {
 		main {
-			gap: 4rem;
+			gap: 3.2rem;
+			padding: 0.75rem;
+		}
+
+		main::before,
+		main::after {
+			display: none;
+		}
+
+		:global(.mobile-optimized .portfolio-o),
+		:global(.mobile-optimized .marquee-track),
+		:global(.mobile-optimized .poster-track) {
+			animation-duration: 44s !important;
 		}
 
 		h2 {
@@ -855,25 +889,67 @@
 
 		.site-footer {
 			min-height: 80vh;
+			padding-inline: 0.75rem;
 		}
 
 		.game-nav {
-			width: calc(100% - 1rem);
+			top: 0.6rem;
+			width: calc(100% - 0.8rem);
+			padding: 0.35rem 0.45rem;
+			backdrop-filter: none;
+			border-radius: 14px;
 		}
 
 		.nav-status {
-			left: 0.75rem;
+			left: 0.7rem;
+		}
+
+		.nav-status span:not(.status-dot) {
+			display: none;
+		}
+
+		.status-dot {
+			width: 0.78rem;
 		}
 
 		.nav-links {
 			justify-content: center;
-			gap: 0.2rem;
-			margin-left: 2.2rem;
+			gap: 0.12rem;
+			width: 100%;
+			margin-left: 1.4rem;
+			overflow-x: auto;
+			scrollbar-width: none;
+		}
+
+		.nav-links::-webkit-scrollbar {
+			display: none;
 		}
 
 		.nav-links a {
-			padding-inline: 0.48rem;
-			font-size: 0.58rem;
+			flex: 0 0 auto;
+			padding: 0.52rem 0.42rem;
+			font-size: clamp(0.5rem, 2.55vw, 0.64rem);
+		}
+
+		.edge-jump {
+			right: 0.8rem;
+			bottom: 1rem;
+			width: 3.15rem;
+		}
+	}
+
+	@media (max-width: 420px) {
+		.nav-links {
+			justify-content: flex-start;
+			padding-left: 0.35rem;
+		}
+
+		.footer-intro h2 {
+			font-size: clamp(4.4rem, 24vw, 6.2rem);
+		}
+
+		.footer-contact-grid a {
+			min-height: 12rem;
 		}
 	}
 </style>

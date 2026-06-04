@@ -48,6 +48,7 @@
 
 	h3 {
 		margin: 0;
+		font-family: var(--display-font);
 		font-size: 2rem;
 		line-height: 0.95;
 	}
