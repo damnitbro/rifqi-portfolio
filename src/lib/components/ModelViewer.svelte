@@ -101,12 +101,11 @@
 			})
 		);
 		platform.position.y = -1.08;
-		decor.add(fallbackCore, fallbackWire, ring, platform);
+		decor.add(ring, platform);
 
 		const loader = new GLTFLoader();
-		let currentModel: THREE.Object3D | null = null;
 
-		const loadModel = (url: string) => {
+		const showFallback = () => {
 			while (modelContainer.children.length) {
 				const child = modelContainer.children[0];
 				modelContainer.remove(child);
@@ -116,35 +115,44 @@
 					materials.forEach((m) => m.dispose());
 				}
 			}
-			fallbackCore.visible = true;
-			fallbackWire.visible = true;
-			if (!url) return;
+			modelContainer.add(fallbackCore, fallbackWire);
+		};
+
+		const loadGLB = (url: string) => {
 			loader.load(
 				url,
 				(gltf) => {
-					currentModel = gltf.scene;
-					const box = new THREE.Box3().setFromObject(currentModel);
+					while (modelContainer.children.length) {
+						const child = modelContainer.children[0];
+						modelContainer.remove(child);
+						if (child instanceof THREE.Mesh) {
+							child.geometry.dispose();
+							const materials = Array.isArray(child.material) ? child.material : [child.material];
+							materials.forEach((m) => m.dispose());
+						}
+					}
+					const model = gltf.scene;
+					const box = new THREE.Box3().setFromObject(model);
 					const center = box.getCenter(new THREE.Vector3());
 					const size = box.getSize(new THREE.Vector3()).length();
-					currentModel.position.sub(center);
-					currentModel.scale.setScalar(2.5 / size);
-					modelContainer.add(currentModel);
-					fallbackCore.visible = false;
-					fallbackWire.visible = false;
+					model.position.sub(center);
+					model.scale.setScalar(2.5 / size);
+					modelContainer.add(model);
 				},
 				undefined,
-				() => {
-					fallbackCore.visible = true;
-					fallbackWire.visible = true;
-				}
+				showFallback
 			);
+		};
+
+		const loadModel = (url: string) => {
+			if (!url) { showFallback(); return; }
+			loadGLB(url);
 		};
 
 		if (models.length > 0) {
 			loadModel(models[0].url);
 		} else {
-			fallbackCore.visible = true;
-			fallbackWire.visible = true;
+			showFallback();
 		}
 
 		$effect(() => {
