@@ -66,7 +66,6 @@
 		controls.minDistance = 4.4;
 		controls.maxDistance = 8;
 
-		const fallbackGeo = new THREE.IcosahedronGeometry(0.96, 4);
 		const fallbackMat = new THREE.MeshStandardMaterial({
 			color: '#f7f3e8',
 			metalness: 0.42,
@@ -74,7 +73,6 @@
 			emissive: new THREE.Color(accent),
 			emissiveIntensity: 0.05
 		});
-		const fallbackCore = new THREE.Mesh(fallbackGeo, fallbackMat);
 
 		const wireMat = new THREE.MeshBasicMaterial({
 			color: accent,
@@ -82,6 +80,8 @@
 			transparent: true,
 			opacity: 0.2
 		});
+
+		const fallbackCore = new THREE.Mesh(new THREE.IcosahedronGeometry(0.96, 4), fallbackMat);
 		const fallbackWire = new THREE.Mesh(new THREE.IcosahedronGeometry(1.02, 2), wireMat);
 
 		const ring = new THREE.Mesh(
@@ -92,11 +92,7 @@
 
 		const platform = new THREE.Mesh(
 			new THREE.CylinderGeometry(1.45, 1.45, 0.05, 96),
-			new THREE.MeshStandardMaterial({
-				color: '#121212',
-				metalness: 0.1,
-				roughness: 0.8
-			})
+			new THREE.MeshStandardMaterial({ color: '#121212', metalness: 0.1, roughness: 0.8 })
 		);
 		platform.position.y = -1.08;
 
@@ -107,8 +103,7 @@
 
 		const showFallback = () => {
 			while (modelContainer.children.length) {
-				const child = modelContainer.children[0];
-				modelContainer.remove(child);
+				modelContainer.remove(modelContainer.children[0]);
 			}
 			modelContainer.add(fallbackGroup);
 		};
@@ -118,14 +113,14 @@
 				url,
 				(gltf) => {
 					while (modelContainer.children.length) {
-						const child = modelContainer.children[0];
-						modelContainer.remove(child);
+						modelContainer.remove(modelContainer.children[0]);
 					}
 					const model = gltf.scene;
 					const box = new THREE.Box3().setFromObject(model);
 					const center = box.getCenter(new THREE.Vector3());
 					const size = box.getSize(new THREE.Vector3()).length();
 					model.position.sub(center);
+					model.position.y -= 0.3;
 					model.scale.setScalar(2.5 / size);
 					modelContainer.add(model);
 				},
@@ -134,8 +129,85 @@
 			);
 		};
 
+		const proceduralGenerators: Record<string, () => THREE.Object3D> = {
+			'torus-knot': () => {
+				const group = new THREE.Group();
+				const core = new THREE.Mesh(
+					new THREE.TorusKnotGeometry(0.7, 0.25, 128, 32),
+					new THREE.MeshStandardMaterial({
+						color: '#f7f3e8',
+						metalness: 0.7,
+						roughness: 0.2,
+						emissive: new THREE.Color(accent),
+						emissiveIntensity: 0.08
+					})
+				);
+				const wire = new THREE.Mesh(
+					new THREE.TorusKnotGeometry(0.73, 0.27, 48, 16),
+					new THREE.MeshBasicMaterial({
+						color: accent,
+						wireframe: true,
+						transparent: true,
+						opacity: 0.15
+					})
+				);
+				group.add(core, wire);
+				return group;
+			},
+			'crystal-cluster': () => {
+				const group = new THREE.Group();
+				const count = 9;
+				const baseMat = new THREE.MeshStandardMaterial({
+					color: '#f7f3e8',
+					metalness: 0.6,
+					roughness: 0.15,
+					transparent: true,
+					opacity: 0.9,
+					emissive: new THREE.Color(accent),
+					emissiveIntensity: 0.05
+				});
+				const wireM = new THREE.MeshBasicMaterial({
+					color: accent,
+					wireframe: true,
+					transparent: true,
+					opacity: 0.12
+				});
+				for (let i = 0; i < count; i++) {
+					const t = i / count;
+					const size = 0.2 + t * 0.5;
+					const angle = t * Math.PI * 2;
+					const radius = 0.5 + t * 0.4;
+					const x = Math.cos(angle) * radius;
+					const y = Math.sin(angle * 1.3) * radius * 0.5;
+					const z = Math.sin(angle) * radius;
+					const oct = new THREE.Mesh(new THREE.OctahedronGeometry(size, 0), baseMat.clone());
+					oct.position.set(x, y, z);
+					oct.rotation.set(angle * 2, angle * 1.5, angle);
+					group.add(oct);
+					const wireOct = new THREE.Mesh(new THREE.OctahedronGeometry(size * 1.06, 0), wireM);
+					wireOct.position.copy(oct.position);
+					wireOct.rotation.copy(oct.rotation);
+					group.add(wireOct);
+				}
+				return group;
+			}
+		};
+
+		const loadProcedural = (key: string) => {
+			const gen = proceduralGenerators[key];
+			if (!gen) { showFallback(); return; }
+			while (modelContainer.children.length) {
+				modelContainer.remove(modelContainer.children[0]);
+			}
+			modelContainer.add(gen());
+		};
+
 		const loadModel = (url: string) => {
 			if (!url) { showFallback(); return; }
+			if (url.startsWith('procedural:')) {
+				loadProcedural(url.slice('procedural:'.length));
+				return;
+			}
 			loadGLB(url);
 		};
 

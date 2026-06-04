@@ -14,7 +14,9 @@
 	const models = [
 		{ url: '', title: '3D Shape' },
 		{ url: '/media/models/Lucy.glb', title: 'Lucy' },
-		{ url: '/media/models/Male.glb', title: 'Male' }
+		{ url: '/media/models/Male.glb', title: 'Male' },
+		{ url: 'procedural:torus-knot', title: 'Torus Knot' },
+		{ url: 'procedural:crystal-cluster', title: 'Crystal Cluster' }
 	];
 </script>
 
