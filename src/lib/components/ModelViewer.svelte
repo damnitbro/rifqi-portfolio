@@ -4,15 +4,20 @@
 	import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 	import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
+	type ModelEntry = {
+		url: string;
+		title?: string;
+	};
+
 	type Props = {
-		modelUrl?: string;
+		models?: ModelEntry[];
 		title?: string;
 		kicker?: string;
 		accent?: string;
 	};
 
 	let {
-		modelUrl,
+		models = [],
 		title = '3D Artist',
 		kicker = 'Realtime model preview',
 		accent = '#8b0000'
@@ -20,18 +25,32 @@
 
 	let host: HTMLDivElement;
 	let canvas: HTMLCanvasElement;
+	let index = $state(0);
+	let modelTitle = $derived(models[index]?.title ?? title);
+
+	const prev = () => {
+		if (models.length < 2) return;
+		index = (index - 1 + models.length) % models.length;
+	};
+
+	const next = () => {
+		if (models.length < 2) return;
+		index = (index + 1) % models.length;
+	};
 
 	onMount(() => {
 		const scene = new THREE.Scene();
 		const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
 		const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
 		const controls = new OrbitControls(camera, renderer.domElement);
-		const group = new THREE.Group();
+		const modelContainer = new THREE.Group();
+		const decor = new THREE.Group();
 		const clock = new THREE.Clock();
 
 		camera.position.set(2.8, 1.8, 6.2);
-		group.position.y = 0.18;
-		scene.add(group);
+		modelContainer.position.y = 0.18;
+		scene.add(modelContainer);
+		scene.add(decor);
 		scene.add(new THREE.HemisphereLight('#ffffff', '#1a0f0a', 1.35));
 
 		const key = new THREE.DirectionalLight(accent, 2.3);
@@ -49,23 +68,23 @@
 		controls.minDistance = 4.4;
 		controls.maxDistance = 8;
 
-		const material = new THREE.MeshStandardMaterial({
+		const fallbackGeo = new THREE.IcosahedronGeometry(0.96, 4);
+		const fallbackMat = new THREE.MeshStandardMaterial({
 			color: '#f7f3e8',
 			metalness: 0.42,
 			roughness: 0.34,
 			emissive: new THREE.Color(accent),
 			emissiveIntensity: 0.05
 		});
+		const fallbackCore = new THREE.Mesh(fallbackGeo, fallbackMat);
 
-		const wire = new THREE.MeshBasicMaterial({
+		const wireMat = new THREE.MeshBasicMaterial({
 			color: accent,
 			wireframe: true,
 			transparent: true,
 			opacity: 0.2
 		});
-
-		const fallbackCore = new THREE.Mesh(new THREE.IcosahedronGeometry(0.96, 4), material);
-		const fallbackWire = new THREE.Mesh(new THREE.IcosahedronGeometry(1.02, 2), wire);
+		const fallbackWire = new THREE.Mesh(new THREE.IcosahedronGeometry(1.02, 2), wireMat);
 
 		const ring = new THREE.Mesh(
 			new THREE.TorusGeometry(1.36, 0.016, 16, 140),
@@ -82,20 +101,57 @@
 			})
 		);
 		platform.position.y = -1.08;
-		group.add(fallbackCore, fallbackWire, ring, platform);
+		decor.add(fallbackCore, fallbackWire, ring, platform);
 
-		if (modelUrl) {
-			new GLTFLoader().load(modelUrl, (gltf) => {
-				group.clear();
-				const model = gltf.scene;
-				const box = new THREE.Box3().setFromObject(model);
-				const center = box.getCenter(new THREE.Vector3());
-				const size = box.getSize(new THREE.Vector3()).length();
-				model.position.sub(center);
-				model.scale.setScalar(2.5 / size);
-				group.add(model);
-			});
+		const loader = new GLTFLoader();
+		let currentModel: THREE.Object3D | null = null;
+
+		const loadModel = (url: string) => {
+			while (modelContainer.children.length) {
+				const child = modelContainer.children[0];
+				modelContainer.remove(child);
+				if (child instanceof THREE.Mesh) {
+					child.geometry.dispose();
+					const materials = Array.isArray(child.material) ? child.material : [child.material];
+					materials.forEach((m) => m.dispose());
+				}
+			}
+			fallbackCore.visible = true;
+			fallbackWire.visible = true;
+			if (!url) return;
+			loader.load(
+				url,
+				(gltf) => {
+					currentModel = gltf.scene;
+					const box = new THREE.Box3().setFromObject(currentModel);
+					const center = box.getCenter(new THREE.Vector3());
+					const size = box.getSize(new THREE.Vector3()).length();
+					currentModel.position.sub(center);
+					currentModel.scale.setScalar(2.5 / size);
+					modelContainer.add(currentModel);
+					fallbackCore.visible = false;
+					fallbackWire.visible = false;
+				},
+				undefined,
+				() => {
+					fallbackCore.visible = true;
+					fallbackWire.visible = true;
+				}
+			);
+		};
+
+		if (models.length > 0) {
+			loadModel(models[0].url);
+		} else {
+			fallbackCore.visible = true;
+			fallbackWire.visible = true;
 		}
+
+		$effect(() => {
+			if (models.length > 0) {
+				loadModel(models[index].url);
+			}
+		});
 
 		const resize = () => {
 			const width = Math.max(320, host.clientWidth);
@@ -106,15 +162,14 @@
 			renderer.setSize(width, height, false);
 		};
 
-		const observer = new ResizeObserver(resize);
-		observer.observe(host);
+		const resizeObserver = new ResizeObserver(resize);
+		resizeObserver.observe(host);
 		resize();
 
 		let frame = 0;
 		const tick = () => {
 			const elapsed = clock.getElapsedTime();
 			const floatY = Math.sin(elapsed * 1.4) * 0.08;
-			group.rotation.y += 0.003;
 			fallbackCore.position.y = floatY;
 			fallbackWire.position.y = floatY;
 			fallbackWire.rotation.x -= 0.004;
@@ -125,11 +180,39 @@
 		};
 		tick();
 
+		const handleKeydown = (e: KeyboardEvent) => {
+			if (models.length < 2) return;
+			if (e.key === 'ArrowLeft') prev();
+			if (e.key === 'ArrowRight') next();
+		};
+		window.addEventListener('keydown', handleKeydown);
+
+		let touchStartX = 0;
+		let touchStartY = 0;
+		const handleTouchStart = (e: TouchEvent) => {
+			touchStartX = e.changedTouches[0].screenX;
+			touchStartY = e.changedTouches[0].screenY;
+		};
+		const handleTouchEnd = (e: TouchEvent) => {
+			if (models.length < 2) return;
+			const dx = e.changedTouches[0].screenX - touchStartX;
+			const dy = e.changedTouches[0].screenY - touchStartY;
+			if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+				if (dx > 0) prev();
+				else next();
+			}
+		};
+		host.addEventListener('touchstart', handleTouchStart, { passive: true });
+		host.addEventListener('touchend', handleTouchEnd);
+
 		return () => {
 			cancelAnimationFrame(frame);
-			observer.disconnect();
+			resizeObserver.disconnect();
 			controls.dispose();
 			renderer.dispose();
+			window.removeEventListener('keydown', handleKeydown);
+			host.removeEventListener('touchstart', handleTouchStart);
+			host.removeEventListener('touchend', handleTouchEnd);
 			scene.traverse((object) => {
 				if (object instanceof THREE.Mesh) {
 					object.geometry.dispose();
@@ -142,11 +225,28 @@
 </script>
 
 <div class="model-viewer" bind:this={host} style:--accent={accent}>
-	<canvas bind:this={canvas} aria-label={title}></canvas>
+	<canvas bind:this={canvas} aria-label={modelTitle}></canvas>
 	<div class="model-label">
 		<span>{kicker}</span>
-		<strong>{title}</strong>
+		<strong>{modelTitle}</strong>
 	</div>
+	{#if models.length > 1}
+		<button class="nav-arrow nav-prev" onclick={prev} aria-label="Previous model">
+			<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+		</button>
+		<button class="nav-arrow nav-next" onclick={next} aria-label="Next model">
+			<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+		</button>
+		<div class="nav-dots">
+			{#each models as _, i}
+				<button
+					class:active={i === index}
+					onclick={() => { index = i; }}
+					aria-label="Switch to model {i + 1}"
+				></button>
+			{/each}
+		</div>
+	{/if}
 </div>
 
 <style>
@@ -197,6 +297,63 @@
 		font-size: 4rem;
 		line-height: 0.88;
 		text-wrap: balance;
+	}
+
+	.nav-arrow {
+		position: absolute;
+		top: 50%;
+		z-index: 3;
+		display: grid;
+		place-items: center;
+		width: 2.6rem;
+		height: 2.6rem;
+		padding: 0;
+		color: rgba(245, 245, 245, 0.7);
+		background: rgba(0, 0, 0, 0.5);
+		border: 1px solid rgba(255, 255, 255, 0.15);
+		border-radius: 50%;
+		cursor: pointer;
+		transform: translateY(-50%);
+		transition: background 0.15s, color 0.15s;
+	}
+
+	.nav-arrow:hover {
+		background: rgba(255, 16, 16, 0.6);
+		color: #fff;
+	}
+
+	.nav-prev {
+		left: 0.8rem;
+	}
+
+	.nav-next {
+		right: 0.8rem;
+	}
+
+	.nav-dots {
+		position: absolute;
+		left: 50%;
+		bottom: 1rem;
+		z-index: 3;
+		display: flex;
+		gap: 0.4rem;
+		transform: translateX(-50%);
+	}
+
+	.nav-dots button {
+		width: 0.55rem;
+		height: 0.55rem;
+		padding: 0;
+		background: rgba(245, 245, 245, 0.3);
+		border: none;
+		border-radius: 50%;
+		cursor: pointer;
+		transition: background 0.15s, transform 0.15s;
+	}
+
+	.nav-dots button.active {
+		background: var(--accent);
+		transform: scale(1.35);
 	}
 
 	@media (max-width: 620px) {

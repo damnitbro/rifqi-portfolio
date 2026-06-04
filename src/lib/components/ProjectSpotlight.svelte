@@ -10,12 +10,17 @@
 
 	const YT_ID = '5v7WOd9hAi0';
 	const ytSrc = `https://www.youtube.com/embed/${YT_ID}?autoplay=1&mute=1&loop=1&playlist=${YT_ID}&controls=1&rel=0`;
+
+	const models = [
+		{ url: '/media/models/UasAnatomiFinal.glb', title: 'Anatomy Study' },
+		{ url: '/media/models/Catur.glb', title: 'Chess Set' }
+	];
 </script>
 
 <section class="spotlight" id="work" data-video-count={videos.length}>
 
 	<div class="spotlight-grid">
-		<ModelViewer accent="#8b0000" />
+		<ModelViewer {models} accent="#8b0000" />
 		<div class="yt-embed-shell">
 			<iframe
 				src={ytSrc}
