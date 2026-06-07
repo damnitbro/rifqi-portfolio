@@ -133,7 +133,7 @@ export const brandPalette = [
 export const skills: Skill[] = [
 	{ label: '3D Artist', value: 'Model previews, look-dev, cinematic presentation' },
 	{ label: 'Video Editor', value: 'Short-form cuts, pacing, social-first reels' },
-	{ label: 'Motion Design', value: 'Campaign posts, motion assets, and social visual systems' },
+	{ label: 'Graphic Design', value: 'Campaign posts, motion assets, and social visual systems' },
 	{ label: 'Contact', value: 'Email, Instagram, and WhatsApp details for collaboration' }
 ];
 

@@ -30,11 +30,7 @@
 <section class="hero" id="top">
 	<div class="cover-banner">
 		<div class="portfolio-frame">
-			<div class="portfolio-word" aria-label="Portfolio">
-				<span>P</span>
-				<span class="portfolio-o" aria-hidden="true"></span>
-				<span>RTFOLIO</span>
-			</div>
+			<img src="/images/Portofolio.png" alt="Portfolio" class="portfolio-image" />
 		</div>
 	</div>
 	<div class="hero-grid">
@@ -289,15 +285,22 @@
 		z-index: 1;
 		display: grid;
 		place-items: center;
-		width: min(100%, 70rem);
-		min-height: clamp(16rem, 38vw, 33.5rem);
-		margin-inline: auto;
+		width: 100%;
 		padding: clamp(1.2rem, 3.2vw, 3.3rem) clamp(1.2rem, 4.2vw, 4.4rem);
-		overflow: visible;
+		overflow: hidden;
 		background: rgba(18, 15, 16, 0.9);
 		border: 1px solid rgba(255, 255, 255, 0.24);
 		border-radius: clamp(1.25rem, 3vw, 2rem) 0.8rem clamp(1.25rem, 3vw, 2rem) 0.8rem;
 		box-shadow: 0 2.6rem 5rem rgba(0, 0, 0, 0.54);
+	}
+
+	.portfolio-image {
+		display: block;
+		width: 100%;
+		height: auto;
+		max-height: clamp(12rem, 40vw, 38rem);
+		object-fit: contain;
+		object-position: center;
 	}
 
 	.portfolio-word {
@@ -628,7 +631,6 @@
 		}
 
 		.portfolio-frame {
-			min-height: clamp(9.4rem, 40vw, 13rem);
 			padding: clamp(0.8rem, 4vw, 1.2rem);
 			border-radius: 18px 8px 18px 8px;
 			box-shadow: 0 1.25rem 2.5rem rgba(0, 0, 0, 0.48);

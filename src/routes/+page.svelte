@@ -223,7 +223,7 @@
 	<div class="nav-links">
 		<a href="#experience-3d">3D Artist</a>
 		<a href="#experience-video">Video Editor</a>
-		<a href="#experience-graphics">Motion Design</a>
+		<a href="#experience-graphics">Graphic Design</a>
 		<a href="#contact">Contact</a>
 	</div>
 
@@ -924,7 +924,7 @@
 			justify-content: center;
 			gap: 0.12rem;
 			width: 100%;
-			margin-left: 1.4rem;
+			padding-left: 1.4rem;
 			overflow-x: auto;
 			scrollbar-width: none;
 		}
@@ -948,8 +948,8 @@
 
 	@media (max-width: 420px) {
 		.nav-links {
-			justify-content: flex-start;
-			padding-left: 0.35rem;
+			justify-content: center;
+			padding-left: 1.4rem;
 		}
 
 		.footer-intro h2 {
