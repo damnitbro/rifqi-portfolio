@@ -223,7 +223,7 @@ export const socialColumns: SocialPost[][] = [
 			meta: '3D workflow',
 			caption: 'Clay render to final composited shot.',
 			accent: '#8b0000',
-			src: '/media/work/3d-personal/3DLabPersonal.jpeg'
+			src: '/media/work/3d-personal/3d-lab.webp'
 		},
 		{
 			title: 'IG Carousel',
@@ -292,7 +292,7 @@ const threeDPersonalAssets: ProjectAsset[] = [
 		ratio: 'square'
 	},
 	{ title: 'Isometric Classroom', src: '/media/work/3d-personal/3d-class.webp', type: 'image', meta: '', ratio: 'wide' },
-	{ title: 'CG Boost Lab Competition entry', src: '/media/work/3d-personal/3DLabPersonal.jpeg', type: 'image', meta: '', ratio: 'wide' },
+	{ title: 'CG Boost Lab Competition entry', src: '/media/work/3d-personal/3d-lab.webp', type: 'image', meta: '', ratio: 'wide' },
 	{
 		title: 'Personal Letter Animation',
 		src: '/media/work/3d-personal/3d-personal-letter.mp4',
