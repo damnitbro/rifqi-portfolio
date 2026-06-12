@@ -351,7 +351,7 @@ const videoEditorAssets: ProjectAsset[] = [
 		meta: '',
 		// Backend-only clip timing: change startAt/endAt to adjust this loop.
 		startAt: 0,
-		endAt: 90.114,
+		endAt: 78,
 		ratio: 'portrait'
 	},
 	{
@@ -361,7 +361,7 @@ const videoEditorAssets: ProjectAsset[] = [
 		meta: '',
 		// Backend-only clip timing: change startAt/endAt to adjust this loop.
 		startAt: 0,
-		endAt: 78.829,
+		endAt: 59,
 		ratio: 'portrait'
 	},
 	{
@@ -371,17 +371,17 @@ const videoEditorAssets: ProjectAsset[] = [
 		meta: '',
 		// Backend-only clip timing: change startAt/endAt to adjust this loop.
 		startAt: 0,
-		endAt: 59.116,
+		endAt: 59,
 		ratio: 'portrait'
 	},
 	{
 		title: '',
-		src: 'F:/Video/GreenNuri.mp4',
+		src: '/media/work/video-editor/real-estate-4.mp4',
 		type: 'video',
 		meta: '',
 		// Backend-only clip timing: change startAt/endAt to adjust this loop.
 		startAt: 0,
-		endAt: 59.952,
+		endAt: 90,
 		ratio: 'portrait'
 	},
 	{
@@ -391,17 +391,17 @@ const videoEditorAssets: ProjectAsset[] = [
 		meta: '',
 		// Backend-only clip timing: change startAt/endAt to adjust this loop.
 		startAt: 0,
-		endAt: 80.803,
+		endAt: 90,
 		ratio: 'portrait'
 	},
 	{
 		title: '',
-		src: 'F:/Video/Petukangan.mp4',
+		src: '/media/work/video-editor/real-estate-6.mp4',
 		type: 'video',
 		meta: '',
 		// Backend-only clip timing: change startAt/endAt to adjust this loop.
 		startAt: 0,
-		endAt: 90.184,
+		endAt: 90,
 		ratio: 'portrait'
 	},
 	{
@@ -411,17 +411,17 @@ const videoEditorAssets: ProjectAsset[] = [
 		meta: '',
 		// Backend-only clip timing: change startAt/endAt to adjust this loop.
 		startAt: 0,
-		endAt: 89.905,
+		endAt: 89,
 		ratio: 'portrait'
 	},
 	{
 		title: '',
-		src: 'F:/Video/Menteng.mp4',
+		src: '/media/work/video-editor/real-estate-8.mp4',
 		type: 'video',
 		meta: '',
 		// Backend-only clip timing: change startAt/endAt to adjust this loop.
 		startAt: 0,
-		endAt: 90.068,
+		endAt: 89,
 		ratio: 'portrait'
 	}
 ];

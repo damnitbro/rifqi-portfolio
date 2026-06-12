@@ -707,7 +707,7 @@
 		order: 91;
 		grid-column: 1 / span 6;
 		width: 100%;
-		aspect-ratio: 16 / 9;
+		aspect-ratio: auto;
 	}
 
 	.project-group[data-layout='personal-3d'] figure[data-title='Horror Poster for No Smoke Campaign'] {
@@ -1220,6 +1220,11 @@
 			width: 60%;
 			margin-inline: auto;
 			aspect-ratio: 2268 / 3402;
+		}
+
+		.youtube-figure[data-title='Gibran Pro Home — Virtual Tour'],
+		.youtube-figure[data-title='Gibran Pro Home — Listing Highlight'] {
+			grid-column: span 3;
 		}
 
 		.logo-system-container {

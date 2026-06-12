@@ -251,7 +251,7 @@
 		align-content: center;
 		place-items: stretch;
 		width: calc(100% + (var(--hero-pad) * 2));
-		min-height: clamp(24rem, 58vw, 43rem);
+		min-height: clamp(26rem, 62vw, 48rem);
 		margin: calc(var(--hero-pad) * -1) calc(var(--hero-pad) * -1) clamp(2.4rem, 5vw, 4.5rem);
 		padding: clamp(5.8rem, 9vw, 8rem) clamp(0rem, 0vw, 0rem) clamp(3.2rem, 6vw, 5rem);
 		overflow: visible;
@@ -298,11 +298,11 @@
 		justify-content: center;
 		width: 100%;
 		padding-inline: clamp(0.5rem, 2vw, 1.5rem);
-		gap: 0.03em;
+		gap: 0.02em;
 		color: #ffffff;
 		font-family: var(--display-font);
-		font-size: clamp(4.5rem, 21vw, 22rem);
-		line-height: 0.68;
+		font-size: clamp(5.5rem, 26vw, 28rem);
+		line-height: 0.64;
 		text-transform: uppercase;
 		letter-spacing: 0;
 		white-space: nowrap;
@@ -317,7 +317,7 @@
 
 	.ornament-letter {
 		flex: 0 0 auto;
-		width: 0.85em;
+		width: 0.92em;
 		aspect-ratio: 1;
 		animation: ornament-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
 		animation-delay: calc(5 * 70ms);
@@ -610,7 +610,7 @@
 
 		.cover-banner {
 			width: calc(100% + (var(--hero-pad) * 2));
-			min-height: clamp(13.5rem, 58vw, 18rem);
+			min-height: clamp(15rem, 62vw, 20rem);
 			margin: calc(var(--hero-pad) * -1) calc(var(--hero-pad) * -1) 1.4rem;
 			padding: 2.8rem 0.75rem 1.4rem;
 			overflow: hidden;
@@ -619,8 +619,8 @@
 		.cover-banner::before {
 			right: -4rem;
 			top: 3rem;
-			width: 12rem;
-			height: 12rem;
+			width: 14rem;
+			height: 14rem;
 			filter: blur(1.1rem);
 			opacity: 0.48;
 		}
@@ -628,15 +628,14 @@
 		.cover-banner::after {
 			left: -3.5rem;
 			bottom: 0.4rem;
-			width: 10rem;
-			height: 7rem;
+			width: 12rem;
+			height: 8rem;
 			opacity: 0.72;
 		}
 
 		.portfolio-word {
-			font-size: clamp(2.35rem, 18vw, 5rem);
-			font-size: clamp(2.35rem, 17vw, 4.15rem);
-			line-height: 0.82;
+			font-size: clamp(3.2rem, 21vw, 5.5rem);
+			line-height: 0.76;
 		}
 
 		h1 {
@@ -687,7 +686,7 @@
 
 	@media (max-width: 420px) {
 		.portfolio-word {
-			font-size: clamp(2.05rem, 18vw, 3.8rem);
+			font-size: clamp(2.8rem, 22vw, 4.6rem);
 		}
 
 		h1 {
