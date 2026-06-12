@@ -449,7 +449,7 @@
 			linear-gradient(140deg, color-mix(in srgb, var(--accent) 14%, transparent), transparent 46%),
 			rgba(12, 10, 11, 0.78);
 		border: 1px solid rgba(255, 255, 255, 0.12);
-		border-radius: 24px 8px 24px 8px;
+		border-radius: 8px;
 		min-width: 0;
 		overflow: hidden;
 	}
@@ -549,8 +549,6 @@
 		overflow: hidden;
 		border-radius: inherit;
 		contain: paint;
-		-webkit-mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
-		mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
 	}
 
 	.poster-column {

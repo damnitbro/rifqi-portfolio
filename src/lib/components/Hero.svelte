@@ -241,7 +241,7 @@
 		overflow: hidden;
 		background: rgba(12, 10, 11, 0.72);
 		border: 1px solid rgba(255, 255, 255, 0.14);
-		border-radius: 24px 8px 24px 8px;
+		border-radius: 8px;
 		box-shadow: 0 24px 80px rgba(0, 0, 0, 0.34);
 	}
 
@@ -485,7 +485,7 @@
 		padding: clamp(0.9rem, 1.8vw, 1.25rem);
 		background: rgba(12, 10, 11, 0.72);
 		border: 1px solid rgba(255, 255, 255, 0.1);
-		border-radius: 16px 8px 16px 8px;
+		border-radius: 8px;
 		animation: rise 640ms ease both;
 		animation-delay: var(--delay);
 		transition:
