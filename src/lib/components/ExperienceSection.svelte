@@ -449,7 +449,7 @@
 			linear-gradient(140deg, color-mix(in srgb, var(--accent) 14%, transparent), transparent 46%),
 			rgba(12, 10, 11, 0.78);
 		border: 1px solid rgba(255, 255, 255, 0.12);
-		border-radius: 28px;
+		border-radius: 24px 8px 24px 8px;
 		min-width: 0;
 		overflow: hidden;
 	}
