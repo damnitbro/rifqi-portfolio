@@ -142,7 +142,7 @@ export const personalSkills: Skill[] = [
 	{ label: 'Creative Direction', value: 'Mood, visual hierarchy, and presentation choices' },
 	{ label: 'Technical Workflow', value: '3D, editing, motion, and design pipeline awareness' },
 	{ label: 'Detail Craft', value: 'Composition, timing, typography, and polish' },
-	{ label: 'English proficiency', value: 'Comfortable communicating project ideas and visual direction' }
+	{ label: 'English Proficiency', value: 'Comfortable communicating project ideas and visual direction' }
 ];
 
 export const softSkills: Skill[] = [
@@ -346,7 +346,7 @@ const threeDPersonalAssets: ProjectAsset[] = [
 const videoEditorAssets: ProjectAsset[] = [
 	{
 		title: '',
-		src: '/media/work/video-editor/real-estate-5.mp4',
+		src: '/media/work/video-editor/real-estate-1.mp4',
 		type: 'video',
 		meta: '',
 		// Backend-only clip timing: change startAt/endAt to adjust this loop.
@@ -356,7 +356,7 @@ const videoEditorAssets: ProjectAsset[] = [
 	},
 	{
 		title: '',
-		src: '/media/work/video-editor/real-estate-1.mp4',
+		src: '/media/work/video-editor/real-estate-2.mp4',
 		type: 'video',
 		meta: '',
 		// Backend-only clip timing: change startAt/endAt to adjust this loop.
@@ -366,7 +366,7 @@ const videoEditorAssets: ProjectAsset[] = [
 	},
 	{
 		title: '',
-		src: '/media/work/video-editor/real-estate-2.mp4',
+		src: '/media/work/video-editor/real-estate-3.mp4',
 		type: 'video',
 		meta: '',
 		// Backend-only clip timing: change startAt/endAt to adjust this loop.
@@ -376,7 +376,7 @@ const videoEditorAssets: ProjectAsset[] = [
 	},
 	{
 		title: '',
-		src: '/media/work/video-editor/real-estate-3.mp4',
+		src: '/media/work/video-editor/real-estate-4.mp4',
 		type: 'video',
 		meta: '',
 		// Backend-only clip timing: change startAt/endAt to adjust this loop.
@@ -386,7 +386,7 @@ const videoEditorAssets: ProjectAsset[] = [
 	},
 	{
 		title: '',
-		src: 'F:/Video/GreenNuri.mp4',
+		src: '/media/work/video-editor/real-estate-5.mp4',
 		type: 'video',
 		meta: '',
 		// Backend-only clip timing: change startAt/endAt to adjust this loop.
@@ -396,7 +396,7 @@ const videoEditorAssets: ProjectAsset[] = [
 	},
 	{
 		title: '',
-		src: 'F:/Video/Petukangan.mp4',
+		src: '/media/work/video-editor/real-estate-6.mp4',
 		type: 'video',
 		meta: '',
 		// Backend-only clip timing: change startAt/endAt to adjust this loop.
@@ -416,7 +416,7 @@ const videoEditorAssets: ProjectAsset[] = [
 	},
 	{
 		title: '',
-		src: 'F:/Video/Menteng.mp4',
+		src: '/media/work/video-editor/real-estate-8.mp4',
 		type: 'video',
 		meta: '',
 		// Backend-only clip timing: change startAt/endAt to adjust this loop.

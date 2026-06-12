@@ -31,18 +31,16 @@
 
 <section class="hero" id="top">
 	<div class="cover-banner">
-		<div class="portfolio-frame">
-			<div class="portfolio-word">
-				{#each letters as letter, i}
-					{#if i === 5}
-						<span class="letter ornament-letter" style:--i={i}>
-							<img src="/images/RadialDot.png" alt="O" class="radial-o" />
-						</span>
-					{:else}
-						<span class="letter" style:--i={i}>{letter}</span>
-					{/if}
-				{/each}
-			</div>
+		<div class="portfolio-word">
+			{#each letters as letter, i}
+				{#if i === 5}
+					<span class="letter ornament-letter" style:--i={i}>
+						<img src="/images/RadialDot.png" alt="O" class="radial-o" />
+					</span>
+				{:else}
+					<span class="letter" style:--i={i}>{letter}</span>
+				{/if}
+			{/each}
 		</div>
 	</div>
 	<div class="hero-grid">
@@ -250,12 +248,12 @@
 	.cover-banner {
 		position: relative;
 		display: grid;
-		align-content: start;
+		align-content: center;
 		place-items: stretch;
 		width: calc(100% + (var(--hero-pad) * 2));
 		min-height: clamp(24rem, 58vw, 43rem);
 		margin: calc(var(--hero-pad) * -1) calc(var(--hero-pad) * -1) clamp(2.4rem, 5vw, 4.5rem);
-		padding: clamp(5.8rem, 9vw, 8rem) clamp(1.1rem, 3vw, 2.2rem) clamp(3.2rem, 6vw, 5rem);
+		padding: clamp(5.8rem, 9vw, 8rem) clamp(0rem, 0vw, 0rem) clamp(3.2rem, 6vw, 5rem);
 		overflow: visible;
 		background:
 			radial-gradient(circle at 100% 0%, rgba(255, 0, 0, 0.82), transparent 24rem),
@@ -292,20 +290,6 @@
 		filter: blur(0.35rem);
 	}
 
-	.portfolio-frame {
-		position: relative;
-		z-index: 1;
-		display: grid;
-		place-items: center;
-		width: 100%;
-		padding: clamp(1.2rem, 3.2vw, 3.3rem) clamp(1.2rem, 4.2vw, 4.4rem);
-		overflow: hidden;
-		background: rgba(18, 15, 16, 0.9);
-		border: 1px solid rgba(255, 255, 255, 0.24);
-		border-radius: clamp(1.25rem, 3vw, 2rem) 0.8rem clamp(1.25rem, 3vw, 2rem) 0.8rem;
-		box-shadow: 0 2.6rem 5rem rgba(0, 0, 0, 0.54);
-	}
-
 	.portfolio-word {
 		position: relative;
 		z-index: 1;
@@ -313,10 +297,11 @@
 		align-items: center;
 		justify-content: center;
 		width: 100%;
+		padding-inline: clamp(1rem, 3vw, 2rem);
 		gap: 0.035em;
 		color: #ffffff;
 		font-family: var(--display-font);
-		font-size: clamp(4.1rem, 9.4vw, 10.4rem);
+		font-size: clamp(4.1rem, 14vw, 16rem);
 		line-height: 0.72;
 		text-transform: uppercase;
 		letter-spacing: 0;
@@ -528,6 +513,7 @@
 		display: flex;
 		flex-wrap: wrap;
 		gap: 0.8rem;
+		align-items: start;
 	}
 
 	.skills-row .skill-group {
@@ -535,6 +521,7 @@
 		gap: 0.25rem;
 		flex: 1;
 		min-width: 14rem;
+		align-content: start;
 	}
 
 	.skill-group-label {
@@ -638,13 +625,8 @@
 			opacity: 0.72;
 		}
 
-		.portfolio-frame {
-			padding: clamp(0.8rem, 4vw, 1.2rem);
-			border-radius: 18px 8px 18px 8px;
-			box-shadow: 0 1.25rem 2.5rem rgba(0, 0, 0, 0.48);
-		}
-
 		.portfolio-word {
+			font-size: clamp(2.35rem, 18vw, 5rem);
 			font-size: clamp(2.35rem, 17vw, 4.15rem);
 			line-height: 0.82;
 		}
@@ -697,7 +679,7 @@
 
 	@media (max-width: 420px) {
 		.portfolio-word {
-			font-size: clamp(2.05rem, 16vw, 3.2rem);
+			font-size: clamp(2.05rem, 18vw, 3.8rem);
 		}
 
 		h1 {

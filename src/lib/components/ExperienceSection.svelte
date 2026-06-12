@@ -344,6 +344,7 @@
 		gap: clamp(1.5rem, 4vw, 3rem);
 		min-width: 0;
 		overflow: hidden;
+		scroll-margin-top: 5.5rem;
 	}
 
 	.experience-heading {
@@ -702,6 +703,13 @@
 		justify-self: start;
 	}
 
+	.project-group[data-layout='personal-3d'] figure[data-title='Sofa with Lighting Study'] {
+		order: 98;
+		grid-column: 1 / -1;
+		width: 100%;
+		aspect-ratio: 16 / 9;
+	}
+
 	.project-group[data-layout='personal-3d'] figure[data-title='Horror Poster for No Smoke Campaign'] {
 		order: 99;
 		grid-column: 1 / -1;
@@ -966,6 +974,14 @@
 	.youtube-figure {
 		position: relative;
 		overflow: hidden;
+		grid-column: span 6;
+		aspect-ratio: 16 / 9;
+	}
+
+	@media (max-width: 680px) {
+		.youtube-figure {
+			grid-column: span 3 !important;
+		}
 	}
 
 	.yt-thumb-wrap {

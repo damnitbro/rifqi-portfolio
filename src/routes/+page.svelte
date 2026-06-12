@@ -771,6 +771,7 @@
 		min-height: 92vh;
 		align-content: end;
 		padding: clamp(2rem, 5vw, 5rem) clamp(1rem, 2.6vw, 2rem) 6.5rem;
+		scroll-margin-top: 5.5rem;
 		color: #f5f5f5;
 		background: #080808;
 		border-top: 1px solid rgba(255, 255, 255, 0.1);
