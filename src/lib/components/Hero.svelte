@@ -325,6 +325,7 @@
 		flex: 0 0 auto;
 		width: 0.72em;
 		height: 0.72em;
+		margin-top: -0.04em;
 		animation: ornament-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
 		animation-delay: calc(5 * 70ms);
 		transform-origin: center;

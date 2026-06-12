@@ -449,9 +449,8 @@
 			linear-gradient(140deg, color-mix(in srgb, var(--accent) 14%, transparent), transparent 46%),
 			rgba(12, 10, 11, 0.78);
 		border: 1px solid rgba(255, 255, 255, 0.12);
-		border-radius: 24px 8px 24px 8px;
+		border-radius: 28px;
 		min-width: 0;
-		overflow: hidden;
 	}
 
 	.project-group > * {
@@ -536,6 +535,8 @@
 		min-width: 0;
 		width: 100%;
 		max-width: 100%;
+		overflow: hidden;
+		border-radius: inherit;
 	}
 
 	.poster-columns {
@@ -545,6 +546,7 @@
 		height: min(900px, 90vh);
 		min-height: 680px;
 		overflow: hidden;
+		border-radius: inherit;
 		contain: paint;
 		-webkit-mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
 		mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
