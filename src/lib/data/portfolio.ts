@@ -628,7 +628,7 @@ export const experienceSections: ExperienceSection[] = [
 				title: 'Real Estate Long Format Video',
 				description:
 					'Long-form property tour videos and real estate content for the Gibran Pro Home YouTube channel, edited for clear walkthrough flow, client storytelling, and audience retention across listing presentations and market updates.',
-				layout: 'showcase',
+				layout: 'personal-3d',
 				assets: youtubeEditorAssets
 			}
 		]

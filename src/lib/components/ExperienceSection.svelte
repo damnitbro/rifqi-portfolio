@@ -986,12 +986,6 @@
 		grid-column: 7 / -1;
 	}
 
-	@media (max-width: 680px) {
-		.youtube-figure {
-			grid-column: span 3 !important;
-		}
-	}
-
 	.yt-thumb-wrap {
 		position: relative;
 		display: block;
@@ -1224,11 +1218,6 @@
 			width: 60%;
 			margin-inline: auto;
 			aspect-ratio: 2268 / 3402;
-		}
-
-		.youtube-figure[data-title='Gibran Pro Home — Virtual Tour'],
-		.youtube-figure[data-title='Gibran Pro Home — Listing Highlight'] {
-			grid-column: span 3;
 		}
 
 		.logo-system-container {
