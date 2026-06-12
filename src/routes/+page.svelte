@@ -158,6 +158,11 @@
 					void dot.offsetWidth;
 					dot.classList.add('nav-dot-click');
 					dot.classList.add('nav-dot-active');
+					const removeOnScroll = () => {
+						dot.classList.remove('nav-dot-active');
+						window.removeEventListener('scroll', removeOnScroll);
+					};
+					window.addEventListener('scroll', removeOnScroll, { once: true });
 				}
 			}
 		};
