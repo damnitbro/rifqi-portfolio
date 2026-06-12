@@ -38,6 +38,14 @@
 
 	const segmentVideo = (node: HTMLVideoElement, asset: ProjectAsset) => {
 		let inView = false;
+		let loaded = false;
+
+		const loadSrc = () => {
+			if (loaded) return;
+			loaded = true;
+			node.src = asset.src;
+			node.load();
+		};
 
 		const playIfVisible = () => {
 			if (!inView || document.hidden) return;
@@ -83,7 +91,7 @@
 		node.autoplay = false;
 		node.loop = !asset.endAt;
 		node.playsInline = true;
-		node.preload = 'metadata';
+		node.preload = 'none';
 		node.addEventListener('loadedmetadata', applyStart);
 		node.addEventListener('timeupdate', handleTimeUpdate);
 		node.addEventListener('ended', handleEnded);
@@ -93,6 +101,7 @@
 			([entry]) => {
 				inView = entry.isIntersecting;
 				if (inView) {
+					loadSrc();
 					playIfVisible();
 				} else {
 					node.pause();
@@ -190,7 +199,6 @@
 								class="poster-column"
 								class:reverse={columnIndex % 2 === 1}
 								style:--speed={`${28 + columnIndex * 7}s`}
-								style:--offset={`${(columnIndex % 2) * -3.2}rem`}
 							>
 								<div class="poster-track">
 									{#each [...column, ...column] as asset, itemIndex}
@@ -266,10 +274,9 @@
 											<video
 												bind:this={videoEls[key]}
 												use:segmentVideo={asset}
-												src={asset.src}
 												muted={mutedMap[key] ?? true}
 												playsinline
-												preload="metadata"
+												preload="none"
 											></video>
 											<div class="vid-overlay-controls">
 												<button aria-label="Restart video" onclick={() => restartVideo(key)}>

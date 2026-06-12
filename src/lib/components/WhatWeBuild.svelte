@@ -1,7 +1,7 @@
 <section class="loop-marquee" aria-hidden="true">
 	<div class="marquee-track">
-		<span>WHAT I LOVE TO CREATE • 3D ART • EDITING VIDEOS • MOTION • </span>
-		<span>WHAT I LOVE TO CREATE • 3D ART • EDITING VIDEOS • MOTION • </span>
+		<span>WHAT I LOVE TO CREATE • 3D ART • VIDEO EDITING • MOTION • </span>
+		<span>WHAT I LOVE TO CREATE • 3D ART • VIDEO EDITING • MOTION • </span>
 	</div>
 </section>
 

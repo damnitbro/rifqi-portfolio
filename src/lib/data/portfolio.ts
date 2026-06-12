@@ -82,7 +82,7 @@ export const appBadges = {
 export const identity = {
 	name: 'Muhammad Rifqi Adiantama',
 	location: 'Jakarta, Indonesia',
-	tagline: 'Interactive CV for 3D art, editing, motion, and visual systems.',
+	tagline: 'Jakarta-based 3D artist and video editor. Available for freelance.',
 	availability: 'Open for freelance and studio collaborations',
 	email: 'rifqiadiantama@gmail.com',
 	instagram: 'marvs_qx',
@@ -116,7 +116,7 @@ export const cvTimeline: TimelineItem[] = [
 	},
 	{
 		period: '2026 (3 Months)',
-		title: 'Kementrian Kesehatan RI',
+		title: 'Kementerian Kesehatan RI',
 		detail: 'Social Media Designer',
 		type: 'experience'
 	}
@@ -365,7 +365,7 @@ const threeDPersonalAssets: ProjectAsset[] = [
 
 const videoEditorAssets: ProjectAsset[] = [
 	{
-		title: '',
+		title: 'Real Estate Edit 1',
 		src: '/media/work/video-editor/real-estate-5.mp4',
 		type: 'video',
 		meta: '',
@@ -375,7 +375,7 @@ const videoEditorAssets: ProjectAsset[] = [
 		ratio: 'portrait'
 	},
 	{
-		title: '',
+		title: 'Real Estate Edit 2',
 		src: '/media/work/video-editor/real-estate-1.mp4',
 		type: 'video',
 		meta: '',
@@ -385,7 +385,7 @@ const videoEditorAssets: ProjectAsset[] = [
 		ratio: 'portrait'
 	},
 	{
-		title: '',
+		title: 'Real Estate Edit 3',
 		src: '/media/work/video-editor/real-estate-2.mp4',
 		type: 'video',
 		meta: '',
@@ -395,7 +395,7 @@ const videoEditorAssets: ProjectAsset[] = [
 		ratio: 'portrait'
 	},
 	{
-		title: '',
+		title: 'Real Estate Edit 4',
 		src: '/media/work/video-editor/real-estate-3.mp4',
 		type: 'video',
 		meta: '',
@@ -405,7 +405,7 @@ const videoEditorAssets: ProjectAsset[] = [
 		ratio: 'portrait'
 	},
 	{
-	title: '',
+	title: 'Real Estate Edit 5',
 		src: '/media/work/video-editor/real-estate-4.mp4',
 		type: 'video',
 		meta: '',
@@ -415,7 +415,7 @@ const videoEditorAssets: ProjectAsset[] = [
 		ratio: 'portrait'
 	},
 	{
-		title: '',
+		title: 'Real Estate Edit 6',
 		src: '/media/work/video-editor/real-estate-6.mp4',
 		type: 'video',
 		meta: '',
@@ -425,7 +425,7 @@ const videoEditorAssets: ProjectAsset[] = [
 		ratio: 'portrait'
 	},
 	{
-		title: '',
+		title: 'Real Estate Edit 7',
 		src: '/media/work/video-editor/real-estate-7.mp4',
 		type: 'video',
 		meta: '',
@@ -435,7 +435,7 @@ const videoEditorAssets: ProjectAsset[] = [
 		ratio: 'portrait'
 	},
 	{
-		title: '',
+		title: 'Real Estate Edit 8',
 		src: '/media/work/video-editor/real-estate-8.mp4',
 		type: 'video',
 		meta: '',
@@ -443,6 +443,27 @@ const videoEditorAssets: ProjectAsset[] = [
 		startAt: 0,
 		endAt: 90.068,
 		ratio: 'portrait'
+	}
+];
+
+const youtubeEditorAssets: ProjectAsset[] = [
+	{
+		title: 'Property Tour Edit',
+		src: '/media/work/video-editor/real-estate-5.mp4',
+		type: 'video',
+		meta: 'long-form YouTube cut',
+		startAt: 0,
+		endAt: 12,
+		ratio: 'wide'
+	},
+	{
+		title: 'Listing Walkthrough',
+		src: '/media/work/video-editor/real-estate-1.mp4',
+		type: 'video',
+		meta: 'client presentation',
+		startAt: 0,
+		endAt: 12,
+		ratio: 'wide'
 	}
 ];
 
@@ -615,7 +636,7 @@ export const experienceSections: ExperienceSection[] = [
 		kicker: 'Job experience / Editing',
 		title: 'Video Editor',
 		description:
-			'Short-form editing for real-estate and lifestyle content, with attention to pacing, clean transitions, social framing, and repeatable campaign output.',
+			'Short-form reels and long-form YouTube content for real estate, with attention to pacing, clean transitions, social framing, and repeatable campaign output.',
 		apps: [appBadges.premiere, appBadges.afterEffects, appBadges.finalCut, appBadges.davinci],
 		accent: '#c2a96a',
 		metrics: [
@@ -631,6 +652,14 @@ export const experienceSections: ExperienceSection[] = [
 					'Property-focused edits built for fast viewing: clear room flow, rhythmic cuts, and concise visual storytelling for listings and social media.',
 				layout: 'showcase',
 				assets: videoEditorAssets
+			},
+			{
+				kind: 'priority',
+				title: 'YouTube Long-Format Editing',
+				description:
+					'Long-form property tour videos and real estate content for the Gibran Pro Home YouTube channel, edited for clear walkthrough flow, client storytelling, and audience retention across listing presentations and market updates.',
+				layout: 'showcase',
+				assets: youtubeEditorAssets
 			}
 		]
 	},

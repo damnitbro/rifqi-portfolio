@@ -194,12 +194,6 @@
 		name="description"
 		content="Interactive portfolio CV for 3D art, video editing, motion design, social posts, and identity work."
 	/>
-	<link rel="preconnect" href="https://fonts.googleapis.com" />
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
-	<link
-		href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap"
-		rel="stylesheet"
-	/>
 </svelte:head>
 
 {#if isLoading}
@@ -212,7 +206,7 @@
 {/if}
 
 <div class="page-content" class:page-visible={!isLoading}>
-<nav class="game-nav" aria-label="Main navigation" style="z-index: 10;" >
+<nav class="game-nav" aria-label="Main navigation">
 	<div class="nav-status">
 		<span class="status-dot"></span>
 		<span></span>

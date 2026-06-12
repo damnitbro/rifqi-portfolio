@@ -38,7 +38,7 @@
 			<span class="eyebrow">{location}</span>
 			<h1>{name}</h1>
 			<p>{tagline}</p>
-			<a class="cta" href="#work">
+			<a class="cta" href="#experience-3d">
 				<span>{availability}</span>
 				<span class="cta-icon"><ArrowDownRight size={20} /></span>
 			</a>
@@ -48,7 +48,7 @@
 			<div class="intro-card">
 				<h2>Introduction</h2>
 				<p>
-					Hello, I'm <strong>{name}</strong>. A detail-oriented visual designer focused on
+					Hello, I'm <strong>{name}</strong>. A 3D artist and video editor focused on
 					creating impactful visuals that connect ideas with audiences.
 				</p>
 

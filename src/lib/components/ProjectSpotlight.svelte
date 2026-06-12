@@ -19,6 +19,10 @@
 </script>
 
 <section class="spotlight" id="work" data-video-count={videos.length}>
+	<div class="section-heading">
+		<span>Featured work</span>
+		<h2>Project Spotlight</h2>
+	</div>
 
 	<div class="spotlight-grid">
 		<ModelViewer {models} accent="#8b0000" />
@@ -39,6 +43,27 @@
 	.spotlight {
 		display: grid;
 		gap: clamp(1.5rem, 4vw, 3rem);
+	}
+
+	.section-heading {
+		display: grid;
+		gap: 0.2rem;
+	}
+
+	.section-heading span {
+		color: rgba(255, 255, 255, 0.58);
+		font-size: 0.86rem;
+		font-weight: 950;
+		text-transform: uppercase;
+	}
+
+	.section-heading h2 {
+		margin: 0;
+		font-family: var(--display-font);
+		font-size: 4.8rem;
+		line-height: 0.88;
+		letter-spacing: 0.024em;
+		text-wrap: balance;
 	}
 
 	.spotlight-grid {
