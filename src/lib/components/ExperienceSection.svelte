@@ -974,6 +974,7 @@
 	.youtube-figure {
 		position: relative;
 		overflow: hidden;
+		display: block;
 		grid-column: span 6;
 		aspect-ratio: 16 / 9;
 	}
