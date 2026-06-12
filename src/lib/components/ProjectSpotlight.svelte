@@ -12,7 +12,7 @@
 
 	const models = [
 		{ url: '/media/models/Lucy.glb', title: 'Lucy' },
-		{ url: '/media/models/Male.glb', title: 'Male' }
+		{ url: '/media/models/Male.glb', title: 'Marv' }
 	];
 </script>
 

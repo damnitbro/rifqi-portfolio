@@ -309,16 +309,22 @@
 	}
 
 	.letter {
-		display: inline-block;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
 		flex: 0 0 auto;
+		height: 0.72em;
 		animation: letter-pop 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
 		animation-delay: calc(var(--i) * 70ms);
 	}
 
 	.ornament-letter {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
 		flex: 0 0 auto;
 		width: 0.72em;
-		aspect-ratio: 1;
+		height: 0.72em;
 		animation: ornament-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
 		animation-delay: calc(5 * 70ms);
 		transform-origin: center;
@@ -634,7 +640,7 @@
 		}
 
 		.portfolio-word {
-			font-size: clamp(3.2rem, 21vw, 5.5rem);
+			font-size: clamp(3.8rem, 24vw, 6.5rem);
 			line-height: 0.76;
 		}
 
@@ -686,7 +692,7 @@
 
 	@media (max-width: 420px) {
 		.portfolio-word {
-			font-size: clamp(2.8rem, 22vw, 4.6rem);
+			font-size: clamp(3.2rem, 25vw, 5.6rem);
 		}
 
 		h1 {

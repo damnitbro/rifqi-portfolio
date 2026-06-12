@@ -979,7 +979,7 @@
 	}
 
 	.youtube-figure[data-title='Gibran Pro Home — Virtual Tour'] {
-		grid-column: 1 / span 6;
+		grid-column: 1 / span 5;
 	}
 
 	.youtube-figure[data-title='Gibran Pro Home — Listing Highlight'] {

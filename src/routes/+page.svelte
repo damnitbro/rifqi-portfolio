@@ -918,7 +918,6 @@
 			justify-content: center;
 			gap: 0.12rem;
 			width: 100%;
-			padding-left: 1.4rem;
 			overflow-x: auto;
 			scrollbar-width: none;
 		}
@@ -943,7 +942,6 @@
 	@media (max-width: 420px) {
 		.nav-links {
 			justify-content: center;
-			padding-left: 1.4rem;
 		}
 
 		.footer-intro h2 {
