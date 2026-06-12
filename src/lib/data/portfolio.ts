@@ -87,9 +87,9 @@ export const appBadges = {
 } satisfies Record<string, AppBadge>;
 
 export const identity = {
-	name: 'Muhammad Rifqi Adiantama',
+	name: 'Rifqi Adiantama',
 	location: 'Jakarta, Indonesia',
-	tagline: 'Jakarta-based 3D artist and video editor. Available for freelance.',
+	tagline: 'Visual Designer specializing in 3D, motion, and digital campaigns',
 	availability: 'Open for freelance and studio collaborations',
 	email: 'rifqiadiantama@gmail.com',
 	instagram: 'marvs_qx',
