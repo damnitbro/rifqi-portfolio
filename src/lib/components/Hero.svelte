@@ -325,7 +325,7 @@
 		flex: 0 0 auto;
 		width: 0.72em;
 		height: 0.72em;
-		margin-top: -0.04em;
+		margin-top: -0.08em;
 		animation: ornament-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
 		animation-delay: calc(5 * 70ms);
 		transform-origin: center;
@@ -472,6 +472,7 @@
 		display: grid;
 		gap: 0.8rem;
 		grid-column: 1 / -1;
+		animation: rise 700ms ease both;
 	}
 
 	.toc-card {

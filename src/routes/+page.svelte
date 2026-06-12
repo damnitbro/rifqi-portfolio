@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { ArrowDown, ArrowUp, Instagram, Mail, MessageCircle } from '@lucide/svelte';
+	import { ArrowDown, ArrowUp, Mail, MessageCircle } from '@lucide/svelte';
 	import ExperienceSection from '$lib/components/ExperienceSection.svelte';
 	import Hero from '$lib/components/Hero.svelte';
 	import ProjectSpotlight from '$lib/components/ProjectSpotlight.svelte';
@@ -276,7 +276,7 @@
 			<small>{identity.email}</small>
 		</a>
 		<a href={instagramUrl} target="_blank" rel="noreferrer">
-			<span><Instagram size={20} /></span>
+			<span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg></span>
 			<strong>Stay in the loop</strong>
 			<small>@{identity.instagram}</small>
 		</a>

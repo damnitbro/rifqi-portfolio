@@ -451,6 +451,7 @@
 		border: 1px solid rgba(255, 255, 255, 0.12);
 		border-radius: 28px;
 		min-width: 0;
+		overflow: hidden;
 	}
 
 	.project-group > * {
