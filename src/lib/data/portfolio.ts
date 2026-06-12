@@ -118,7 +118,7 @@ export const cvTimeline: TimelineItem[] = [
 	{
 		period: '2026 (3 Months)',
 		title: 'Ministry of Health',
-		detail: 'Intern Social Media Designer',
+		detail: 'Social Media Designer Intern',
 		type: 'experience'
 	}
 ];
@@ -376,7 +376,7 @@ const videoEditorAssets: ProjectAsset[] = [
 	},
 	{
 		title: '',
-		src: '/media/work/video-editor/real-estate-4.mp4',
+		src: 'F:/Video/GreenNuri.mp4',
 		type: 'video',
 		meta: '',
 		// Backend-only clip timing: change startAt/endAt to adjust this loop.
@@ -396,7 +396,7 @@ const videoEditorAssets: ProjectAsset[] = [
 	},
 	{
 		title: '',
-		src: '/media/work/video-editor/real-estate-6.mp4',
+		src: 'F:/Video/Petukangan.mp4',
 		type: 'video',
 		meta: '',
 		// Backend-only clip timing: change startAt/endAt to adjust this loop.
@@ -416,7 +416,7 @@ const videoEditorAssets: ProjectAsset[] = [
 	},
 	{
 		title: '',
-		src: '/media/work/video-editor/real-estate-8.mp4',
+		src: 'F:/Video/Menteng.mp4',
 		type: 'video',
 		meta: '',
 		// Backend-only clip timing: change startAt/endAt to adjust this loop.
@@ -617,7 +617,7 @@ export const experienceSections: ExperienceSection[] = [
 		groups: [
 			{
 				kind: 'priority',
-				title: 'Real Estate Editing Reel',
+				title: 'Real Estate Short Format Video',
 				description:
 					'Property-focused edits built for fast viewing: clear room flow, rhythmic cuts, and concise visual storytelling for listings and social media.',
 				layout: 'showcase',
@@ -625,7 +625,7 @@ export const experienceSections: ExperienceSection[] = [
 			},
 			{
 				kind: 'priority',
-				title: 'YouTube Long-Format Editing',
+				title: 'Real Estate Long Format Video',
 				description:
 					'Long-form property tour videos and real estate content for the Gibran Pro Home YouTube channel, edited for clear walkthrough flow, client storytelling, and audience retention across listing presentations and market updates.',
 				layout: 'showcase',

@@ -482,8 +482,8 @@
 	}
 
 	.project-group.logo-system h3 {
-		font-size: 1.8rem;
-		line-height: 0.92;
+		font-size: 2.4rem;
+		line-height: 1.08;
 	}
 
 	.project-group.logo-system .group-copy p {
@@ -704,15 +704,15 @@
 	}
 
 	.project-group[data-layout='personal-3d'] figure[data-title='Sofa with Lighting Study'] {
-		order: 98;
-		grid-column: 1 / -1;
+		order: 91;
+		grid-column: 1 / span 6;
 		width: 100%;
 		aspect-ratio: 16 / 9;
 	}
 
 	.project-group[data-layout='personal-3d'] figure[data-title='Horror Poster for No Smoke Campaign'] {
-		order: 99;
-		grid-column: 1 / -1;
+		order: 92;
+		grid-column: 7 / -1;
 		width: min(100%, 22rem);
 		aspect-ratio: 2268 / 3402;
 		justify-self: center;
@@ -976,6 +976,14 @@
 		overflow: hidden;
 		grid-column: span 6;
 		aspect-ratio: 16 / 9;
+	}
+
+	.youtube-figure[data-title='Gibran Pro Home — Virtual Tour'] {
+		grid-column: 1 / span 6;
+	}
+
+	.youtube-figure[data-title='Gibran Pro Home — Listing Highlight'] {
+		grid-column: 7 / -1;
 	}
 
 	@media (max-width: 680px) {

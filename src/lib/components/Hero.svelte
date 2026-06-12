@@ -297,12 +297,12 @@
 		align-items: center;
 		justify-content: center;
 		width: 100%;
-		padding-inline: clamp(1rem, 3vw, 2rem);
-		gap: 0.035em;
+		padding-inline: clamp(0.5rem, 2vw, 1.5rem);
+		gap: 0.03em;
 		color: #ffffff;
 		font-family: var(--display-font);
-		font-size: clamp(4.1rem, 14vw, 16rem);
-		line-height: 0.72;
+		font-size: clamp(4.5rem, 21vw, 22rem);
+		line-height: 0.68;
 		text-transform: uppercase;
 		letter-spacing: 0;
 		white-space: nowrap;
@@ -311,14 +311,17 @@
 	.letter {
 		display: inline-block;
 		flex: 0 0 auto;
-		animation: letter-in 0.55s ease both;
-		animation-delay: calc(var(--i) * 55ms);
+		animation: letter-pop 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+		animation-delay: calc(var(--i) * 70ms);
 	}
 
 	.ornament-letter {
 		flex: 0 0 auto;
 		width: 0.85em;
 		aspect-ratio: 1;
+		animation: ornament-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+		animation-delay: calc(5 * 70ms);
+		transform-origin: center;
 	}
 
 	.radial-o {
@@ -326,8 +329,8 @@
 		width: 100%;
 		height: 100%;
 		object-fit: contain;
-		animation: spin 8s linear infinite;
-		filter: drop-shadow(0 0 0.08em rgba(255, 16, 16, 0.72));
+		animation: spin 10s linear infinite;
+		filter: drop-shadow(0 0 0.15em rgba(255, 16, 16, 0.8));
 	}
 
 	.intro-card {
@@ -548,9 +551,14 @@
 		border-radius: 6px;
 	}
 
-	@keyframes letter-in {
-		from { opacity: 0; }
-		to { opacity: 1; }
+	@keyframes letter-pop {
+		from { opacity: 0; filter: blur(12px); }
+		to { opacity: 1; filter: blur(0); }
+	}
+
+	@keyframes ornament-in {
+		from { opacity: 0; transform: scale(0) rotate(-90deg); }
+		to { opacity: 1; transform: scale(1) rotate(0deg); }
 	}
 
 	@keyframes spin {
