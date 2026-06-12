@@ -123,13 +123,13 @@
 		camera.position.set(1.8, 1.1, 3.8);
 		modelContainer.position.y = 0.18;
 		scene.add(modelContainer);
-		scene.add(new THREE.HemisphereLight('#ffffff', '#1a0f0a', 1.35));
+		scene.add(new THREE.HemisphereLight('#ffffff', '#1a0f0a', 2.0));
 
-		const key = new THREE.DirectionalLight(accent, 2.3);
+		const key = new THREE.DirectionalLight(accent, 3.5);
 		key.position.set(4, 4, 3);
 		scene.add(key);
 
-		const fill = new THREE.DirectionalLight('#c2a96a', 1.2);
+		const fill = new THREE.DirectionalLight('#c2a96a', 2.0);
 		fill.position.set(-3, 2, -2);
 		scene.add(fill);
 
