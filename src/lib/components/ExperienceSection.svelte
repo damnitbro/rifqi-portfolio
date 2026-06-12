@@ -486,6 +486,10 @@
 		line-height: 1.08;
 	}
 
+	.project-group.logo-system .group-copy span {
+		font-size: 0.78rem;
+	}
+
 	.project-group.logo-system .group-copy p {
 		font-size: 0.85rem;
 		line-height: 1.3;
