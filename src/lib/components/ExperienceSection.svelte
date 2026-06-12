@@ -1,5 +1,8 @@
 <script lang="ts">
-	import type { ExperienceSection as ExperienceSectionData, ProjectAsset } from '$lib/data/portfolio';
+	import type {
+		ExperienceSection as ExperienceSectionData,
+		ProjectAsset
+	} from '$lib/data/portfolio';
 	import { RotateCcw, Volume2, VolumeOff } from '@lucide/svelte';
 	import { activeVideoKey } from '$lib/stores/videoMute';
 
@@ -122,11 +125,11 @@
 		};
 	};
 
-	let videoEls: Record<string, HTMLVideoElement> = {};
+	let videoEls: Record<string, HTMLVideoElement> = $state({});
 	let mutedMap: Record<string, boolean> = $state({});
 	let youtubeActive: Record<string, boolean> = $state({});
 
-	const vidKey = (g: number, a: number) => `${g}-${a}`;
+	const vidKey = (g: number, a: number) => `${section.id}-${g}-${a}`;
 
 	const restartVideo = (key: string) => {
 		const el = videoEls[key];
@@ -162,13 +165,13 @@
 		<h2>{section.title}</h2>
 		<p>{section.description}</p>
 		<div class="apps" aria-label={`${section.title} apps used`}>
-			{#each section.apps as app}
+			{#each section.apps as app (app.name)}
 				<span><img src={app.icon} alt="" loading="lazy" />{app.name}</span>
 			{/each}
 		</div>
 		{#if section.metrics}
 			<div class="metrics-grid" aria-label={`${section.title} performance metrics`}>
-				{#each section.metrics as metric}
+				{#each section.metrics as metric (metric.label)}
 					<div class="metric-card">
 						<strong>{metric.value}</strong>
 						<span>{metric.label}</span>
@@ -179,7 +182,7 @@
 	</div>
 
 	<div class="project-groups" class:poster-wall={section.groups[0]?.layout === 'poster-wall'}>
-		{#each section.groups as group, groupIdx}
+		{#each section.groups as group, groupIdx (`${section.id}-${group.title}`)}
 			<article
 				class="project-group"
 				class:personal={group.kind === 'personal'}
@@ -195,14 +198,14 @@
 
 				{#if group.layout === 'poster-wall'}
 					<div class="poster-columns" aria-label={`${group.title} vertical carousel`}>
-						{#each posterColumns(group.assets) as column, columnIndex}
+						{#each posterColumns(group.assets) as column, columnIndex (columnIndex)}
 							<div
 								class="poster-column"
 								class:reverse={columnIndex % 2 === 1}
 								style:--speed={`${28 + columnIndex * 7}s`}
 							>
 								<div class="poster-track">
-									{#each [...column, ...column] as asset, itemIndex}
+									{#each [...column, ...column] as asset, itemIndex (`${asset.src}-${itemIndex}`)}
 										<figure
 											class:poster={asset.poster}
 											data-ratio={asset.ratio ?? 'auto'}
@@ -215,123 +218,144 @@
 							</div>
 						{/each}
 					</div>
-				{:else}
-					{#if group.layout === 'logo-system'}
-						{@const mockups = group.assets.slice(1)}
-						<div class="logo-system-container">
-							<div class="logo-left">
-								<figure class="main-logo-figure">
-									<img src={group.assets[0].src} alt={group.assets[0].title} loading="lazy" />
-								</figure>
+				{:else if group.layout === 'logo-system'}
+					{@const mockups = group.assets.slice(1)}
+					<div class="logo-system-container">
+						<div class="logo-left">
+							<figure class="main-logo-figure">
+								<img src={group.assets[0].src} alt={group.assets[0].title} loading="lazy" />
+							</figure>
+						</div>
+
+						<div class="logo-right-inner">
+							<div class="mockup-grid">
+								{#each mockups as asset (asset.src)}
+									<figure class="mockup-figure">
+										<img src={asset.src} alt={asset.title} loading="lazy" />
+									</figure>
+								{/each}
 							</div>
 
-							<div class="logo-right-inner">
-								<div class="mockup-grid">
-									{#each mockups as asset}
-										<figure class="mockup-figure">
-											<img src={asset.src} alt={asset.title} loading="lazy" />
-										</figure>
-									{/each}
+							<div class="color-row">
+								<div style:--swatch="#080808">
+									<span></span><strong>Black Obsidian</strong><small>#080808</small>
 								</div>
-
-								<div class="color-row">
-									<div style:--swatch={'#080808'}><span></span><strong>Black Obsidian</strong><small>#080808</small></div>
-									<div style:--swatch={'#f5f5f5'}><span></span><strong>Ivory White</strong><small>#f5f5f5</small></div>
-									<div style:--swatch={'#8b0000'}><span></span><strong>Crimson Red</strong><small>#8b0000</small></div>
-									<div style:--swatch={'#6e6e6e'}><span></span><strong>Ash Gray</strong><small>#6e6e6e</small></div>
-									<div style:--swatch={'#c2a96a'}><span></span><strong>Muted Gold</strong><small>#c2a96a</small></div>
+								<div style:--swatch="#f5f5f5">
+									<span></span><strong>Ivory White</strong><small>#f5f5f5</small>
 								</div>
-							</div>
-
-							<div class="font-left">
-								<span>Heading font</span>
-								<strong class="brand-serif">Fallen Halo</strong>
-								<small>Cinzel Bold reference</small>
-								<strong class="brand-serif alphabet">ABCDEFGHIJKLMNOPQRSTUVWXYZ</strong>
-								<strong class="brand-serif alphabet">1234567890 !@#$%^&*()</strong>
-							</div>
-
-							<div class="font-right">
-								<span>Body font</span>
-								<strong>Create. Descend. Become.</strong>
-								<small>Inter Regular web fallback</small>
-								<strong class="alphabet">ABCDEFGHIJKLMNOPQRSTUVWXYZ</strong>
-								<strong class="alphabet">1234567890 !@#$%^&*()</strong>
+								<div style:--swatch="#8b0000">
+									<span></span><strong>Crimson Red</strong><small>#8b0000</small>
+								</div>
+								<div style:--swatch="#6e6e6e">
+									<span></span><strong>Ash Gray</strong><small>#6e6e6e</small>
+								</div>
+								<div style:--swatch="#c2a96a">
+									<span></span><strong>Muted Gold</strong><small>#c2a96a</small>
+								</div>
 							</div>
 						</div>
-					{:else}
-						<div class="media-grid" data-layout={group.layout ?? 'showcase'}>
-							{#each group.assets as asset, assetIdx}
-								{@const key = vidKey(groupIdx, assetIdx)}
-								<figure
-									class:featured={assetIdx === 0}
-									class:poster={asset.poster}
-									data-title={asset.title}
-									data-ratio={asset.ratio ?? 'auto'}
-									style:--asset-aspect={asset.aspect}
-									class:youtube-figure={!!asset.youtubeId}
-								>
-									{#if asset.youtubeId}
-										{@const ytId = asset.youtubeId}
-										{@const ytKey = `yt-${groupIdx}-${assetIdx}`}
-										{#if youtubeActive[ytKey]}
-											<iframe
-												class="yt-embed"
-												src="https://www.youtube.com/embed/{ytId}?autoplay=1&rel=0"
-												title={asset.title}
-												frameborder="0"
-												allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-												allowfullscreen
-												loading="lazy"
-											></iframe>
-										{:else}
-											<button class="yt-thumb-wrap" onclick={() => { youtubeActive[ytKey] = true; }}>
-												<img
-													src="https://img.youtube.com/vi/{ytId}/hqdefault.jpg"
-													alt={asset.title}
-													loading="lazy"
-													class="yt-thumb"
-												/>
-												<div class="yt-play-btn">
-													<svg width="48" height="48" viewBox="0 0 24 24" fill="#ff1010"><polygon points="8,5 19,12 8,19" fill="#fff"/></svg>
-												</div>
-											</button>
-										{/if}
-									{:else if isVideo(asset)}
-										<div class="vid-wrap">
-											<video
-												bind:this={videoEls[key]}
-												use:segmentVideo={asset}
-												muted={mutedMap[key] ?? true}
-												playsinline
-												preload="none"
-											></video>
-											<div class="vid-overlay-controls">
-												<button aria-label="Restart video" onclick={() => restartVideo(key)}>
-													<RotateCcw size={13} />
-												</button>
-												<button aria-label={mutedMap[key] ? 'Unmute video' : 'Mute video'} onclick={() => toggleMute(key)}>
-													{#if mutedMap[key]}
-														<VolumeOff size={13} />
-													{:else}
-														<Volume2 size={13} />
-													{/if}
-												</button>
-											</div>
-										</div>
+
+						<div class="font-left">
+							<span>Heading font</span>
+							<strong class="brand-serif">Fallen Halo</strong>
+							<small>Cinzel Bold reference</small>
+							<strong class="brand-serif alphabet">ABCDEFGHIJKLMNOPQRSTUVWXYZ</strong>
+							<strong class="brand-serif alphabet">1234567890 !@#$%^&*()</strong>
+						</div>
+
+						<div class="font-right">
+							<span>Body font</span>
+							<strong>Create. Descend. Become.</strong>
+							<small>Inter Regular web fallback</small>
+							<strong class="alphabet">ABCDEFGHIJKLMNOPQRSTUVWXYZ</strong>
+							<strong class="alphabet">1234567890 !@#$%^&*()</strong>
+						</div>
+					</div>
+				{:else}
+					<div class="media-grid" data-layout={group.layout ?? 'showcase'}>
+						{#each group.assets as asset, assetIdx (`${asset.youtubeId ?? asset.src}-${assetIdx}`)}
+							{@const key = vidKey(groupIdx, assetIdx)}
+							<figure
+								class:featured={assetIdx === 0}
+								class:poster={asset.poster}
+								class:video-figure={isVideo(asset)}
+								data-title={asset.title}
+								data-ratio={asset.ratio ?? 'auto'}
+								style:--asset-aspect={asset.aspect}
+								class:youtube-figure={!!asset.youtubeId}
+							>
+								{#if asset.youtubeId}
+									{@const ytId = asset.youtubeId}
+									{@const ytKey = `yt-${groupIdx}-${assetIdx}`}
+									{#if youtubeActive[ytKey]}
+										<iframe
+											class="yt-embed"
+											src="https://www.youtube.com/embed/{ytId}?autoplay=1&rel=0"
+											title={asset.title}
+											frameborder="0"
+											allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+											allowfullscreen
+											loading="lazy"
+										></iframe>
 									{:else}
-										<img src={asset.src} alt={asset.title} loading="lazy" />
+										<button
+											class="yt-thumb-wrap"
+											onclick={() => {
+												youtubeActive[ytKey] = true;
+											}}
+										>
+											<img
+												src="https://img.youtube.com/vi/{ytId}/hqdefault.jpg"
+												alt={asset.title}
+												loading="lazy"
+												class="yt-thumb"
+											/>
+											<div class="yt-play-btn">
+												<svg width="48" height="48" viewBox="0 0 24 24" fill="#ff1010"
+													><polygon points="8,5 19,12 8,19" fill="#fff" /></svg
+												>
+											</div>
+										</button>
 									{/if}
+								{:else if isVideo(asset)}
+									<div class="vid-wrap">
+										<video
+											bind:this={videoEls[key]}
+											use:segmentVideo={asset}
+											muted={mutedMap[key] ?? true}
+											playsinline
+											preload="none"
+										></video>
+										<div class="vid-overlay-controls">
+											<button aria-label="Restart video" onclick={() => restartVideo(key)}>
+												<RotateCcw size={13} />
+											</button>
+											<button
+												aria-label={mutedMap[key] ? 'Unmute video' : 'Mute video'}
+												onclick={() => toggleMute(key)}
+											>
+												{#if mutedMap[key]}
+													<VolumeOff size={13} />
+												{:else}
+													<Volume2 size={13} />
+												{/if}
+											</button>
+										</div>
+									</div>
+								{:else}
+									<img src={asset.src} alt={asset.title} loading="lazy" />
+								{/if}
+								{#if asset.title || (group.kind !== 'personal' && asset.meta)}
 									<figcaption>
 										<strong>{asset.title}</strong>
-										{#if group.kind !== 'personal'}
+										{#if group.kind !== 'personal' && asset.meta}
 											<span>{asset.meta}</span>
 										{/if}
 									</figcaption>
-								</figure>
-							{/each}
-						</div>
-					{/if}
+								{/if}
+							</figure>
+						{/each}
+					</div>
 				{/if}
 			</article>
 		{/each}
@@ -343,7 +367,7 @@
 		display: grid;
 		gap: clamp(1.5rem, 4vw, 3rem);
 		min-width: 0;
-		overflow: hidden;
+		overflow: visible;
 		scroll-margin-top: 5.5rem;
 	}
 
@@ -437,6 +461,8 @@
 		display: grid;
 		gap: clamp(1rem, 3vw, 1.8rem);
 		min-width: 0;
+		margin: -0.25rem;
+		padding: 0.25rem;
 	}
 
 	.project-group {
@@ -445,13 +471,20 @@
 		gap: clamp(1rem, 3vw, 1.4rem);
 		padding: clamp(0.9rem, 2vw, 1.3rem);
 		background:
-			repeating-radial-gradient(circle at 88% 16%, color-mix(in srgb, var(--accent) 30%, transparent) 0 1px, transparent 1px 8px),
+			repeating-radial-gradient(
+				circle at 88% 16%,
+				color-mix(in srgb, var(--accent) 30%, transparent) 0 1px,
+				transparent 1px 8px
+			),
 			linear-gradient(140deg, color-mix(in srgb, var(--accent) 14%, transparent), transparent 46%),
 			rgba(12, 10, 11, 0.78);
-		border: 1px solid rgba(255, 255, 255, 0.12);
-		border-radius: 8px;
+		border: 1px solid color-mix(in srgb, var(--accent) 48%, rgba(255, 255, 255, 0.14));
+		border-radius: 14px;
 		min-width: 0;
-		overflow: hidden;
+		overflow: visible;
+		box-shadow:
+			inset 0 0 0 1px rgba(255, 255, 255, 0.025),
+			0 18px 60px rgba(0, 0, 0, 0.22);
 	}
 
 	.project-group > * {
@@ -460,9 +493,12 @@
 
 	.project-group.personal {
 		background:
-			repeating-radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.5) 0 1px, transparent 1px 40px),
-			linear-gradient(140deg, rgba(194, 169, 106, 0.12), transparent 44%),
-			rgba(8, 8, 8, 0.86);
+			repeating-radial-gradient(
+				circle at 50% 30%,
+				rgba(255, 255, 255, 0.5) 0 1px,
+				transparent 1px 40px
+			),
+			linear-gradient(140deg, rgba(194, 169, 106, 0.12), transparent 44%), rgba(8, 8, 8, 0.86);
 	}
 
 	.project-group.logo-system {
@@ -472,27 +508,16 @@
 	.project-group[data-layout='personal-3d'],
 	.project-group.logo-system {
 		background:
-			repeating-radial-gradient(circle at 88% 16%, rgba(255, 255, 255, 0.2) 0 1px, transparent 1px 8px),
-			linear-gradient(140deg, rgba(255, 255, 255, 0.2), transparent 46%),
-			rgba(8, 8, 8, 0.86);
+			repeating-radial-gradient(
+				circle at 88% 16%,
+				rgba(255, 255, 255, 0.2) 0 1px,
+				transparent 1px 8px
+			),
+			linear-gradient(140deg, rgba(255, 255, 255, 0.2), transparent 46%), rgba(8, 8, 8, 0.86);
 	}
 
 	.project-group.logo-system .group-copy {
 		gap: 0.2rem;
-	}
-
-	.project-group.logo-system h3 {
-		font-size: 2.4rem;
-		line-height: 1.08;
-	}
-
-	.project-group.logo-system .group-copy span {
-		font-size: 0.78rem;
-	}
-
-	.project-group.logo-system .group-copy p {
-		font-size: 0.85rem;
-		line-height: 1.3;
 	}
 
 	.project-group.poster-wall-group {
@@ -510,6 +535,7 @@
 		font-size: 0.78rem;
 		font-weight: 950;
 		text-transform: uppercase;
+		letter-spacing: 0.04em;
 	}
 
 	h3 {
@@ -525,7 +551,8 @@
 	.group-copy p {
 		margin: 0;
 		color: rgba(245, 245, 245, 0.7);
-		line-height: 1.55;
+		font-size: 0.95rem;
+		line-height: 1.5;
 	}
 
 	.media-grid {
@@ -536,8 +563,7 @@
 		min-width: 0;
 		width: 100%;
 		max-width: 100%;
-		overflow: hidden;
-		border-radius: inherit;
+		overflow: visible;
 	}
 
 	.poster-columns {
@@ -547,8 +573,9 @@
 		height: min(900px, 90vh);
 		min-height: 680px;
 		overflow: hidden;
-		border-radius: inherit;
-		contain: paint;
+		border-radius: 10px;
+		-webkit-mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
+		mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
 	}
 
 	.poster-column {
@@ -576,8 +603,11 @@
 		overflow: hidden;
 		aspect-ratio: var(--asset-aspect, 4 / 3);
 		background: #080808;
-		border: 1px solid rgba(255, 255, 255, 0.12);
+		border: 1px solid rgba(255, 255, 255, 0.2);
 		border-radius: 8px;
+		box-shadow:
+			inset 0 0 0 1px rgba(255, 255, 255, 0.035),
+			0 12px 34px rgba(0, 0, 0, 0.2);
 	}
 
 	figure.featured {
@@ -653,7 +683,7 @@
 		aspect-ratio: 487 / 852;
 	}
 
-	.project-group[data-layout='soca-showcase'] figure[data-title='Sovia Pop out'] {
+	.project-group[data-layout='soca-showcase'] figure[data-title='Sovia Pop-Out'] {
 		order: 1;
 		grid-column: 9 / span 4;
 		grid-row: 1 / span 2;
@@ -700,7 +730,7 @@
 		aspect-ratio: 16 / 9;
 	}
 
-	.project-group[data-layout='personal-3d'] figure[data-title='End of term university project'] {
+	.project-group[data-layout='personal-3d'] figure[data-title='End-of-Term University Project'] {
 		order: 81;
 		grid-column: 1 / span 6;
 		width: 100%;
@@ -715,7 +745,8 @@
 		aspect-ratio: auto;
 	}
 
-	.project-group[data-layout='personal-3d'] figure[data-title='Horror Poster for No Smoke Campaign'] {
+	.project-group[data-layout='personal-3d']
+		figure[data-title='Horror Poster for No Smoke Campaign'] {
 		order: 92;
 		grid-column: 7 / -1;
 		width: min(100%, 22rem);
@@ -728,7 +759,9 @@
 		object-fit: cover;
 	}
 
-	.project-group[data-layout='personal-3d'] figure[data-title='Horror Poster for No Smoke Campaign'] img {
+	.project-group[data-layout='personal-3d']
+		figure[data-title='Horror Poster for No Smoke Campaign']
+		img {
 		object-fit: contain;
 		background: #080808;
 	}
@@ -819,7 +852,7 @@
 		width: 100%;
 		justify-self: start;
 		border: 1px solid rgba(255, 255, 255, 0.12);
-		border-radius: 0;
+		border-radius: 10px;
 		overflow: hidden;
 		aspect-ratio: 1.35 / 1;
 	}
@@ -841,6 +874,10 @@
 		display: grid;
 		min-width: 0;
 		gap: 0.35rem;
+		padding: 0.35rem;
+		background: rgba(255, 255, 255, 0.035);
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		border-radius: 9px;
 	}
 
 	.color-row span {
@@ -849,7 +886,7 @@
 		aspect-ratio: 1 / 1;
 		background: var(--swatch);
 		border: 1px solid rgba(255, 255, 255, 0.18);
-		border-radius: 0;
+		border-radius: 7px;
 	}
 
 	.color-row strong,
@@ -981,14 +1018,18 @@
 		overflow: hidden;
 		display: block;
 		grid-column: span 6;
+		width: 100%;
+		max-width: 100%;
 		aspect-ratio: 16 / 9;
 	}
 
-	.youtube-figure[data-title='Gibran Pro Home — Virtual Tour'] {
+	.project-group[data-layout='personal-3d']
+		.youtube-figure[data-title='Gibran Pro Home — Virtual Tour'] {
 		grid-column: 1 / span 5;
 	}
 
-	.youtube-figure[data-title='Gibran Pro Home — Listing Highlight'] {
+	.project-group[data-layout='personal-3d']
+		.youtube-figure[data-title='Gibran Pro Home — Listing Highlight'] {
 		grid-column: 7 / -1;
 	}
 
@@ -1030,7 +1071,9 @@
 		background: rgba(0, 0, 0, 0.55);
 		backdrop-filter: blur(2px);
 		filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.6));
-		transition: transform 0.2s, background 0.2s;
+		transition:
+			transform 0.2s,
+			background 0.2s;
 	}
 
 	.yt-thumb-wrap:hover .yt-play-btn svg {
@@ -1179,7 +1222,7 @@
 
 		.project-group[data-layout='soca-showcase'] figure[data-title='Soca Environment Render'],
 		.project-group[data-layout='soca-showcase'] figure[data-title='Witch Sovia v2'],
-		.project-group[data-layout='soca-showcase'] figure[data-title='Sovia Pop out'],
+		.project-group[data-layout='soca-showcase'] figure[data-title='Sovia Pop-Out'],
 		.project-group[data-layout='soca-showcase'] figure[data-title='Sovia X Banner'],
 		.project-group[data-layout='soca-showcase'] figure[data-title='Witch Sovia v1'] {
 			grid-row: auto;
@@ -1188,7 +1231,7 @@
 			aspect-ratio: var(--asset-aspect, 16 / 9);
 		}
 
-		.project-group[data-layout='soca-showcase'] figure[data-title='Sovia Pop out'] {
+		.project-group[data-layout='soca-showcase'] figure[data-title='Sovia Pop-Out'] {
 			width: min(100%, 20rem);
 			justify-self: center;
 			aspect-ratio: 9 / 16;
@@ -1206,7 +1249,7 @@
 			width: 100%;
 		}
 
-		.project-group[data-layout='personal-3d'] figure[data-title='End of term university project'] {
+		.project-group[data-layout='personal-3d'] figure[data-title='End-of-Term University Project'] {
 			grid-column: 1 / -1 !important;
 			grid-row: auto !important;
 			width: 100%;
@@ -1218,7 +1261,8 @@
 			width: 100%;
 		}
 
-		.project-group[data-layout='personal-3d'] figure[data-title='Horror Poster for No Smoke Campaign'] {
+		.project-group[data-layout='personal-3d']
+			figure[data-title='Horror Poster for No Smoke Campaign'] {
 			grid-column: 1 / -1 !important;
 			grid-row: auto !important;
 			width: 60%;
@@ -1334,7 +1378,8 @@
 			grid-column: 1 / -1 !important;
 		}
 
-		.project-group[data-layout='personal-3d'] figure[data-title='Horror Poster for No Smoke Campaign'] {
+		.project-group[data-layout='personal-3d']
+			figure[data-title='Horror Poster for No Smoke Campaign'] {
 			width: min(100%, 16rem);
 		}
 

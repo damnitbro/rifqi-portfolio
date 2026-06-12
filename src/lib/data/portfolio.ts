@@ -55,7 +55,13 @@ export type ProjectGroup = {
 	kind: 'priority' | 'personal';
 	title: string;
 	description: string;
-	layout?: 'showcase' | 'soca-showcase' | 'personal-3d' | 'poster-wall' | 'logo-system' | 'motion-layout';
+	layout?:
+		| 'showcase'
+		| 'soca-showcase'
+		| 'personal-3d'
+		| 'poster-wall'
+		| 'logo-system'
+		| 'motion-layout';
 	assets: ProjectAsset[];
 };
 
@@ -93,14 +99,14 @@ export const identity = {
 export const cvTimeline: TimelineItem[] = [
 	{
 		period: '2017 - 2020',
-		title: 'Media Informatika Vocational',
+		title: 'Media Informatika Vocational School',
 		detail: 'Software Engineering',
 		type: 'education'
 	},
 	{
 		period: '2020 - Present',
 		title: 'Budi Luhur University',
-		detail: 'Visual Communication and Design',
+		detail: 'Visual Communication Design',
 		type: 'education'
 	},
 	{
@@ -142,7 +148,10 @@ export const personalSkills: Skill[] = [
 	{ label: 'Creative Direction', value: 'Mood, visual hierarchy, and presentation choices' },
 	{ label: 'Technical Workflow', value: '3D, editing, motion, and design pipeline awareness' },
 	{ label: 'Detail Craft', value: 'Composition, timing, typography, and polish' },
-	{ label: 'English Proficiency', value: 'Comfortable communicating project ideas and visual direction' }
+	{
+		label: 'English Proficiency',
+		value: 'Comfortable communicating project ideas and visual direction'
+	}
 ];
 
 export const softSkills: Skill[] = [
@@ -248,7 +257,7 @@ const socaAssets: ProjectAsset[] = [
 		ratio: 'wide'
 	},
 	{
-		title: 'Sovia Pop out',
+		title: 'Sovia Pop-Out',
 		src: '/media/work/3d-personal/soca-sovia-box.mp4',
 		type: 'video',
 		meta: '3D character animation test',
@@ -284,7 +293,13 @@ const socaAssets: ProjectAsset[] = [
 ];
 
 const threeDPersonalAssets: ProjectAsset[] = [
-	{ title: 'Chess Piece', src: '/media/work/3d-personal/3d-catur.webp', type: 'image', meta: 'Design From Sait Alanyali', ratio: 'wide' },
+	{
+		title: 'Chess Piece',
+		src: '/media/work/3d-personal/3d-catur.webp',
+		type: 'image',
+		meta: 'Design by Sait Alanyali',
+		ratio: 'wide'
+	},
 	{
 		title: 'Isometric Room',
 		src: '/media/work/3d-personal/3d-chamber.webp',
@@ -292,8 +307,20 @@ const threeDPersonalAssets: ProjectAsset[] = [
 		meta: 'environment render',
 		ratio: 'square'
 	},
-	{ title: 'Isometric Classroom', src: '/media/work/3d-personal/3d-class.webp', type: 'image', meta: '', ratio: 'wide' },
-	{ title: 'CG Boost Lab Competition entry', src: '/media/work/3d-personal/Lab.jpeg', type: 'image', meta: '', ratio: 'wide' },
+	{
+		title: 'Isometric Classroom',
+		src: '/media/work/3d-personal/3d-class.webp',
+		type: 'image',
+		meta: '',
+		ratio: 'wide'
+	},
+	{
+		title: 'CG Boost Lab Competition entry',
+		src: '/media/work/3d-personal/Lab.jpeg',
+		type: 'image',
+		meta: '',
+		ratio: 'wide'
+	},
 	{
 		title: 'Personal Letter Animation',
 		src: '/media/work/3d-personal/3d-personal-letter.mp4',
@@ -335,7 +362,7 @@ const threeDPersonalAssets: ProjectAsset[] = [
 		ratio: 'wide'
 	},
 	{
-		title: 'End of term university project',
+		title: 'End-of-Term University Project',
 		src: '/media/work/3d-personal/3d-personal-uasfinal3-1.webp',
 		type: 'image',
 		meta: '',
@@ -489,23 +516,94 @@ const graphicMotionAssets: ProjectAsset[] = [
 		type: 'image',
 		meta: 'Kemenkes flyer'
 	},
-	{ title: 'IG Post 1', src: '/media/work/graphic-motion/1-1.webp', type: 'image', meta: 'social post' },
-	{ title: 'IG Post 2', src: '/media/work/graphic-motion/2-172500810.webp', type: 'image', meta: 'social post' },
-	{ title: 'IG Post 3', src: '/media/work/graphic-motion/3-1.webp', type: 'image', meta: 'social post' },
-	{ title: 'Minggu 1', src: '/media/work/graphic-motion/minggu-1-1-1.webp', type: 'image', meta: 'content series' },
-	{ title: 'Minggu 2', src: '/media/work/graphic-motion/minggu-2-1.webp', type: 'image', meta: 'content series' },
-	{ title: 'Minggu 2-1', src: '/media/work/graphic-motion/minggu-2-1-1.webp', type: 'image', meta: 'content series' },
-	{ title: 'Minggu 2-13', src: '/media/work/graphic-motion/minggu-2-13-1.webp', type: 'image', meta: 'content series' },
-	{ title: 'Minggu 2-2', src: '/media/work/graphic-motion/minggu-2-2-2.webp', type: 'image', meta: 'content series' },
-	{ title: 'Minggu 2-21', src: '/media/work/graphic-motion/minggu-2-21-1.webp', type: 'image', meta: 'content series' },
-	{ title: 'Minggu 3-1', src: '/media/work/graphic-motion/minggu-3-1-1.webp', type: 'image', meta: 'content series' },
-	{ title: 'Minggu 3-2', src: '/media/work/graphic-motion/minggu-3-2-3.webp', type: 'image', meta: 'content series' },
-	{ title: 'Minggu 3-22', src: '/media/work/graphic-motion/minggu-3-22-1.webp', type: 'image', meta: 'content series' },
-	{ title: 'Saturn Poster', src: '/media/work/graphic-motion/saturn-1.webp', type: 'image', meta: 'poster study', ratio: 'poster', poster: true }
+	{
+		title: 'IG Post 1',
+		src: '/media/work/graphic-motion/1-1.webp',
+		type: 'image',
+		meta: 'social post'
+	},
+	{
+		title: 'IG Post 2',
+		src: '/media/work/graphic-motion/2-172500810.webp',
+		type: 'image',
+		meta: 'social post'
+	},
+	{
+		title: 'IG Post 3',
+		src: '/media/work/graphic-motion/3-1.webp',
+		type: 'image',
+		meta: 'social post'
+	},
+	{
+		title: 'Minggu 1',
+		src: '/media/work/graphic-motion/minggu-1-1-1.webp',
+		type: 'image',
+		meta: 'content series'
+	},
+	{
+		title: 'Minggu 2',
+		src: '/media/work/graphic-motion/minggu-2-1.webp',
+		type: 'image',
+		meta: 'content series'
+	},
+	{
+		title: 'Minggu 2-1',
+		src: '/media/work/graphic-motion/minggu-2-1-1.webp',
+		type: 'image',
+		meta: 'content series'
+	},
+	{
+		title: 'Minggu 2-13',
+		src: '/media/work/graphic-motion/minggu-2-13-1.webp',
+		type: 'image',
+		meta: 'content series'
+	},
+	{
+		title: 'Minggu 2-2',
+		src: '/media/work/graphic-motion/minggu-2-2-2.webp',
+		type: 'image',
+		meta: 'content series'
+	},
+	{
+		title: 'Minggu 2-21',
+		src: '/media/work/graphic-motion/minggu-2-21-1.webp',
+		type: 'image',
+		meta: 'content series'
+	},
+	{
+		title: 'Minggu 3-1',
+		src: '/media/work/graphic-motion/minggu-3-1-1.webp',
+		type: 'image',
+		meta: 'content series'
+	},
+	{
+		title: 'Minggu 3-2',
+		src: '/media/work/graphic-motion/minggu-3-2-3.webp',
+		type: 'image',
+		meta: 'content series'
+	},
+	{
+		title: 'Minggu 3-22',
+		src: '/media/work/graphic-motion/minggu-3-22-1.webp',
+		type: 'image',
+		meta: 'content series'
+	},
+	{
+		title: 'Saturn Poster',
+		src: '/media/work/graphic-motion/saturn-1.webp',
+		type: 'image',
+		meta: 'poster study',
+		ratio: 'poster',
+		poster: true
+	}
 ];
 
-const kemenkesGraphicAssets = graphicMotionAssets.filter((asset) => asset.src.toLowerCase().includes('flyer'));
-const budiluhurCommunityAssets = graphicMotionAssets.filter((asset) => !asset.src.toLowerCase().includes('flyer'));
+const kemenkesGraphicAssets = graphicMotionAssets.filter((asset) =>
+	asset.src.toLowerCase().includes('flyer')
+);
+const budiluhurCommunityAssets = graphicMotionAssets.filter(
+	(asset) => !asset.src.toLowerCase().includes('flyer')
+);
 
 const personalLogoAssets: ProjectAsset[] = [
 	{
@@ -517,28 +615,28 @@ const personalLogoAssets: ProjectAsset[] = [
 		aspect: '524 / 525'
 	},
 	{
-	title: '',
+		title: '',
 		src: '/media/work/personal-logo/image-29.webp',
 		type: 'image',
 		meta: 'brand mockup',
 		aspect: '304 / 240'
 	},
 	{
-	title: '',
+		title: '',
 		src: '/media/work/personal-logo/image-32.webp',
 		type: 'image',
 		meta: 'brand mockup',
 		aspect: '379 / 242'
 	},
 	{
-	title: '',
+		title: '',
 		src: '/media/work/personal-logo/link-image-31.png',
 		type: 'image',
 		meta: 'brand mockup',
 		aspect: '303 / 228'
 	},
 	{
-	title: '',
+		title: '',
 		src: '/media/work/personal-logo/image-30.webp',
 		type: 'image',
 		meta: 'brand mockup',
@@ -548,7 +646,7 @@ const personalLogoAssets: ProjectAsset[] = [
 
 const motionPersonalAssets: ProjectAsset[] = [
 	{
-		title: '44th Budiluhur University Anniversary Motion Backdrop',
+		title: '44th Budi Luhur University Anniversary Motion Backdrop',
 		src: '/media/work/motion/motion-44-landscape.mp4',
 		type: 'video',
 		meta: '',
@@ -558,14 +656,14 @@ const motionPersonalAssets: ProjectAsset[] = [
 		ratio: 'wide'
 	},
 	{
-		title: '44th Budiluhur University Anniversary Motion Instagram Reels',
+		title: '44th Budi Luhur University Anniversary Motion Instagram Reel',
 		src: '/media/work/motion/motion-44-potrait.mp4',
 		type: 'video',
 		meta: '',
 		ratio: 'portrait'
 	},
 	{
-		title: '44th Budiluhur University Anniversary Motion Instagram Post',
+		title: '44th Budi Luhur University Anniversary Motion Instagram Post',
 		src: '/media/work/motion/motion-44-square.mp4',
 		type: 'video',
 		meta: '',
@@ -577,7 +675,7 @@ export const experienceSections: ExperienceSection[] = [
 	{
 		id: 'experience-3d',
 		kicker: 'Job experience / 3D',
-		title: 'Intern 3D Artist',
+		title: '3D Artist Intern',
 		description:
 			'Character, environment, and presentation work focused on turning static assets into readable digital companions with mood, staging, and production polish.',
 		apps: [appBadges.blender, appBadges.davinci, appBadges.afterEffects],
@@ -587,7 +685,7 @@ export const experienceSections: ExperienceSection[] = [
 				kind: 'priority',
 				title: 'Soca AI / Sovia',
 				description:
-					'3D internship work: Sovia character renders, turntable-style previews, vertical campaign frames mockups, environment presentation and Icons',
+					'3D internship work: Sovia character renders, turntable-style previews, vertical campaign frame mockups, environment presentations, and icons.',
 				layout: 'soca-showcase',
 				assets: socaAssets
 			},
@@ -603,7 +701,7 @@ export const experienceSections: ExperienceSection[] = [
 	},
 	{
 		id: 'experience-video',
-		kicker: 'Job experience / Editing',
+		kicker: 'Job experience / editing',
 		title: 'Video Editor',
 		description:
 			'Short-form reels and long-form YouTube content for real estate, with attention to pacing, clean transitions, social framing, and repeatable campaign output.',
@@ -617,7 +715,7 @@ export const experienceSections: ExperienceSection[] = [
 		groups: [
 			{
 				kind: 'priority',
-				title: 'Real Estate Short Format Video',
+				title: 'Real Estate Short-Form Video',
 				description:
 					'Property-focused edits built for fast viewing: clear room flow, rhythmic cuts, and concise visual storytelling for listings and social media.',
 				layout: 'showcase',
@@ -625,7 +723,7 @@ export const experienceSections: ExperienceSection[] = [
 			},
 			{
 				kind: 'priority',
-				title: 'Real Estate Long Format Video',
+				title: 'Real Estate Long-Form Video',
 				description:
 					'Long-form property tour videos and real estate content for the Gibran Pro Home YouTube channel, edited for clear walkthrough flow, client storytelling, and audience retention across listing presentations and market updates.',
 				layout: 'personal-3d',
@@ -636,7 +734,7 @@ export const experienceSections: ExperienceSection[] = [
 	{
 		id: 'experience-graphics',
 		kicker: 'Job experience / graphics',
-		title: 'Graphics Designer',
+		title: 'Graphic Designer',
 		description:
 			'Social graphics and motion-ready layouts for campaign communication, using strong hierarchy, repeatable templates, and clean visual systems.',
 		apps: [appBadges.figma, appBadges.photoshop],
@@ -652,7 +750,7 @@ export const experienceSections: ExperienceSection[] = [
 			},
 			{
 				kind: 'priority',
-				title: 'Budiluhur University Community Social Media Manager',
+				title: 'Budi Luhur University Community Social Media Manager',
 				description:
 					'Community-focused social content for campus activities and student engagement, shaped with adaptable layouts, readable hierarchy, and an energetic visual tone.',
 				layout: 'poster-wall',
@@ -679,9 +777,9 @@ export const experienceSections: ExperienceSection[] = [
 		groups: [
 			{
 				kind: 'priority',
-				title: '44th Budiluhur University Anniversary Motion',
+				title: '44th Budi Luhur University Anniversary Motion',
 				description:
-					'Motion package exported across landscape, portrait, and square ratios to show adaptable format thinking in celebration of the university\'s anniversary.',
+					"Motion package exported across landscape, portrait, and square ratios to show adaptable format thinking in celebration of the university's anniversary.",
 				layout: 'motion-layout',
 				assets: motionPersonalAssets
 			}

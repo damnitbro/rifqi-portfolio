@@ -9,10 +9,10 @@
 </script>
 
 <div class="carousel" aria-label="Social work samples">
-	{#each columns as column, index}
+	{#each columns as column, index (index)}
 		<div class="lane" class:reverse={index === 1} style:--speed={`${26 + index * 5}s`}>
 			<div class="track">
-				{#each [...column, ...column] as post}
+				{#each [...column, ...column] as post, postIndex (`${post.title}-${postIndex}`)}
 					<article class="post" style:--accent={post.accent}>
 						<div class="post-top">
 							<span class="avatar"></span>
@@ -45,7 +45,8 @@
 		height: min(720px, 80vh);
 		min-height: 460px;
 		overflow: hidden;
-		mask-image: linear-gradient(transparent, #000 14%, #000 86%, transparent);
+		-webkit-mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
+		mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
 	}
 
 	.lane {
@@ -83,9 +84,7 @@
 	.avatar {
 		width: 2rem;
 		aspect-ratio: 1;
-		background:
-			linear-gradient(135deg, var(--accent), transparent),
-			#222;
+		background: linear-gradient(135deg, var(--accent), transparent), #222;
 		border-radius: 50%;
 	}
 
@@ -118,7 +117,11 @@
 		overflow: hidden;
 		padding: 0.85rem;
 		background:
-			radial-gradient(circle at 24% 20%, color-mix(in srgb, var(--accent) 74%, #fff), transparent 18%),
+			radial-gradient(
+				circle at 24% 20%,
+				color-mix(in srgb, var(--accent) 74%, #fff),
+				transparent 18%
+			),
 			linear-gradient(140deg, color-mix(in srgb, var(--accent) 60%, #111), #111 62%),
 			repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.1) 0 1px, transparent 1px 13px);
 		border-radius: 6px;

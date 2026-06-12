@@ -13,15 +13,7 @@
 		accent?: string;
 	};
 
-	let {
-		title,
-		role,
-		src,
-		poster,
-		startAt = 0,
-		endAt = 0,
-		accent = '#8b0000'
-	}: Props = $props();
+	let { title, role, src, poster, startAt = 0, endAt = 0, accent = '#8b0000' }: Props = $props();
 
 	const videoKey = $derived(`vloop-${title}`);
 	const initialStart = () => startAt;
@@ -95,7 +87,7 @@
 			muted={videoMuted}
 			loop={!loopSegment}
 			preload="metadata"
-			src={src}
+			{src}
 			onloadedmetadata={handleLoaded}
 			ontimeupdate={handleTimeUpdate}
 		></video>

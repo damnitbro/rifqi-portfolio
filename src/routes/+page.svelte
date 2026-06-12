@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { replaceState } from '$app/navigation';
+	import { resolve } from '$app/paths';
 	import { ArrowDown, ArrowUp, Mail, MessageCircle } from '@lucide/svelte';
 	import ExperienceSection from '$lib/components/ExperienceSection.svelte';
 	import Hero from '$lib/components/Hero.svelte';
@@ -47,7 +49,7 @@
 			history.scrollRestoration = 'manual';
 		}
 		if (window.location.hash) {
-			history.replaceState(null, document.title, `${window.location.pathname}${window.location.search}`);
+			window.requestAnimationFrame(() => replaceState(resolve('/'), {}));
 		}
 		forceTop();
 		updateScrollState();
@@ -59,12 +61,12 @@
 		applyMobileMode();
 		mobileQuery.addEventListener('change', applyMobileMode);
 		const revealGroups = [
-			'.hero .cover-banner',
 			'.hero .intro > *',
-			'.hero .intro-card',
-			'.hero .timeline-section',
-			'.hero .skill-group',
-			'.hero .contact-info',
+			'.hero .intro-card > h2',
+			'.hero .intro-card > p',
+			'.hero .intro-card .timeline-section',
+			'.hero .intro-card .skill-group',
+			'.hero .intro-card .contact-info',
 			'.cv-panel .toc-card',
 			'.spotlight .section-heading > *',
 			'.spotlight-grid > *',
@@ -84,7 +86,9 @@
 			'.footer-bottom > *'
 		];
 
-		const revealElements = Array.from(document.querySelectorAll<HTMLElement>(revealGroups.join(',')));
+		const revealElements = Array.from(
+			document.querySelectorAll<HTMLElement>(revealGroups.join(','))
+		);
 		revealElements.forEach((element, index) => {
 			element.classList.add('motion-reveal');
 			element.style.setProperty('--reveal-delay', `${Math.min((index % 6) * 45, 225)}ms`);
@@ -211,88 +215,103 @@
 {/if}
 
 <div class="page-content" class:page-visible={!isLoading}>
-<nav class="game-nav" aria-label="Main navigation">
-	<div class="nav-status">
-		<span class="status-dot"></span>
-		<span></span>
-		<span></span>
-		<span></span>
-	</div>
+	<nav class="game-nav" aria-label="Main navigation">
+		<div class="nav-status">
+			<span class="status-dot"></span>
+			<span></span>
+			<span></span>
+			<span></span>
+		</div>
 
-	<div class="nav-links">
-		<a href="#experience-3d">3D Artist</a>
-		<a href="#experience-video">Video Editor</a>
-		<a href="#experience-graphics">Graphic Design</a>
-		<a href="#contact">Contact</a>
-	</div>
+		<div class="nav-links">
+			<a href="#experience-3d">3D Artist</a>
+			<a href="#experience-video">Video Editor</a>
+			<a href="#experience-graphics">Graphic Design</a>
+			<a href="#contact">Contact</a>
+		</div>
 
-	<!-- <a class="nav-player" href="#top">Player 1</a> -->
-</nav>
+		<!-- <a class="nav-player" href="#top">Player 1</a> -->
+	</nav>
 
-<Hero
-	name={identity.name}
-	location={identity.location}
-	tagline={identity.tagline}
-	availability={identity.availability}
-	email={identity.email}
-	instagram={identity.instagram}
-	phone={identity.phone}
-	timeline={cvTimeline}
-	{skills}
-	{personalSkills}
-	{softSkills}
-/>
+	<Hero
+		ready={!isLoading}
+		name={identity.name}
+		location={identity.location}
+		tagline={identity.tagline}
+		availability={identity.availability}
+		email={identity.email}
+		instagram={identity.instagram}
+		phone={identity.phone}
+		timeline={cvTimeline}
+		{skills}
+		{personalSkills}
+		{softSkills}
+	/>
 
-<main>
-	<ProjectSpotlight videos={videoProjects} />
-	<WhatWeBuild />
+	<main>
+		<ProjectSpotlight videos={videoProjects} />
+		<WhatWeBuild />
 
-	{#each experienceSections as section}
-		<ExperienceSection {section} />
-	{/each}
-</main>
+		{#each experienceSections as section (section.id)}
+			<ExperienceSection {section} />
+		{/each}
+	</main>
 
-<button
-	class="edge-jump"
-	class:bottom-mode={isAtBottom}
-	type="button"
-	aria-label={isAtBottom ? 'Scroll to top' : 'Scroll to contact'}
-	onclick={jumpEdge}
->
-	<span class="arrow arrow-down"><ArrowDown size={24} /></span>
-	<span class="arrow arrow-up"><ArrowUp size={24} /></span>
-</button>
+	<button
+		class="edge-jump"
+		class:bottom-mode={isAtBottom}
+		type="button"
+		aria-label={isAtBottom ? 'Scroll to top' : 'Scroll to contact'}
+		onclick={jumpEdge}
+	>
+		<span class="arrow arrow-down"><ArrowDown size={24} /></span>
+		<span class="arrow arrow-up"><ArrowUp size={24} /></span>
+	</button>
 
-<footer class="site-footer" id="contact">
-	<div class="footer-intro">
-		<span>Want to collaborate?</span>
-		<h2>Let’s talk</h2>
-	</div>
+	<footer class="site-footer" id="contact">
+		<div class="footer-intro">
+			<span>Want to collaborate?</span>
+			<h2>Let’s talk</h2>
+		</div>
 
-	<div class="footer-contact-grid" aria-label="Contact information">
-		<a href={`mailto:${identity.email}`}>
-			<span><Mail size={20} /></span>
-			<strong>Want to ask something?</strong>
-			<small>{identity.email}</small>
-		</a>
-		<a href={instagramUrl} target="_blank" rel="noreferrer">
-			<span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg></span>
-			<strong>Stay in the loop</strong>
-			<small>@{identity.instagram}</small>
-		</a>
-		<a href={whatsappUrl} target="_blank" rel="noreferrer">
-			<span><MessageCircle size={20} /></span>
-			<strong>Prefer direct chat?</strong>
-			<small>{identity.phone}</small>
-		</a>
-	</div>
+		<div class="footer-contact-grid" aria-label="Contact information">
+			<a href={`mailto:${identity.email}`}>
+				<span><Mail size={20} /></span>
+				<strong>Want to ask something?</strong>
+				<small>{identity.email}</small>
+			</a>
+			<a href={instagramUrl} target="_blank" rel="noreferrer">
+				<span
+					><svg
+						width="20"
+						height="20"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						><rect width="20" height="20" x="2" y="2" rx="5" ry="5" /><path
+							d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"
+						/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5" /></svg
+					></span
+				>
+				<strong>Stay in the loop</strong>
+				<small>@{identity.instagram}</small>
+			</a>
+			<a href={whatsappUrl} target="_blank" rel="noreferrer">
+				<span><MessageCircle size={20} /></span>
+				<strong>Prefer direct chat?</strong>
+				<small>{identity.phone}</small>
+			</a>
+		</div>
 
-	<div class="footer-bottom">
-		<span>{identity.name}</span>
-		<span>{identity.location}</span>
-		<span>Interactive CV</span>
-	</div>
-</footer>
+		<div class="footer-bottom">
+			<span>{identity.name}</span>
+			<span>{identity.location}</span>
+			<span>Interactive CV</span>
+		</div>
+	</footer>
 </div>
 
 <style>
@@ -314,7 +333,13 @@
 			radial-gradient(circle at 0 20%, rgba(139, 0, 0, 0.26), transparent 18rem),
 			linear-gradient(180deg, #211c1d, #080808 36rem);
 		font-family:
-			Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+			Inter,
+			ui-sans-serif,
+			system-ui,
+			-apple-system,
+			BlinkMacSystemFont,
+			'Segoe UI',
+			sans-serif;
 	}
 
 	:global(button),
@@ -331,8 +356,8 @@
 		--cursor-x: 0;
 		--cursor-y: 0;
 		--scroll-progress: 0;
-		--display-font: 'Bebas Neue', Impact, 'Arial Black', 'Roboto Condensed', 'Arial Narrow',
-			system-ui, sans-serif;
+		--display-font:
+			'Bebas Neue', Impact, 'Arial Black', 'Roboto Condensed', 'Arial Narrow', system-ui, sans-serif;
 	}
 
 	:global(.motion-ready .game-nav) {
@@ -454,9 +479,7 @@
 		width: min(42vw, 15rem);
 		aspect-ratio: 1;
 		place-items: center;
-		background:
-			radial-gradient(circle, rgba(255, 16, 16, 0.18), transparent 58%),
-			#111;
+		background: radial-gradient(circle, rgba(255, 16, 16, 0.18), transparent 58%), #111;
 		border: 1px solid rgba(255, 255, 255, 0.16);
 		border-radius: 50%;
 		box-shadow: 0 0 0 0 rgba(255, 16, 16, 0.5);
@@ -558,7 +581,9 @@
 	}
 
 	:global(.status-dot.nav-dot-active) {
-		box-shadow: 0 0 30px rgba(251, 8, 8, 0.9), 0 0 0 0.4rem rgba(255, 16, 16, 0.1);
+		box-shadow:
+			0 0 30px rgba(251, 8, 8, 0.9),
+			0 0 0 0.4rem rgba(255, 16, 16, 0.1);
 		transform: scale(1.06);
 	}
 
@@ -611,40 +636,54 @@
 	@keyframes portfolio-pulse {
 		0%,
 		100% {
-			box-shadow: inset 0 0 0 0 rgba(255, 16, 16, 0.2), 0 0 0 rgba(255, 16, 16, 0);
+			box-shadow:
+				inset 0 0 0 0 rgba(255, 16, 16, 0.2),
+				0 0 0 rgba(255, 16, 16, 0);
 		}
 
 		50% {
-			box-shadow: inset 0 0 1rem rgba(255, 16, 16, 0.28), 0 0 1.6rem rgba(255, 16, 16, 0.22);
+			box-shadow:
+				inset 0 0 1rem rgba(255, 16, 16, 0.28),
+				0 0 1.6rem rgba(255, 16, 16, 0.22);
 		}
 	}
 
 	@keyframes nav-dot-idle {
 		0%,
 		100% {
-			box-shadow: 0 0 16px rgba(251, 8, 8, 0.62), 0 0 0 0 rgba(255, 16, 16, 0.18);
+			box-shadow:
+				0 0 16px rgba(251, 8, 8, 0.62),
+				0 0 0 0 rgba(255, 16, 16, 0.18);
 			transform: scale(1);
 		}
 
 		50% {
-			box-shadow: 0 0 24px rgba(251, 8, 8, 0.86), 0 0 0 0.45rem rgba(255, 16, 16, 0.05);
+			box-shadow:
+				0 0 24px rgba(251, 8, 8, 0.86),
+				0 0 0 0.45rem rgba(255, 16, 16, 0.05);
 			transform: scale(1.08);
 		}
 	}
 
 	@keyframes nav-dot-click {
 		0% {
-			box-shadow: 0 0 16px rgba(251, 8, 8, 0.72), 0 0 0 0 rgba(255, 16, 16, 0.32);
+			box-shadow:
+				0 0 16px rgba(251, 8, 8, 0.72),
+				0 0 0 0 rgba(255, 16, 16, 0.32);
 			transform: scale(1);
 		}
 
 		45% {
-			box-shadow: 0 0 34px rgba(251, 8, 8, 1), 0 0 0 0.95rem rgba(255, 16, 16, 0.1);
+			box-shadow:
+				0 0 34px rgba(251, 8, 8, 1),
+				0 0 0 0.95rem rgba(255, 16, 16, 0.1);
 			transform: scale(1.38);
 		}
 
 		100% {
-			box-shadow: 0 0 18px rgba(251, 8, 8, 0.72), 0 0 0 0 rgba(255, 16, 16, 0);
+			box-shadow:
+				0 0 18px rgba(251, 8, 8, 0.72),
+				0 0 0 0 rgba(255, 16, 16, 0);
 			transform: scale(1);
 		}
 	}
@@ -682,7 +721,7 @@
 		position: relative;
 		display: grid;
 		gap: clamp(5rem, 12vw, 9rem);
-		overflow: hidden;
+		overflow: visible;
 		padding: clamp(1rem, 2.6vw, 2rem);
 	}
 

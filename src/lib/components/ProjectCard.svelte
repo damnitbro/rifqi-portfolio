@@ -25,8 +25,7 @@
 		min-height: 250px;
 		padding: 1.2rem;
 		background:
-			linear-gradient(140deg, color-mix(in srgb, var(--accent) 18%, transparent), transparent),
-			#111;
+			linear-gradient(140deg, color-mix(in srgb, var(--accent) 18%, transparent), transparent), #111;
 		border: 1px solid rgba(255, 255, 255, 0.12);
 		border-radius: 8px;
 		transition:

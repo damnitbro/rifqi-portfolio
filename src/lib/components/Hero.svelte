@@ -3,6 +3,7 @@
 	import type { Skill, TimelineItem } from '$lib/data/portfolio';
 
 	type Props = {
+		ready?: boolean;
 		name: string;
 		location: string;
 		tagline: string;
@@ -16,8 +17,20 @@
 		softSkills: Skill[];
 	};
 
-	let { name, location, tagline, availability, email, instagram, phone, timeline, skills, personalSkills, softSkills }: Props =
-		$props();
+	let {
+		ready = false,
+		name,
+		location,
+		tagline,
+		availability,
+		email,
+		instagram,
+		phone,
+		timeline,
+		skills,
+		personalSkills,
+		softSkills
+	}: Props = $props();
 
 	let education = $derived(timeline.filter((item) => item.type === 'education'));
 	let experience = $derived(timeline.filter((item) => item.type === 'experience'));
@@ -29,10 +42,10 @@
 	const letters = ['P', 'O', 'R', 'T', 'F', 'O', 'L', 'I', 'O'];
 </script>
 
-<section class="hero" id="top">
+<section class="hero" class:banner-ready={ready} id="top">
 	<div class="cover-banner">
 		<div class="portfolio-word">
-			{#each letters as letter, i}
+			{#each letters as letter, i (`${letter}-${i}`)}
 				{#if i === 5}
 					<span class="letter ornament-letter" style:--i={i}>
 						<img src="/images/RadialDot.png" alt="O" class="radial-o" />
@@ -58,15 +71,15 @@
 			<div class="intro-card">
 				<h2>Introduction</h2>
 				<p>
-					Hello, I'm <strong>{name}</strong>. A 3D artist and video editor focused on
-					creating impactful visuals that connect ideas with audiences.
+					Hello, I'm <strong>{name}</strong>. A 3D artist and video editor focused on creating
+					impactful visuals that connect ideas with audiences.
 				</p>
 
 				<div class="timeline-split">
 					<div class="timeline-section">
 						<span class="timeline-label">Experience</span>
 						<div class="timeline">
-							{#each experience as item}
+							{#each experience as item (`${item.period}-${item.title}`)}
 								<div>
 									<span class="tl-period">{item.period}</span>
 									<strong class="tl-title">{item.title}</strong>
@@ -79,7 +92,7 @@
 					<div class="timeline-section">
 						<span class="timeline-label">Education</span>
 						<div class="timeline">
-							{#each education as item}
+							{#each education as item (`${item.period}-${item.title}`)}
 								<div>
 									<span class="tl-period">{item.period}</span>
 									<strong class="tl-title">{item.title}</strong>
@@ -94,7 +107,7 @@
 					<div class="skill-group">
 						<span class="skill-group-label">Personal Skills</span>
 						<div class="skill-tags">
-							{#each personalSkills as skill}
+							{#each personalSkills as skill (skill.label)}
 								<span class="skill-tag">{skill.label}</span>
 							{/each}
 						</div>
@@ -102,7 +115,7 @@
 					<div class="skill-group">
 						<span class="skill-group-label">Soft Skills</span>
 						<div class="skill-tags">
-							{#each softSkills as skill}
+							{#each softSkills as skill (skill.label)}
 								<span class="skill-tag">{skill.label}</span>
 							{/each}
 						</div>
@@ -117,7 +130,19 @@
 							<span>{email}</span>
 						</a>
 						<a href={instagramUrl} target="_blank" rel="noreferrer" aria-label="Instagram">
-							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+							<svg
+								width="18"
+								height="18"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								><rect width="20" height="20" x="2" y="2" rx="5" ry="5" /><path
+									d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"
+								/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5" /></svg
+							>
 							<span>@{instagram}</span>
 						</a>
 						<a href={whatsappUrl} target="_blank" rel="noreferrer" aria-label="WhatsApp">
@@ -130,8 +155,12 @@
 		</div>
 
 		<div class="cv-panel" aria-label="Role summary">
-			{#each skills as skill, index}
-				<a class="toc-card" href={`#${skillTargets[index] ?? 'contact'}`} style:--delay={`${index * 90}ms`}>
+			{#each skills as skill, index (skill.label)}
+				<a
+					class="toc-card"
+					href={`#${skillTargets[index] ?? 'contact'}`}
+					style:--delay={`${index * 90}ms`}
+				>
 					<span>0{index + 1}</span>
 					<h2>{skill.label}</h2>
 					<p>{skill.value}</p>
@@ -147,10 +176,15 @@
 		--hero-nav-space: 0rem;
 		min-height: 100svh;
 		display: grid;
+		grid-template-columns: minmax(0, 1fr);
 		grid-template-rows: auto auto 1fr;
 		padding: calc(var(--hero-pad) + var(--hero-nav-space)) var(--hero-pad) var(--hero-pad);
 		background:
-			repeating-radial-gradient(circle at 86% 28%, rgba(255, 0, 0, 0.28) 0 2px, transparent 2px 10px),
+			repeating-radial-gradient(
+				circle at 86% 28%,
+				rgba(255, 0, 0, 0.28) 0 2px,
+				transparent 2px 10px
+			),
 			radial-gradient(circle at 86% 22%, rgba(139, 0, 0, 0.56), transparent 21rem),
 			linear-gradient(180deg, #221f20, #080808 74%);
 	}
@@ -276,6 +310,12 @@
 		background: rgba(255, 0, 0, 0.72);
 		filter: blur(1.5rem);
 		opacity: 0.72;
+		transform-origin: center;
+	}
+
+	.hero:not(.banner-ready) .cover-banner::before,
+	.hero:not(.banner-ready) .cover-banner::after {
+		opacity: 0;
 	}
 
 	.cover-banner::after {
@@ -285,9 +325,15 @@
 		height: min(18vw, 11rem);
 		border-radius: 50%;
 		background:
-			radial-gradient(ellipse at 38% 45%, rgba(255, 0, 0, 0.78), rgba(139, 0, 0, 0.38) 42%, transparent 72%),
+			radial-gradient(
+				ellipse at 38% 45%,
+				rgba(255, 0, 0, 0.78),
+				rgba(139, 0, 0, 0.38) 42%,
+				transparent 72%
+			),
 			radial-gradient(ellipse at 92% 88%, rgba(255, 0, 0, 0.44), transparent 68%);
 		filter: blur(0.35rem);
+		transform-origin: center;
 	}
 
 	.portfolio-word {
@@ -301,7 +347,7 @@
 		gap: 0.02em;
 		color: #ffffff;
 		font-family: var(--display-font);
-		font-size: clamp(5.5rem, 26vw, 28rem);
+		font-size: clamp(5.5rem, 25.4vw, 28rem);
 		line-height: 0.64;
 		text-transform: uppercase;
 		letter-spacing: 0;
@@ -314,8 +360,10 @@
 		justify-content: center;
 		flex: 0 0 auto;
 		height: 0.72em;
-		animation: letter-pop 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
-		animation-delay: calc(var(--i) * 70ms);
+		opacity: 0;
+		filter: blur(14px);
+		transform: translateY(0.24em) rotateX(70deg) scale(0.86);
+		transform-origin: center bottom;
 	}
 
 	.ornament-letter {
@@ -326,9 +374,28 @@
 		width: 0.72em;
 		height: 0.72em;
 		margin-top: -0.08em;
-		animation: ornament-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
-		animation-delay: calc(5 * 70ms);
+		opacity: 0;
+		filter: blur(10px);
+		transform: scale(0.2) rotate(-120deg);
 		transform-origin: center;
+	}
+
+	.banner-ready .letter {
+		animation: letter-pop 820ms cubic-bezier(0.16, 1, 0.3, 1) both;
+		animation-delay: calc(var(--i) * 82ms);
+	}
+
+	.banner-ready .ornament-letter {
+		animation: ornament-in 980ms cubic-bezier(0.16, 1, 0.3, 1) both;
+		animation-delay: 410ms;
+	}
+
+	.banner-ready .cover-banner::before {
+		animation: banner-glow-in 1.25s cubic-bezier(0.16, 1, 0.3, 1) both;
+	}
+
+	.banner-ready .cover-banner::after {
+		animation: banner-ornament-in 1.1s 180ms cubic-bezier(0.16, 1, 0.3, 1) both;
 	}
 
 	.radial-o {
@@ -456,7 +523,9 @@
 		border-radius: 7px;
 		text-decoration: none;
 		font-size: 0.8rem;
-		transition: background 0.15s, color 0.15s;
+		transition:
+			background 0.15s,
+			color 0.15s;
 	}
 
 	.contact-row a:hover {
@@ -472,7 +541,6 @@
 		display: grid;
 		gap: 0.8rem;
 		grid-column: 1 / -1;
-		animation: rise 700ms ease both;
 	}
 
 	.toc-card {
@@ -486,8 +554,6 @@
 		background: rgba(12, 10, 11, 0.72);
 		border: 1px solid rgba(255, 255, 255, 0.1);
 		border-radius: 8px;
-		animation: rise 640ms ease both;
-		animation-delay: var(--delay);
 		transition:
 			border-color 180ms ease,
 			background 180ms ease,
@@ -560,13 +626,55 @@
 	}
 
 	@keyframes letter-pop {
-		from { opacity: 0; filter: blur(12px); }
-		to { opacity: 1; filter: blur(0); }
+		from {
+			opacity: 0;
+			filter: blur(14px);
+			transform: translateY(0.24em) rotateX(70deg) scale(0.86);
+		}
+
+		to {
+			opacity: 1;
+			filter: blur(0);
+			transform: translateY(0) rotateX(0) scale(1);
+		}
 	}
 
 	@keyframes ornament-in {
-		from { opacity: 0; transform: scale(0) rotate(-90deg); }
-		to { opacity: 1; transform: scale(1) rotate(0deg); }
+		from {
+			opacity: 0;
+			filter: blur(10px);
+			transform: scale(0.2) rotate(-120deg);
+		}
+
+		to {
+			opacity: 1;
+			filter: blur(0);
+			transform: scale(1) rotate(0deg);
+		}
+	}
+
+	@keyframes banner-glow-in {
+		from {
+			opacity: 0;
+			filter: blur(2.6rem);
+		}
+
+		to {
+			opacity: 0.72;
+			filter: blur(1.5rem);
+		}
+	}
+
+	@keyframes banner-ornament-in {
+		from {
+			opacity: 0;
+			transform: translate3d(-2rem, 1.5rem, 0) scale(0.58) rotate(-12deg);
+		}
+
+		to {
+			opacity: 1;
+			transform: translate3d(0, 0, 0) scale(1) rotate(0);
+		}
 	}
 
 	@keyframes spin {
@@ -704,6 +812,21 @@
 
 		.cta {
 			width: 100%;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.letter,
+		.ornament-letter {
+			opacity: 1;
+			filter: none;
+			transform: none;
+			animation: none;
+		}
+
+		.banner-ready .cover-banner::before,
+		.banner-ready .cover-banner::after {
+			animation: none;
 		}
 	}
 </style>

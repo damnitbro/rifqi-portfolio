@@ -96,7 +96,10 @@
 	}
 
 	function dotAction(node: HTMLElement, i: number) {
-		const handler = () => { index = i; resetAdvance(); };
+		const handler = () => {
+			index = i;
+			resetAdvance();
+		};
 		node.addEventListener('click', handler);
 		return {
 			destroy() {
@@ -115,6 +118,8 @@
 			alpha: true,
 			powerPreference: 'high-performance'
 		});
+		renderer.toneMapping = THREE.ACESFilmicToneMapping;
+		renderer.toneMappingExposure = 1.2;
 		const controls = new OrbitControls(camera, renderer.domElement);
 		const modelContainer = new THREE.Group();
 		const startTime = performance.now();
@@ -123,13 +128,14 @@
 		camera.position.set(1.8, 1.1, 3.8);
 		modelContainer.position.y = 0.18;
 		scene.add(modelContainer);
-		scene.add(new THREE.HemisphereLight('#ffffff', '#1a0f0a', 2.0));
+		scene.add(new THREE.HemisphereLight('#ffffff', '#2a1710', 2.8));
+		scene.add(new THREE.AmbientLight('#fff4e5', 0.65));
 
-		const key = new THREE.DirectionalLight(accent, 3.5);
+		const key = new THREE.DirectionalLight('#fff2dc', 4.4);
 		key.position.set(4, 4, 3);
 		scene.add(key);
 
-		const fill = new THREE.DirectionalLight('#c2a96a', 2.0);
+		const fill = new THREE.DirectionalLight(accent, 2.8);
 		fill.position.set(-3, 2, -2);
 		scene.add(fill);
 
@@ -206,7 +212,10 @@
 		};
 
 		const loadModel = (url: string) => {
-			if (!url) { showFallback(); return; }
+			if (!url) {
+				showFallback();
+				return;
+			}
 			if (url === 'particle-planet') {
 				show2d = true;
 				return;
@@ -302,7 +311,7 @@
 			const a = counter / 9 + i * i;
 			const ringFlatten = parity ? 0.28 : 1.0;
 			const ringTilt = parity ? 2.1 : 1.0;
-			const x = cx + r * Math.sin(a) * Math.cos((parity === 0 ? 1 : 0) * i / counter);
+			const x = cx + r * Math.sin(a) * Math.cos(((parity === 0 ? 1 : 0) * i) / counter);
 			const y = cy + r * Math.cos(a + parity * 2) * ringFlatten * ringTilt;
 			let size = 1 - Math.cos(a);
 			if (parity) {
@@ -318,6 +327,7 @@
 			}
 			ctx.fill();
 		};
+		draw2D();
 
 		const reset2D = () => {
 			pCounter = 100;
@@ -395,18 +405,43 @@
 		<span>{kicker}</span>
 		<strong>{modelTitle}</strong>
 	</div>
-	<button class="nav-arrow nav-prev" class:hidden={models.length < 2} use:navAction={'prev'} aria-label="Previous model">
-		<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+	<button
+		class="nav-arrow nav-prev"
+		class:hidden={models.length < 2}
+		use:navAction={'prev'}
+		aria-label="Previous model"
+	>
+		<svg
+			width="24"
+			height="24"
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			stroke-linecap="round"
+			stroke-linejoin="round"><path d="m15 18-6-6 6-6" /></svg
+		>
 	</button>
-	<button class="nav-arrow nav-next" class:hidden={models.length < 2} use:navAction={'next'} aria-label="Next model">
-		<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+	<button
+		class="nav-arrow nav-next"
+		class:hidden={models.length < 2}
+		use:navAction={'next'}
+		aria-label="Next model"
+	>
+		<svg
+			width="24"
+			height="24"
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			stroke-linecap="round"
+			stroke-linejoin="round"><path d="m9 18 6-6-6-6" /></svg
+		>
 	</button>
 	<div class="nav-dots" class:hidden={models.length < 2}>
-		{#each models as _, i (i)}
-			<button
-				class:active={i === index}
-				use:dotAction={i}
-				aria-label="Switch to model {i + 1}"
+		{#each models as model, i (model.url)}
+			<button class:active={i === index} use:dotAction={i} aria-label="Switch to model {i + 1}"
 			></button>
 		{/each}
 	</div>
@@ -419,7 +454,11 @@
 		min-height: clamp(420px, 62vh, 720px);
 		overflow: hidden;
 		background:
-			radial-gradient(circle at 70% 30%, color-mix(in srgb, var(--accent) 35%, transparent), transparent 34%),
+			radial-gradient(
+				circle at 70% 30%,
+				color-mix(in srgb, var(--accent) 35%, transparent),
+				transparent 34%
+			),
 			linear-gradient(145deg, #151515 0%, #080808 58%, #1b1711 100%);
 		border: 1px solid rgba(255, 255, 255, 0.12);
 		border-radius: 8px;
@@ -496,7 +535,9 @@
 		border: 1px solid rgba(255, 255, 255, 0.15);
 		border-radius: 50%;
 		cursor: pointer;
-		transition: background 0.15s, color 0.15s;
+		transition:
+			background 0.15s,
+			color 0.15s;
 		isolation: isolate;
 		contain: layout style;
 	}
@@ -540,7 +581,9 @@
 		border: none;
 		border-radius: 50%;
 		cursor: pointer;
-		transition: background 0.15s, transform 0.15s;
+		transition:
+			background 0.15s,
+			transform 0.15s;
 	}
 
 	.nav-dots button.active {
