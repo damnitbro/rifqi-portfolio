@@ -124,6 +124,7 @@
 
 	let videoEls: Record<string, HTMLVideoElement> = {};
 	let mutedMap: Record<string, boolean> = $state({});
+	let youtubeActive: Record<string, boolean> = $state({});
 
 	const vidKey = (g: number, a: number) => `${g}-${a}`;
 
@@ -268,8 +269,35 @@
 									data-title={asset.title}
 									data-ratio={asset.ratio ?? 'auto'}
 									style:--asset-aspect={asset.aspect}
+									class:youtube-figure={!!asset.youtubeId}
 								>
-									{#if isVideo(asset)}
+									{#if asset.youtubeId}
+										{@const ytId = asset.youtubeId}
+										{@const ytKey = `yt-${groupIdx}-${assetIdx}`}
+										{#if youtubeActive[ytKey]}
+											<iframe
+												class="yt-embed"
+												src="https://www.youtube.com/embed/{ytId}?autoplay=1&rel=0"
+												title={asset.title}
+												frameborder="0"
+												allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+												allowfullscreen
+												loading="lazy"
+											></iframe>
+										{:else}
+											<button class="yt-thumb-wrap" onclick={() => { youtubeActive[ytKey] = true; }}>
+												<img
+													src="https://img.youtube.com/vi/{ytId}/hqdefault.jpg"
+													alt={asset.title}
+													loading="lazy"
+													class="yt-thumb"
+												/>
+												<div class="yt-play-btn">
+													<svg width="48" height="48" viewBox="0 0 24 24" fill="#ff1010"><polygon points="8,5 19,12 8,19" fill="#fff"/></svg>
+												</div>
+											</button>
+										{/if}
+									{:else if isVideo(asset)}
 										<div class="vid-wrap">
 											<video
 												bind:this={videoEls[key]}
@@ -933,6 +961,60 @@
 		color: #080808;
 		background: var(--accent, #8b0000);
 		border-color: var(--accent, #8b0000);
+	}
+
+	.youtube-figure {
+		position: relative;
+		overflow: hidden;
+	}
+
+	.yt-thumb-wrap {
+		position: relative;
+		display: block;
+		width: 100%;
+		height: 100%;
+		padding: 0;
+		border: none;
+		cursor: pointer;
+		background: none;
+	}
+
+	.yt-thumb {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.yt-play-btn {
+		position: absolute;
+		inset: 0;
+		display: grid;
+		place-items: center;
+		background: rgba(0, 0, 0, 0.3);
+		transition: background 0.2s;
+	}
+
+	.yt-thumb-wrap:hover .yt-play-btn {
+		background: rgba(0, 0, 0, 0.1);
+	}
+
+	.yt-play-btn svg {
+		width: clamp(2.4rem, 6vw, 3.6rem);
+		height: auto;
+		filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.6));
+		transition: transform 0.2s;
+	}
+
+	.yt-thumb-wrap:hover .yt-play-btn svg {
+		transform: scale(1.1);
+	}
+
+	.yt-embed {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
 	}
 
 	figcaption {

@@ -45,6 +45,7 @@ export type ProjectAsset = {
 	meta: string;
 	startAt?: number;
 	endAt?: number;
+	youtubeId?: string;
 	ratio?: 'wide' | 'square' | 'portrait' | 'poster' | 'tall' | 'auto';
 	aspect?: string;
 	poster?: boolean;
@@ -427,21 +428,19 @@ const videoEditorAssets: ProjectAsset[] = [
 
 const youtubeEditorAssets: ProjectAsset[] = [
 	{
-		title: 'Property Tour Edit',
-		src: '/media/work/video-editor/real-estate-5.mp4',
+		title: 'Gibran Pro Home — Virtual Tour',
+		src: '',
 		type: 'video',
-		meta: 'long-form YouTube cut',
-		startAt: 0,
-		endAt: 12,
+		meta: 'property walkthrough',
+		youtubeId: '5v7WOd9hAi0',
 		ratio: 'wide'
 	},
 	{
-		title: 'Listing Walkthrough',
-		src: '/media/work/video-editor/real-estate-1.mp4',
+		title: 'Gibran Pro Home — Listing Highlight',
+		src: '',
 		type: 'video',
 		meta: 'client presentation',
-		startAt: 0,
-		endAt: 12,
+		youtubeId: 'TxzTQOQjACE',
 		ratio: 'wide'
 	}
 ];
