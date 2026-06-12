@@ -46,14 +46,31 @@
 		}
 	});
 
+	let autoTimer: ReturnType<typeof setTimeout>;
+
+	const scheduleAdvance = () => {
+		clearTimeout(autoTimer);
+		if (models.length < 2) return;
+		autoTimer = setTimeout(() => {
+			index = (index + 1) % models.length;
+			scheduleAdvance();
+		}, 15000);
+	};
+
+	const resetAdvance = () => {
+		scheduleAdvance();
+	};
+
 	const prev = () => {
 		if (models.length < 2) return;
 		index = (index - 1 + models.length) % models.length;
+		resetAdvance();
 	};
 
 	const next = () => {
 		if (models.length < 2) return;
 		index = (index + 1) % models.length;
+		resetAdvance();
 	};
 
 	function navAction(node: HTMLElement, direction: 'prev' | 'next') {
@@ -67,7 +84,7 @@
 	}
 
 	function dotAction(node: HTMLElement, i: number) {
-		const handler = () => { index = i; };
+		const handler = () => { index = i; resetAdvance(); };
 		node.addEventListener('click', handler);
 		return {
 			destroy() {
@@ -312,6 +329,11 @@
 		};
 		window.addEventListener('keydown', handleKeydown);
 
+		const handleControlStart = () => resetAdvance();
+		controls.addEventListener('start', handleControlStart);
+
+		resetAdvance();
+
 		let touchStartX = 0;
 		let touchStartY = 0;
 		const handleTouchStart = (e: TouchEvent) => {
@@ -326,6 +348,7 @@
 				if (dx > 0) prev();
 				else next();
 			}
+			resetAdvance();
 		};
 		host.addEventListener('touchstart', handleTouchStart, { passive: true });
 		host.addEventListener('touchend', handleTouchEnd);
@@ -333,11 +356,13 @@
 		return () => {
 			cancelAnimationFrame(frame);
 			cancelAnimationFrame(frame2d);
+			clearTimeout(autoTimer);
 			resizeObserver.disconnect();
 			visibilityObserver.disconnect();
 			controls.dispose();
 			renderer.dispose();
 			window.removeEventListener('keydown', handleKeydown);
+			controls.removeEventListener('start', handleControlStart);
 			host.removeEventListener('touchstart', handleTouchStart);
 			host.removeEventListener('touchend', handleTouchEnd);
 			scene.traverse((object) => {

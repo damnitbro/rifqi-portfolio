@@ -25,12 +25,24 @@
 	const instagramUrl = `https://www.instagram.com/marvs_qx/`;
 	const whatsappUrl = 'https://wa.me/+6282114914404';
 	const skillTargets = ['experience-3d', 'experience-video', 'experience-graphics', 'contact'];
+
+	const letters = ['P', 'O', 'R', 'T', 'F', 'O', 'L', 'I', 'O'];
 </script>
 
 <section class="hero" id="top">
 	<div class="cover-banner">
 		<div class="portfolio-frame">
-			<img src="/images/Portofolio.png" alt="Portfolio" class="portfolio-image" />
+			<div class="portfolio-word">
+				{#each letters as letter, i}
+					{#if i === 5}
+						<span class="letter ornament-letter" style:--i={i}>
+							<img src="/images/RadialDot.png" alt="O" class="radial-o" />
+						</span>
+					{:else}
+						<span class="letter" style:--i={i}>{letter}</span>
+					{/if}
+				{/each}
+			</div>
 		</div>
 	</div>
 	<div class="hero-grid">
@@ -294,15 +306,6 @@
 		box-shadow: 0 2.6rem 5rem rgba(0, 0, 0, 0.54);
 	}
 
-	.portfolio-image {
-		display: block;
-		width: 100%;
-		height: auto;
-		max-height: clamp(12rem, 40vw, 38rem);
-		object-fit: contain;
-		object-position: center;
-	}
-
 	.portfolio-word {
 		position: relative;
 		z-index: 1;
@@ -320,34 +323,29 @@
 		white-space: nowrap;
 	}
 
-	.portfolio-o {
-		position: relative;
+	.letter {
 		display: inline-block;
 		flex: 0 0 auto;
-		width: 0.98em;
+		animation:
+			letter-enter 0.55s ease both,
+			letter-float 3s ease-in-out infinite;
+		animation-delay: calc(var(--i) * 55ms), calc(var(--i) * 0.35s + 0.6s);
+		will-change: transform, opacity;
+	}
+
+	.ornament-letter {
+		flex: 0 0 auto;
+		width: 0.85em;
 		aspect-ratio: 1;
-		border: 0.025em solid currentColor;
-		border-radius: 50%;
-		background:
-			radial-gradient(circle, rgba(255, 16, 16, 0.95) 0 0.026em, transparent 0.03em) 0 0 / 0.066em 0.066em,
-			radial-gradient(circle at center, rgba(255, 16, 16, 0.24), transparent 64%);
-		transform: translateY(0.04em);
 	}
 
-	.portfolio-o::before,
-	.portfolio-o::after {
-		position: absolute;
-		inset: 18%;
-		content: '';
-		border: 0.035em solid currentColor;
-		border-radius: 50%;
-		display: none;
-	}
-
-	.portfolio-o::after {
-		inset: 34%;
-		border-width: 0.025em;
-		opacity: 0.72;
+	.radial-o {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+		animation: spin 8s linear infinite;
+		filter: drop-shadow(0 0 0.08em rgba(255, 16, 16, 0.72));
 	}
 
 	.intro-card {
@@ -562,6 +560,32 @@
 		background: rgba(255, 255, 255, 0.06);
 		border: 1px solid rgba(255, 255, 255, 0.1);
 		border-radius: 6px;
+	}
+
+	@keyframes letter-enter {
+		from {
+			opacity: 0;
+			transform: translateY(1.8em) scale(0.92);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0) scale(1);
+		}
+	}
+
+	@keyframes letter-float {
+		0%, 100% {
+			transform: translateY(0);
+		}
+		50% {
+			transform: translateY(-0.12em);
+		}
+	}
+
+	@keyframes spin {
+		to {
+			transform: rotate(360deg);
+		}
 	}
 
 	@keyframes rise {

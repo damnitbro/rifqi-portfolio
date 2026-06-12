@@ -116,8 +116,8 @@ export const cvTimeline: TimelineItem[] = [
 	},
 	{
 		period: '2026 (3 Months)',
-		title: 'Kementerian Kesehatan RI',
-		detail: 'Social Media Designer',
+		title: 'Ministry of Health',
+		detail: 'Intern Social Media Designer',
 		type: 'experience'
 	}
 ];
@@ -292,7 +292,7 @@ const threeDPersonalAssets: ProjectAsset[] = [
 		ratio: 'square'
 	},
 	{ title: 'Isometric Classroom', src: '/media/work/3d-personal/3d-class.webp', type: 'image', meta: '', ratio: 'wide' },
-	{ title: 'CG Boost Lab Competition entry', src: '/media/work/3d-personal/3d-lab.webp', type: 'image', meta: '', ratio: 'wide' },
+	{ title: 'CG Boost Lab Competition entry', src: '/media/work/3d-personal/Lab.jpeg', type: 'image', meta: '', ratio: 'wide' },
 	{
 		title: 'Personal Letter Animation',
 		src: '/media/work/3d-personal/3d-personal-letter.mp4',
@@ -311,29 +311,8 @@ const threeDPersonalAssets: ProjectAsset[] = [
 		ratio: 'wide'
 	},
 	{
-		title: 'Mandiri Booth Front Right',
-		src: '/media/work/3d-personal/3d-personal-mbfpng-1.webp',
-		type: 'image',
-		meta: '',
-		ratio: 'wide'
-	},
-	{
-		title: 'Mandiri Booth Front Left',
-		src: '/media/work/3d-personal/3d-personal-mbl.webp',
-		type: 'image',
-		meta: '',
-		ratio: 'wide'
-	},
-	{
-		title: 'Mandiri Booth Front Low Right',
+		title: 'Mandiri Booth',
 		src: '/media/work/3d-personal/3d-personal-mbr.webp',
-		type: 'image',
-		meta: '',
-		ratio: 'wide'
-	},
-	{
-		title: 'Mandiri Booth Right Side',
-		src: '/media/work/3d-personal/3d-personal-mbs.webp',
 		type: 'image',
 		meta: '',
 		ratio: 'wide'
@@ -406,7 +385,7 @@ const videoEditorAssets: ProjectAsset[] = [
 	},
 	{
 	title: 'Real Estate Edit 5',
-		src: '/media/work/video-editor/real-estate-4.mp4',
+		src: 'F:/Video/GreenNuri.mp4',
 		type: 'video',
 		meta: '',
 		// Backend-only clip timing: change startAt/endAt to adjust this loop.
@@ -416,7 +395,7 @@ const videoEditorAssets: ProjectAsset[] = [
 	},
 	{
 		title: 'Real Estate Edit 6',
-		src: '/media/work/video-editor/real-estate-6.mp4',
+		src: 'F:/Video/Petukangan.mp4',
 		type: 'video',
 		meta: '',
 		// Backend-only clip timing: change startAt/endAt to adjust this loop.
@@ -436,7 +415,7 @@ const videoEditorAssets: ProjectAsset[] = [
 	},
 	{
 		title: 'Real Estate Edit 8',
-		src: '/media/work/video-editor/real-estate-8.mp4',
+		src: 'F:/Video/Menteng.mp4',
 		type: 'video',
 		meta: '',
 		// Backend-only clip timing: change startAt/endAt to adjust this loop.
@@ -488,13 +467,6 @@ const graphicMotionAssets: ProjectAsset[] = [
 		meta: 'Kemenkes flyer'
 	},
 	{
-		title: 'Kemenkes Campaign Frame',
-		src: '/media/work/graphic-motion/frame-3.webp',
-		type: 'image',
-		meta: 'IG layout',
-		ratio: 'wide'
-	},
-	{
 		title: 'Hari Kebangkitan Nasional',
 		src: '/media/work/graphic-motion/flyer-hari-kebangkitan-nasional.webp',
 		type: 'image',
@@ -530,7 +502,6 @@ const graphicMotionAssets: ProjectAsset[] = [
 	{ title: 'Minggu 3-1', src: '/media/work/graphic-motion/minggu-3-1-1.webp', type: 'image', meta: 'content series' },
 	{ title: 'Minggu 3-2', src: '/media/work/graphic-motion/minggu-3-2-3.webp', type: 'image', meta: 'content series' },
 	{ title: 'Minggu 3-22', src: '/media/work/graphic-motion/minggu-3-22-1.webp', type: 'image', meta: 'content series' },
-	{ title: 'Magazine Layout', src: '/media/work/graphic-motion/magazine-1.webp', type: 'image', meta: 'editorial study', ratio: 'poster', poster: true },
 	{ title: 'Saturn Poster', src: '/media/work/graphic-motion/saturn-1.webp', type: 'image', meta: 'poster study', ratio: 'poster', poster: true }
 ];
 

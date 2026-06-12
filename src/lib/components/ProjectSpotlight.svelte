@@ -8,11 +8,9 @@
 
 	let { videos = [] }: Props = $props();
 
-	const YT_ID = '5v7WOd9hAi0';
-	const ytSrc = `https://www.youtube.com/embed/${YT_ID}?autoplay=1&mute=1&loop=1&playlist=${YT_ID}&controls=1&rel=0`;
+	const socaSrc = '/media/work/3d-personal/socastreet.mp4';
 
 	const models = [
-		{ url: '', title: '3D Shape' },
 		{ url: '/media/models/Lucy.glb', title: 'Lucy' },
 		{ url: '/media/models/Male.glb', title: 'Male' }
 	];
@@ -26,15 +24,8 @@
 
 	<div class="spotlight-grid">
 		<ModelViewer {models} accent="#8b0000" />
-		<div class="yt-embed-shell">
-			<iframe
-				src={ytSrc}
-				title="Gibran Pro Home - Satu Satunya Rumah Sultan Di Pondok Indah"
-				frameborder="0"
-				loading="lazy"
-				allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-				allowfullscreen
-			></iframe>
+		<div class="vid-shell">
+			<video src={socaSrc} muted autoplay playsinline loop preload="metadata"></video>
 		</div>
 	</div>
 </section>
@@ -72,7 +63,7 @@
 		gap: clamp(1rem, 2vw, 1.4rem);
 	}
 
-	.yt-embed-shell {
+	.vid-shell {
 		position: relative;
 		overflow: hidden;
 		min-height: clamp(420px, 62vh, 720px);
@@ -81,11 +72,12 @@
 		border-radius: 8px;
 	}
 
-	.yt-embed-shell iframe {
+	.vid-shell video {
 		position: absolute;
 		inset: 0;
 		width: 100%;
 		height: 100%;
+		object-fit: contain;
 	}
 
 	@media (max-width: 980px) {
@@ -99,7 +91,7 @@
 			gap: 1rem;
 		}
 
-		.yt-embed-shell {
+		.vid-shell {
 			min-height: auto;
 			aspect-ratio: 16 / 9;
 		}
