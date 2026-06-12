@@ -126,6 +126,7 @@
 	};
 
 	let videoEls: Record<string, HTMLVideoElement> = $state({});
+	let seekEls: Record<string, HTMLInputElement> = $state({});
 	let mutedMap: Record<string, boolean> = $state({});
 	let youtubeActive: Record<string, boolean> = $state({});
 
@@ -136,6 +137,31 @@
 		if (!el) return;
 		el.currentTime = 0;
 		void el.play().catch(() => undefined);
+	};
+
+	const syncSeek = (key: string, asset: ProjectAsset) => {
+		const video = videoEls[key];
+		const seek = seekEls[key];
+		if (!video || !seek || !Number.isFinite(video.duration)) return;
+
+		const start = asset.startAt ?? 0;
+		const end = Math.min(asset.endAt ?? video.duration, video.duration);
+		const span = Math.max(end - start, 0.01);
+		const progress = Math.min(100, Math.max(0, ((video.currentTime - start) / span) * 100));
+		seek.value = String(progress);
+		seek.style.setProperty('--seek-progress', `${progress}%`);
+	};
+
+	const seekVideo = (key: string, asset: ProjectAsset, event: Event) => {
+		const video = videoEls[key];
+		const input = event.currentTarget as HTMLInputElement;
+		if (!video || !Number.isFinite(video.duration)) return;
+
+		const start = asset.startAt ?? 0;
+		const end = Math.min(asset.endAt ?? video.duration, video.duration);
+		video.currentTime = start + ((end - start) * input.valueAsNumber) / 100;
+		input.style.setProperty('--seek-progress', `${input.valueAsNumber}%`);
+		void video.play().catch(() => undefined);
 	};
 
 	const toggleMute = (key: string) => {
@@ -183,6 +209,8 @@
 
 	<div class="project-groups" class:poster-wall={section.groups[0]?.layout === 'poster-wall'}>
 		{#each section.groups as group, groupIdx (`${section.id}-${group.title}`)}
+			{@const isVideoReelGroup =
+				section.id === 'experience-video' && group.title === 'Real Estate Short-Form Video'}
 			<article
 				class="project-group"
 				class:personal={group.kind === 'personal'}
@@ -281,6 +309,7 @@
 								class:video-figure={isVideo(asset)}
 								data-title={asset.title}
 								data-ratio={asset.ratio ?? 'auto'}
+								data-youtube-id={asset.youtubeId}
 								style:--asset-aspect={asset.aspect}
 								class:youtube-figure={!!asset.youtubeId}
 							>
@@ -305,7 +334,9 @@
 											}}
 										>
 											<img
-												src="https://img.youtube.com/vi/{ytId}/hqdefault.jpg"
+												src={ytId === '5v7WOd9hAi0'
+													? `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`
+													: `https://img.youtube.com/vi/${ytId}/mqdefault.jpg`}
 												alt={asset.title}
 												loading="lazy"
 												class="yt-thumb"
@@ -325,8 +356,23 @@
 											muted={mutedMap[key] ?? true}
 											playsinline
 											preload="none"
+											onloadedmetadata={() => syncSeek(key, asset)}
+											ontimeupdate={() => syncSeek(key, asset)}
 										></video>
-										<div class="vid-overlay-controls">
+										<div class="vid-overlay-controls" class:reel-controls={isVideoReelGroup}>
+											{#if isVideoReelGroup}
+												<input
+													bind:this={seekEls[key]}
+													class="video-seek"
+													type="range"
+													min="0"
+													max="100"
+													step="0.1"
+													value="0"
+													aria-label="Seek video"
+													oninput={(event) => seekVideo(key, asset, event)}
+												/>
+											{/if}
 											<button aria-label="Restart video" onclick={() => restartVideo(key)}>
 												<RotateCcw size={13} />
 											</button>
@@ -345,10 +391,10 @@
 								{:else}
 									<img src={asset.src} alt={asset.title} loading="lazy" />
 								{/if}
-								{#if asset.title || (group.kind !== 'personal' && asset.meta)}
+								{#if asset.title || asset.meta}
 									<figcaption>
 										<strong>{asset.title}</strong>
-										{#if group.kind !== 'personal' && asset.meta}
+										{#if asset.meta && (group.kind !== 'personal' || asset.meta.startsWith('Credits'))}
 											<span>{asset.meta}</span>
 										{/if}
 									</figcaption>
@@ -499,10 +545,11 @@
 				transparent 1px 40px
 			),
 			linear-gradient(140deg, rgba(194, 169, 106, 0.12), transparent 44%), rgba(8, 8, 8, 0.86);
+		border-color: rgba(255, 255, 255, 0.42);
 	}
 
 	.project-group.logo-system {
-		grid-template-columns: minmax(320px, 0.5fr) minmax(0, 1fr);
+		grid-template-columns: minmax(190px, 0.32fr) minmax(18rem, 0.9fr) minmax(18rem, 0.7fr);
 	}
 
 	.project-group[data-layout='personal-3d'],
@@ -703,55 +750,27 @@
 	}
 
 	.project-group[data-layout='personal-3d'] figure {
-		order: 5;
+		order: initial;
 		grid-column: span 6;
-	}
-
-	.project-group[data-layout='personal-3d'] figure[data-title='CG Boost Lab Competition entry'] {
-		order: 0;
-		grid-column: 1 / span 8;
-		grid-row: 1;
 		width: 100%;
-		aspect-ratio: 16 / 10;
 	}
 
+	.project-group[data-layout='personal-3d'] figure[data-title='3D Lab'],
 	.project-group[data-layout='personal-3d'] figure[data-title='Isometric Room'] {
-		order: 1;
-		grid-column: 9 / -1;
-		grid-row: 1;
-		width: 100%;
 		aspect-ratio: 1 / 1;
 	}
 
-	.project-group[data-layout='personal-3d'] figure[data-title='Chess Piece'] {
-		order: 82;
-		grid-column: 7 / -1;
-		width: 100%;
-		aspect-ratio: 16 / 9;
-	}
-
-	.project-group[data-layout='personal-3d'] figure[data-title='End-of-Term University Project'] {
-		order: 81;
-		grid-column: 1 / span 6;
-		width: 100%;
-		aspect-ratio: 16 / 9;
-		justify-self: start;
-	}
-
-	.project-group[data-layout='personal-3d'] figure[data-title='Sofa with Lighting Study'] {
-		order: 91;
-		grid-column: 1 / span 6;
-		width: 100%;
-		aspect-ratio: auto;
+	.project-group[data-layout='personal-3d'] figure[data-title='3D Lab'] img,
+	.project-group[data-layout='personal-3d'] figure[data-title='Isometric Room'] img {
+		object-fit: contain;
 	}
 
 	.project-group[data-layout='personal-3d']
 		figure[data-title='Horror Poster for No Smoke Campaign'] {
-		order: 92;
 		grid-column: 7 / -1;
 		width: min(100%, 22rem);
 		aspect-ratio: 2268 / 3402;
-		justify-self: center;
+		justify-self: end;
 	}
 
 	.project-group[data-layout='personal-3d'] img,
@@ -798,16 +817,16 @@
 	}
 
 	.logo-system-container {
-		grid-column: 1 / -1;
+		grid-column: 2 / -1;
 		display: grid;
-		grid-template-columns: minmax(11rem, 0.42fr) minmax(18rem, 0.9fr) minmax(18rem, 0.7fr);
+		grid-template-columns: minmax(18rem, 0.9fr) minmax(18rem, 0.7fr);
 		grid-template-rows: auto auto;
 		gap: clamp(1.2rem, 3vw, 2.4rem) clamp(1rem, 3vw, 2rem);
 		width: 100%;
 	}
 
 	.logo-left {
-		grid-column: 2;
+		grid-column: 1;
 		grid-row: 1;
 		display: flex;
 		flex-direction: column;
@@ -833,7 +852,7 @@
 	}
 
 	.logo-right-inner {
-		grid-column: 3;
+		grid-column: 2;
 		grid-row: 1;
 		display: grid;
 		gap: clamp(0.65rem, 1.4vw, 1rem);
@@ -906,12 +925,12 @@
 	}
 
 	.font-left {
-		grid-column: 2;
+		grid-column: 1;
 		grid-row: 2;
 	}
 
 	.font-right {
-		grid-column: 3;
+		grid-column: 2;
 		grid-row: 2;
 	}
 
@@ -989,12 +1008,79 @@
 		transition: opacity 0.2s;
 	}
 
+	.vid-overlay-controls.reel-controls {
+		left: 0.35rem;
+		align-items: center;
+	}
+
 	figure:hover .vid-overlay-controls,
 	.vid-wrap:focus-within .vid-overlay-controls {
 		opacity: 1;
 	}
 
+	.video-seek {
+		--seek-progress: 0%;
+		flex: 1 1 auto;
+		min-width: 0;
+		height: 1rem;
+		margin: 0 0.15rem 0 0;
+		padding: 0;
+		appearance: none;
+		-webkit-appearance: none;
+		cursor: pointer;
+		background: transparent;
+	}
+
+	.video-seek::-webkit-slider-runnable-track {
+		height: 2px;
+		border-radius: 999px;
+		background: linear-gradient(
+			to right,
+			rgba(255, 255, 255, 0.92) 0 var(--seek-progress),
+			rgba(255, 255, 255, 0.28) var(--seek-progress) 100%
+		);
+	}
+
+	.video-seek::-webkit-slider-thumb {
+		width: 8px;
+		height: 8px;
+		margin-top: -3px;
+		appearance: none;
+		-webkit-appearance: none;
+		border: 1px solid rgba(8, 8, 8, 0.5);
+		border-radius: 50%;
+		background: #fff;
+		box-shadow: 0 1px 5px rgba(0, 0, 0, 0.45);
+	}
+
+	.video-seek::-moz-range-track {
+		height: 2px;
+		border-radius: 999px;
+		background: rgba(255, 255, 255, 0.28);
+	}
+
+	.video-seek::-moz-range-progress {
+		height: 2px;
+		border-radius: 999px;
+		background: rgba(255, 255, 255, 0.92);
+	}
+
+	.video-seek::-moz-range-thumb {
+		width: 8px;
+		height: 8px;
+		border: 1px solid rgba(8, 8, 8, 0.5);
+		border-radius: 50%;
+		background: #fff;
+		box-shadow: 0 1px 5px rgba(0, 0, 0, 0.45);
+	}
+
+	.video-seek:focus-visible {
+		outline: 1px solid rgba(255, 255, 255, 0.9);
+		outline-offset: 3px;
+	}
+
 	.vid-overlay-controls button {
+		flex: 0 0 auto;
 		display: inline-grid;
 		width: 1.7rem;
 		height: 1.7rem;
@@ -1023,13 +1109,12 @@
 		aspect-ratio: 16 / 9;
 	}
 
-	.project-group[data-layout='personal-3d']
-		.youtube-figure[data-title='Gibran Pro Home — Virtual Tour'] {
-		grid-column: 1 / span 5;
+	.project-group[data-layout='personal-3d'] .youtube-figure[data-youtube-id='5v7WOd9hAi0'] {
+		grid-column: 1 / span 6;
+		justify-self: end;
 	}
 
-	.project-group[data-layout='personal-3d']
-		.youtube-figure[data-title='Gibran Pro Home — Listing Highlight'] {
+	.project-group[data-layout='personal-3d'] .youtube-figure[data-youtube-id='TxzTQOQjACE'] {
 		grid-column: 7 / -1;
 	}
 
@@ -1129,6 +1214,10 @@
 			grid-template-columns: 1fr;
 		}
 
+		.project-group.logo-system {
+			grid-template-columns: minmax(0, 1fr);
+		}
+
 		.experience-section .experience-heading {
 			grid-template-columns: minmax(0, 1fr) !important;
 			align-items: start;
@@ -1147,6 +1236,11 @@
 		.experience-heading p,
 		.apps {
 			grid-column: auto;
+		}
+
+		.project-group.logo-system .group-copy,
+		.logo-system-container {
+			grid-column: 1 / -1;
 		}
 
 		h2 {
@@ -1232,30 +1326,14 @@
 		}
 
 		.project-group[data-layout='soca-showcase'] figure[data-title='Sovia Pop-Out'] {
-			width: min(100%, 20rem);
-			justify-self: center;
-			aspect-ratio: 9 / 16;
+			aspect-ratio: 486 / 852;
 		}
 
 		.project-group[data-layout='personal-3d'] .media-grid {
 			grid-template-columns: repeat(6, minmax(0, 1fr));
 		}
 
-		.project-group[data-layout='personal-3d'] figure,
-		.project-group[data-layout='personal-3d'] figure[data-title='CG Boost Lab Competition entry'],
-		.project-group[data-layout='personal-3d'] figure[data-title='Isometric Room'] {
-			grid-column: 1 / -1 !important;
-			grid-row: auto !important;
-			width: 100%;
-		}
-
-		.project-group[data-layout='personal-3d'] figure[data-title='End-of-Term University Project'] {
-			grid-column: 1 / -1 !important;
-			grid-row: auto !important;
-			width: 100%;
-		}
-
-		.project-group[data-layout='personal-3d'] figure[data-title='Chess Piece'] {
+		.project-group[data-layout='personal-3d'] figure {
 			grid-column: 1 / -1 !important;
 			grid-row: auto !important;
 			width: 100%;
@@ -1266,33 +1344,77 @@
 			grid-column: 1 / -1 !important;
 			grid-row: auto !important;
 			width: 60%;
-			margin-inline: auto;
+			margin-left: auto;
+			margin-right: 0;
 			aspect-ratio: 2268 / 3402;
 		}
 
+		.project-group.logo-system {
+			overflow: hidden;
+		}
+
+		.project-group.logo-system .group-copy,
 		.logo-system-container {
+			min-width: 0;
+			max-width: 100%;
+			overflow: hidden;
 			grid-template-columns: 1fr;
 			grid-template-rows: auto;
 		}
 
+		.project-group.logo-system .group-copy {
+			display: grid;
+		}
+
+		.project-group.logo-system .group-copy h3 {
+			max-width: 100%;
+			font-size: clamp(1.65rem, 8vw, 2rem);
+			text-wrap: wrap;
+			overflow-wrap: anywhere;
+		}
+
+		.project-group.logo-system .group-copy p {
+			max-width: 100%;
+			overflow-wrap: anywhere;
+		}
+
+		.logo-system-container > *,
 		.logo-left {
+			min-width: 0;
+			max-width: 100%;
 			grid-column: auto;
 			grid-row: auto;
 		}
 
 		.logo-right-inner {
+			min-width: 0;
+			max-width: 100%;
 			grid-column: auto;
 			grid-row: auto;
 		}
 
 		.main-logo-figure {
-			max-width: 24rem;
+			width: min(100%, 12rem);
+			max-width: 12rem;
+			justify-self: center;
 		}
 
 		.font-left,
 		.font-right {
+			min-width: 0;
+			max-width: 100%;
+			overflow: hidden;
 			grid-column: auto;
 			grid-row: auto;
+		}
+
+		.font-left strong,
+		.font-right strong,
+		.font-left small,
+		.font-right small {
+			min-width: 0;
+			max-width: 100%;
+			overflow-wrap: anywhere;
 		}
 
 		.project-group[data-layout='motion-layout'] figure[data-ratio='wide'],
@@ -1325,7 +1447,8 @@
 		}
 
 		.main-logo-figure {
-			max-width: 18rem;
+			width: min(100%, 11rem);
+			max-width: 11rem;
 			justify-self: center;
 		}
 
@@ -1334,10 +1457,12 @@
 			gap: 0.5rem;
 		}
 
+		.project-group.logo-system .mockup-grid figure:first-child,
 		.project-group.logo-system .mockup-figure {
 			grid-column: auto !important;
 			width: 100%;
-			aspect-ratio: 1 / 1;
+			min-width: 0;
+			aspect-ratio: 1.35 / 1;
 		}
 
 		.project-group.logo-system .mockup-figure img {
@@ -1345,13 +1470,28 @@
 		}
 
 		.color-row {
-			grid-template-columns: repeat(5, minmax(0, 1fr));
-			gap: 0.35rem;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: 0.5rem;
+		}
+
+		.color-row div {
+			min-width: 0;
 		}
 
 		.color-row strong,
 		.color-row small {
-			font-size: 0.58rem;
+			font-size: 0.68rem;
+		}
+
+		.font-left strong:first-of-type,
+		.font-right strong:first-of-type {
+			font-size: clamp(1.55rem, 8vw, 2rem);
+			line-height: 1.05;
+		}
+
+		.alphabet {
+			font-size: 0.72rem !important;
+			overflow-wrap: anywhere;
 		}
 
 		.poster-columns {
@@ -1381,6 +1521,8 @@
 		.project-group[data-layout='personal-3d']
 			figure[data-title='Horror Poster for No Smoke Campaign'] {
 			width: min(100%, 16rem);
+			margin-left: auto;
+			margin-right: 0;
 		}
 
 		.mockup-grid {

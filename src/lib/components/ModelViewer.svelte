@@ -131,7 +131,7 @@
 		scene.add(new THREE.HemisphereLight('#ffffff', '#2a1710', 2.8));
 		scene.add(new THREE.AmbientLight('#fff4e5', 0.65));
 
-		const key = new THREE.DirectionalLight('#fff2dc', 4.4);
+		const key = new THREE.DirectionalLight('#fff2dc', 2.1);
 		key.position.set(4, 4, 3);
 		scene.add(key);
 

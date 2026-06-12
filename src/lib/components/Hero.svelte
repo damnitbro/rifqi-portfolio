@@ -290,9 +290,9 @@
 		padding: clamp(5.8rem, 9vw, 8rem) clamp(0rem, 0vw, 0rem) clamp(3.2rem, 6vw, 5rem);
 		overflow: visible;
 		background:
-			radial-gradient(circle at 100% 0%, rgba(255, 0, 0, 0.82), transparent 24rem),
-			radial-gradient(circle at 5% 74%, rgba(255, 0, 0, 0.64), transparent 8rem),
-			linear-gradient(180deg, rgba(33, 29, 31, 0.92), rgba(28, 25, 26, 0.88));
+			radial-gradient(circle at 100% 0%, rgba(112, 0, 0, 0.52), transparent 24rem),
+			radial-gradient(circle at 5% 74%, rgba(96, 0, 0, 0.4), transparent 8rem),
+			linear-gradient(180deg, rgba(18, 15, 16, 0.99), rgba(9, 8, 9, 0.99));
 	}
 
 	.cover-banner::before,
@@ -307,9 +307,9 @@
 		top: clamp(6rem, 12vw, 9rem);
 		width: min(28vw, 22rem);
 		height: min(26vw, 20rem);
-		background: rgba(255, 0, 0, 0.72);
+		background: rgba(138, 0, 0, 0.42);
 		filter: blur(1.5rem);
-		opacity: 0.72;
+		opacity: 0.56;
 		transform-origin: center;
 	}
 
@@ -327,11 +327,11 @@
 		background:
 			radial-gradient(
 				ellipse at 38% 45%,
-				rgba(255, 0, 0, 0.78),
-				rgba(139, 0, 0, 0.38) 42%,
+				rgba(148, 0, 0, 0.54),
+				rgba(86, 0, 0, 0.32) 42%,
 				transparent 72%
 			),
-			radial-gradient(ellipse at 92% 88%, rgba(255, 0, 0, 0.44), transparent 68%);
+			radial-gradient(ellipse at 92% 88%, rgba(132, 0, 0, 0.32), transparent 68%);
 		filter: blur(0.35rem);
 		transform-origin: center;
 	}
@@ -727,18 +727,18 @@
 		.cover-banner {
 			width: calc(100% + (var(--hero-pad) * 2));
 			min-height: clamp(15rem, 62vw, 20rem);
-			margin: calc(var(--hero-pad) * -1) calc(var(--hero-pad) * -1) 1.4rem;
-			padding: 2.8rem 0.75rem 1.4rem;
+			margin: calc((var(--hero-pad) + var(--hero-nav-space)) * -1) calc(var(--hero-pad) * -1) 1.4rem;
+			padding: calc(var(--hero-nav-space) + 2.8rem) 0.75rem 1.4rem;
 			overflow: hidden;
 		}
 
 		.cover-banner::before {
 			right: -4rem;
-			top: 3rem;
-			width: 14rem;
-			height: 14rem;
+			top: -3rem;
+			width: 18rem;
+			height: 18rem;
 			filter: blur(1.1rem);
-			opacity: 0.48;
+			opacity: 0.58;
 		}
 
 		.cover-banner::after {

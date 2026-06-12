@@ -962,6 +962,8 @@
 			justify-content: center;
 			gap: 0.12rem;
 			width: 100%;
+			margin-left: 0;
+			padding-inline: 1.35rem;
 			overflow-x: auto;
 			scrollbar-width: none;
 		}
@@ -972,8 +974,8 @@
 
 		.nav-links a {
 			flex: 0 0 auto;
-			padding: 0.52rem 0.42rem;
-			font-size: clamp(0.5rem, 2.55vw, 0.64rem);
+			padding: 0.52rem 0.34rem;
+			font-size: clamp(0.48rem, 2.35vw, 0.62rem);
 		}
 
 		.edge-jump {

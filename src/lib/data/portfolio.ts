@@ -286,7 +286,7 @@ const socaAssets: ProjectAsset[] = [
 		title: 'Witch Sovia v2',
 		src: '/media/work/3d-personal/soca-witch-sovia-short-1.webp',
 		type: 'image',
-		meta: 'short-format render',
+		meta: '',
 		ratio: 'portrait',
 		aspect: '487 / 852'
 	}
@@ -294,10 +294,10 @@ const socaAssets: ProjectAsset[] = [
 
 const threeDPersonalAssets: ProjectAsset[] = [
 	{
-		title: 'Chess Piece',
-		src: '/media/work/3d-personal/3d-catur.webp',
+		title: '3D Lab',
+		src: '/media/work/3d-personal/Lab.jpeg',
 		type: 'image',
-		meta: 'Design by Sait Alanyali',
+		meta: '',
 		ratio: 'wide'
 	},
 	{
@@ -308,17 +308,10 @@ const threeDPersonalAssets: ProjectAsset[] = [
 		ratio: 'square'
 	},
 	{
-		title: 'Isometric Classroom',
-		src: '/media/work/3d-personal/3d-class.webp',
-		type: 'image',
-		meta: '',
-		ratio: 'wide'
-	},
-	{
-		title: 'CG Boost Lab Competition entry',
-		src: '/media/work/3d-personal/Lab.jpeg',
-		type: 'image',
-		meta: '',
+		title: 'Trains',
+		src: '/media/work/3d-personal/trains.mov',
+		type: 'video',
+		meta: '3D train scene',
 		ratio: 'wide'
 	},
 	{
@@ -332,10 +325,24 @@ const threeDPersonalAssets: ProjectAsset[] = [
 		ratio: 'wide'
 	},
 	{
-		title: 'Trains',
-		src: '/media/work/3d-personal/trains.mov',
-		type: 'video',
-		meta: '3D train scene',
+		title: 'End-of-Term University Project',
+		src: '/media/work/3d-personal/3d-personal-uasfinal3-1.webp',
+		type: 'image',
+		meta: '',
+		ratio: 'wide'
+	},
+	{
+		title: 'Sofa with Lighting Study',
+		src: '/media/work/3d-personal/3d-personal-sofa3.webp',
+		type: 'image',
+		meta: '',
+		ratio: 'wide'
+	},
+	{
+		title: 'Chess Set',
+		src: '/media/work/3d-personal/3d-catur.webp',
+		type: 'image',
+		meta: 'Credits to Sait Alanyali',
 		ratio: 'wide'
 	},
 	{
@@ -353,64 +360,10 @@ const threeDPersonalAssets: ProjectAsset[] = [
 		ratio: 'poster',
 		aspect: '2268 / 3402',
 		poster: false
-	},
-	{
-		title: 'Sofa with Lighting Study',
-		src: '/media/work/3d-personal/3d-personal-sofa3.webp',
-		type: 'image',
-		meta: '',
-		ratio: 'wide'
-	},
-	{
-		title: 'End-of-Term University Project',
-		src: '/media/work/3d-personal/3d-personal-uasfinal3-1.webp',
-		type: 'image',
-		meta: '',
-		ratio: 'wide'
 	}
 ];
 
 const videoEditorAssets: ProjectAsset[] = [
-	{
-		title: '',
-		src: '/media/work/video-editor/real-estate-1.mp4',
-		type: 'video',
-		meta: '',
-		// Backend-only clip timing: change startAt/endAt to adjust this loop.
-		startAt: 0,
-		endAt: 78,
-		ratio: 'portrait'
-	},
-	{
-		title: '',
-		src: '/media/work/video-editor/real-estate-2.mp4',
-		type: 'video',
-		meta: '',
-		// Backend-only clip timing: change startAt/endAt to adjust this loop.
-		startAt: 0,
-		endAt: 59,
-		ratio: 'portrait'
-	},
-	{
-		title: '',
-		src: '/media/work/video-editor/real-estate-3.mp4',
-		type: 'video',
-		meta: '',
-		// Backend-only clip timing: change startAt/endAt to adjust this loop.
-		startAt: 0,
-		endAt: 59,
-		ratio: 'portrait'
-	},
-	{
-		title: '',
-		src: '/media/work/video-editor/real-estate-4.mp4',
-		type: 'video',
-		meta: '',
-		// Backend-only clip timing: change startAt/endAt to adjust this loop.
-		startAt: 0,
-		endAt: 90,
-		ratio: 'portrait'
-	},
 	{
 		title: '',
 		src: '/media/work/video-editor/real-estate-5.mp4',
@@ -433,6 +386,16 @@ const videoEditorAssets: ProjectAsset[] = [
 	},
 	{
 		title: '',
+		src: '/media/work/video-editor/real-estate-2.mp4',
+		type: 'video',
+		meta: '',
+		// Backend-only clip timing: change startAt/endAt to adjust this loop.
+		startAt: 0,
+		endAt: 59,
+		ratio: 'portrait'
+	},
+	{
+		title: '',
 		src: '/media/work/video-editor/real-estate-7.mp4',
 		type: 'video',
 		meta: '',
@@ -450,23 +413,53 @@ const videoEditorAssets: ProjectAsset[] = [
 		startAt: 0,
 		endAt: 89,
 		ratio: 'portrait'
+	},
+	{
+		title: '',
+		src: '/media/work/video-editor/real-estate-1.mp4',
+		type: 'video',
+		meta: '',
+		// Backend-only clip timing: change startAt/endAt to adjust this loop.
+		startAt: 0,
+		endAt: 78,
+		ratio: 'portrait'
+	},
+	{
+		title: '',
+		src: '/media/work/video-editor/real-estate-3.mp4',
+		type: 'video',
+		meta: '',
+		// Backend-only clip timing: change startAt/endAt to adjust this loop.
+		startAt: 0,
+		endAt: 59,
+		ratio: 'portrait'
+	},
+	{
+		title: '',
+		src: '/media/work/video-editor/real-estate-4.mp4',
+		type: 'video',
+		meta: '',
+		// Backend-only clip timing: change startAt/endAt to adjust this loop.
+		startAt: 0,
+		endAt: 90,
+		ratio: 'portrait'
 	}
 ];
 
 const youtubeEditorAssets: ProjectAsset[] = [
 	{
-		title: 'Gibran Pro Home — Virtual Tour',
+		title: 'Gibran Pro Home - Highest Traffic + Engagement',
 		src: '',
 		type: 'video',
-		meta: 'property walkthrough',
+		meta: '',
 		youtubeId: '5v7WOd9hAi0',
 		ratio: 'wide'
 	},
 	{
-		title: 'Gibran Pro Home — Listing Highlight',
+		title: 'Gibran Pro Home',
 		src: '',
 		type: 'video',
-		meta: 'client presentation',
+		meta: '',
 		youtubeId: 'TxzTQOQjACE',
 		ratio: 'wide'
 	}
