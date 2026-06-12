@@ -120,7 +120,7 @@
 		const startTime = performance.now();
 		let viewerVisible = true;
 
-		camera.position.set(1.4, 0.9, 3.2);
+		camera.position.set(1.8, 1.1, 3.8);
 		modelContainer.position.y = 0.18;
 		scene.add(modelContainer);
 		scene.add(new THREE.HemisphereLight('#ffffff', '#1a0f0a', 1.35));
@@ -137,8 +137,8 @@
 		controls.autoRotate = true;
 		controls.autoRotateSpeed = 1.4;
 		controls.enablePan = false;
-		controls.minDistance = 2.0;
-		controls.maxDistance = 3.8;
+		controls.minDistance = 1.5;
+		controls.maxDistance = 6.5;
 
 		const fallbackMat = new THREE.MeshStandardMaterial({
 			color: '#f7f3e8',

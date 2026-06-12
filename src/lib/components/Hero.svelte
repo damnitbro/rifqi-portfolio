@@ -317,7 +317,7 @@
 
 	.ornament-letter {
 		flex: 0 0 auto;
-		width: 0.92em;
+		width: 0.72em;
 		aspect-ratio: 1;
 		animation: ornament-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
 		animation-delay: calc(5 * 70ms);

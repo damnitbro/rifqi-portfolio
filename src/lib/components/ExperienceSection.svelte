@@ -1015,23 +1015,27 @@
 		inset: 0;
 		display: grid;
 		place-items: center;
-		background: rgba(0, 0, 0, 0.3);
 		transition: background 0.2s;
 	}
 
 	.yt-thumb-wrap:hover .yt-play-btn {
-		background: rgba(0, 0, 0, 0.1);
+		background: transparent;
 	}
 
 	.yt-play-btn svg {
-		width: clamp(2.4rem, 6vw, 3.6rem);
+		width: clamp(3rem, 7vw, 4.2rem);
 		height: auto;
+		padding: 0.6rem;
+		border-radius: 50%;
+		background: rgba(0, 0, 0, 0.55);
+		backdrop-filter: blur(2px);
 		filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.6));
-		transition: transform 0.2s;
+		transition: transform 0.2s, background 0.2s;
 	}
 
 	.yt-thumb-wrap:hover .yt-play-btn svg {
 		transform: scale(1.1);
+		background: rgba(255, 16, 16, 0.7);
 	}
 
 	.yt-embed {
