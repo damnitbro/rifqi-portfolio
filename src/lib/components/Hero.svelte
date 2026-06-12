@@ -326,11 +326,8 @@
 	.letter {
 		display: inline-block;
 		flex: 0 0 auto;
-		animation:
-			letter-enter 0.55s ease both,
-			letter-float 3s ease-in-out infinite;
-		animation-delay: calc(var(--i) * 55ms), calc(var(--i) * 0.35s + 0.6s);
-		will-change: transform, opacity;
+		animation: letter-in 0.55s ease both;
+		animation-delay: calc(var(--i) * 55ms);
 	}
 
 	.ornament-letter {
@@ -498,13 +495,15 @@
 		transition:
 			border-color 180ms ease,
 			background 180ms ease,
-			transform 180ms ease;
+			transform 180ms ease,
+			box-shadow 180ms ease;
 	}
 
 	.toc-card:hover {
 		background: rgba(255, 16, 16, 0.16);
 		border-color: rgba(255, 16, 16, 0.46);
-		transform: translateY(-2px);
+		transform: translateY(-3px) scale(1.012);
+		box-shadow: 0 0.6rem 1.4rem rgba(255, 16, 16, 0.15);
 	}
 
 	.toc-card span {
@@ -562,24 +561,9 @@
 		border-radius: 6px;
 	}
 
-	@keyframes letter-enter {
-		from {
-			opacity: 0;
-			transform: translateY(1.8em) scale(0.92);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0) scale(1);
-		}
-	}
-
-	@keyframes letter-float {
-		0%, 100% {
-			transform: translateY(0);
-		}
-		50% {
-			transform: translateY(-0.12em);
-		}
+	@keyframes letter-in {
+		from { opacity: 0; }
+		to { opacity: 1; }
 	}
 
 	@keyframes spin {

@@ -47,14 +47,26 @@
 	});
 
 	let autoTimer: ReturnType<typeof setTimeout>;
+	let timerProgress = $state(0);
+	const timerDuration = 15000;
+	let timerStarted = 0;
 
 	const scheduleAdvance = () => {
 		clearTimeout(autoTimer);
 		if (models.length < 2) return;
-		autoTimer = setTimeout(() => {
-			index = (index + 1) % models.length;
-			scheduleAdvance();
-		}, 15000);
+		timerProgress = 0;
+		timerStarted = performance.now();
+		const tick = () => {
+			const elapsed = performance.now() - timerStarted;
+			timerProgress = Math.min(elapsed / timerDuration, 1);
+			if (timerProgress < 1) {
+				autoTimer = setTimeout(tick, 50);
+			} else {
+				index = (index + 1) % models.length;
+				scheduleAdvance();
+			}
+		};
+		autoTimer = setTimeout(tick, 50);
 	};
 
 	const resetAdvance = () => {
@@ -108,7 +120,7 @@
 		const startTime = performance.now();
 		let viewerVisible = true;
 
-		camera.position.set(2.8, 1.8, 6.2);
+		camera.position.set(2.2, 1.4, 4.8);
 		modelContainer.position.y = 0.18;
 		scene.add(modelContainer);
 		scene.add(new THREE.HemisphereLight('#ffffff', '#1a0f0a', 1.35));
@@ -125,8 +137,8 @@
 		controls.autoRotate = true;
 		controls.autoRotateSpeed = 1.4;
 		controls.enablePan = false;
-		controls.minDistance = 4.4;
-		controls.maxDistance = 8;
+		controls.minDistance = 3.4;
+		controls.maxDistance = 5.5;
 
 		const fallbackMat = new THREE.MeshStandardMaterial({
 			color: '#f7f3e8',
@@ -398,6 +410,7 @@
 			></button>
 		{/each}
 	</div>
+	<div class="timer-bar" style:--progress={timerProgress.toFixed(3)}></div>
 </div>
 
 <style>
@@ -533,6 +546,18 @@
 	.nav-dots button.active {
 		background: var(--accent);
 		transform: scale(1.35);
+	}
+
+	.timer-bar {
+		position: absolute;
+		left: 0;
+		bottom: 0;
+		z-index: 5;
+		height: 2px;
+		background: var(--accent);
+		width: calc(var(--progress) * 100%);
+		pointer-events: none;
+		transition: width 0.05s linear;
 	}
 
 	@media (max-width: 680px) {

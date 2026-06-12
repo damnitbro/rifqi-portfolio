@@ -141,7 +141,7 @@ export const personalSkills: Skill[] = [
 	{ label: 'Creative Direction', value: 'Mood, visual hierarchy, and presentation choices' },
 	{ label: 'Technical Workflow', value: '3D, editing, motion, and design pipeline awareness' },
 	{ label: 'Detail Craft', value: 'Composition, timing, typography, and polish' },
-	{ label: 'English', value: 'Comfortable communicating project ideas and visual direction' }
+	{ label: 'English proficiency', value: 'Comfortable communicating project ideas and visual direction' }
 ];
 
 export const softSkills: Skill[] = [
@@ -334,7 +334,7 @@ const threeDPersonalAssets: ProjectAsset[] = [
 		ratio: 'wide'
 	},
 	{
-		title: 'University Final Semester Project',
+		title: 'End of term university project',
 		src: '/media/work/3d-personal/3d-personal-uasfinal3-1.webp',
 		type: 'image',
 		meta: '',
@@ -344,7 +344,7 @@ const threeDPersonalAssets: ProjectAsset[] = [
 
 const videoEditorAssets: ProjectAsset[] = [
 	{
-		title: 'Real Estate Edit 1',
+		title: '',
 		src: '/media/work/video-editor/real-estate-5.mp4',
 		type: 'video',
 		meta: '',
@@ -354,7 +354,7 @@ const videoEditorAssets: ProjectAsset[] = [
 		ratio: 'portrait'
 	},
 	{
-		title: 'Real Estate Edit 2',
+		title: '',
 		src: '/media/work/video-editor/real-estate-1.mp4',
 		type: 'video',
 		meta: '',
@@ -364,7 +364,7 @@ const videoEditorAssets: ProjectAsset[] = [
 		ratio: 'portrait'
 	},
 	{
-		title: 'Real Estate Edit 3',
+		title: '',
 		src: '/media/work/video-editor/real-estate-2.mp4',
 		type: 'video',
 		meta: '',
@@ -374,7 +374,7 @@ const videoEditorAssets: ProjectAsset[] = [
 		ratio: 'portrait'
 	},
 	{
-		title: 'Real Estate Edit 4',
+		title: '',
 		src: '/media/work/video-editor/real-estate-3.mp4',
 		type: 'video',
 		meta: '',
@@ -384,7 +384,7 @@ const videoEditorAssets: ProjectAsset[] = [
 		ratio: 'portrait'
 	},
 	{
-	title: 'Real Estate Edit 5',
+		title: '',
 		src: 'F:/Video/GreenNuri.mp4',
 		type: 'video',
 		meta: '',
@@ -394,7 +394,7 @@ const videoEditorAssets: ProjectAsset[] = [
 		ratio: 'portrait'
 	},
 	{
-		title: 'Real Estate Edit 6',
+		title: '',
 		src: 'F:/Video/Petukangan.mp4',
 		type: 'video',
 		meta: '',
@@ -404,7 +404,7 @@ const videoEditorAssets: ProjectAsset[] = [
 		ratio: 'portrait'
 	},
 	{
-		title: 'Real Estate Edit 7',
+		title: '',
 		src: '/media/work/video-editor/real-estate-7.mp4',
 		type: 'video',
 		meta: '',
@@ -414,7 +414,7 @@ const videoEditorAssets: ProjectAsset[] = [
 		ratio: 'portrait'
 	},
 	{
-		title: 'Real Estate Edit 8',
+		title: '',
 		src: 'F:/Video/Menteng.mp4',
 		type: 'video',
 		meta: '',
@@ -608,7 +608,7 @@ export const experienceSections: ExperienceSection[] = [
 		title: 'Video Editor',
 		description:
 			'Short-form reels and long-form YouTube content for real estate, with attention to pacing, clean transitions, social framing, and repeatable campaign output.',
-		apps: [appBadges.premiere, appBadges.afterEffects, appBadges.finalCut, appBadges.davinci],
+		apps: [appBadges.finalCut, appBadges.davinci, appBadges.premiere, appBadges.afterEffects],
 		accent: '#c2a96a',
 		metrics: [
 			{ label: 'Engagement Rate', value: '60%' },

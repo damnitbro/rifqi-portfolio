@@ -666,11 +666,12 @@
 		aspect-ratio: 16 / 9;
 	}
 
-	.project-group[data-layout='personal-3d'] figure[data-title='University Final Semester Project'] {
+	.project-group[data-layout='personal-3d'] figure[data-title='End of term university project'] {
 		order: 81;
 		grid-column: 1 / span 6;
 		width: 100%;
 		aspect-ratio: 16 / 9;
+		justify-self: start;
 	}
 
 	.project-group[data-layout='personal-3d'] figure[data-title='Horror Poster for No Smoke Campaign'] {
@@ -1095,7 +1096,7 @@
 			width: 100%;
 		}
 
-		.project-group[data-layout='personal-3d'] figure[data-title='University Final Semester Project'] {
+		.project-group[data-layout='personal-3d'] figure[data-title='End of term university project'] {
 			grid-column: 1 / -1 !important;
 			grid-row: auto !important;
 			width: 100%;

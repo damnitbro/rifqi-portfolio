@@ -59,7 +59,7 @@
 
 	.spotlight-grid {
 		display: grid;
-		grid-template-columns: 1fr 1fr;
+		grid-template-columns: 0.7fr 1.3fr;
 		gap: clamp(1rem, 2vw, 1.4rem);
 	}
 
@@ -80,7 +80,7 @@
 		object-fit: contain;
 	}
 
-	@media (max-width: 980px) {
+	@media (max-width: 1020px) {
 		.spotlight-grid {
 			grid-template-columns: 1fr;
 		}
